@@ -93,13 +93,24 @@ header, footer { width: 100%; z-index: 10; }
 /* --- Accordion for Tracking --- */
 .accordion-item { border-bottom: 1px solid #e5e7eb; }
 .accordion-item:last-child { border-bottom: none; }
-.accordion-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0.5rem; cursor: pointer; }
+.accordion-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    cursor: pointer;
+    background-color: #f3f4f6; /* Added: สีพื้นหลังเทาอ่อน */
+    transition: background-color 0.2s ease;
+}
+.accordion-header:hover {
+    background-color: #e5e7eb; /* Added: สีพื้นหลังเข้มขึ้นเมื่อเมาส์ชี้ */
+}
 .accordion-header h4 { margin: 0; font-size: 1.125rem; font-weight: 700; }
 .accordion-header-info { font-size: 0.875rem; color: #6b7280; }
 .accordion-arrow { width: 1.5rem; height: 1.5rem; transition: transform 0.3s ease; }
 .accordion-header[aria-expanded="true"] .accordion-arrow { transform: rotate(180deg); }
 .accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; }
-.accordion-body-content { padding: 0.5rem; }
+.accordion-body-content { padding: 0.5rem 1rem 1rem 1rem; } /* Adjusted padding */
 
 /* --- Tracking Timeline --- */
 .timeline-date-header { font-size: 1rem; font-weight: 700; margin-top: 1rem; margin-bottom: 0.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid #e5e7eb; }
@@ -136,8 +147,16 @@ body.dark-mode .progress-line-fill { background-color: #fbbf24; }
 body.dark-mode .progress-step.is-active .step-text { color: #f87171; }
 body.dark-mode .progress-step.is-complete .step-text { color: #d1d5db; }
 body.dark-mode .accordion-item { border-color: #374151; }
+/* Added: Dark Mode styles for Accordion Header */
+body.dark-mode .accordion-header {
+    background-color: #2c374a; /* สีพื้นหลังสำหรับ Dark Mode */
+}
+body.dark-mode .accordion-header:hover {
+    background-color: #374151; /* สีพื้นหลังตอนเมาส์ชี้สำหรับ Dark Mode */
+}
 body.dark-mode .accordion-header-info { color: #9ca3af; }
 body.dark-mode .timeline-date-header, body.dark-mode .timeline-item:not(:last-child)::before { border-color: #4b5563; }
 body.dark-mode .timeline-icon { background-color: #374151; }
 body.dark-mode .timeline-icon svg { color: #9ca3af; }
 body.dark-mode .timeline-location, body.dark-mode .timeline-timestamp { color: #9ca3af; }
+
