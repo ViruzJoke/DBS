@@ -113,11 +113,12 @@
                     <div><label for="quote-ship-date" class="block text-sm font-medium mb-1" data-i18n="shipmentDate"></label><input type="date" id="quote-ship-date" class="input-field" required></div>
                     <div class="flex items-center mt-2"><input type="checkbox" id="quote-is-parcel" class="form-checkbox h-5 w-5 text-red-600 rounded-md"><label for="quote-is-parcel" class="ml-2 block text-sm font-medium" data-i18n="isParcel"></label></div>
                     <div id="quote-declared-value-container" class="hidden"><label for="quote-declared-value" class="block text-sm font-medium mb-1" data-i18n="declaredValue"></label><input type="number" id="quote-declared-value" min="0" step="0.01" class="input-field" data-i18n-placeholder="enterDeclaredValue"></div>
+                    <!-- [UI REORDER] Weight > L > W > H -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div><label class="block text-sm" data-i18n="weightKg"></label><input type="number" id="quote-weight" min="0.1" step="0.1" class="input-field" required data-i18n-placeholder="weightPlaceholder"></div>
                         <div><label class="block text-sm" data-i18n="lengthCm"></label><input type="number" id="quote-length" min="0.1" step="0.1" class="input-field" required data-i18n-placeholder="lengthPlaceholder"></div>
                         <div><label class="block text-sm" data-i18n="widthCm"></label><input type="number" id="quote-width" min="0.1" step="0.1" class="input-field" required data-i18n-placeholder="widthPlaceholder"></div>
                         <div><label class="block text-sm" data-i18n="heightCm"></label><input type="number" id="quote-height" min="0.1" step="0.1" class="input-field" required data-i18n-placeholder="heightPlaceholder"></div>
-                        <div><label class="block text-sm" data-i18n="weightKg"></label><input type="number" id="quote-weight" min="0.1" step="0.1" class="input-field" required data-i18n-placeholder="weightPlaceholder"></div>
                     </div>
                 </div>
                  <div class="flex flex-col sm:flex-row gap-4">
@@ -243,7 +244,13 @@
             }
 
             function displayQuoteResults(data) {
-                if (!data || !data.products || data.products.length === 0) {
+                // [FILTER] Filter out specified products before displaying
+                const productsToDisplay = data.products.filter(product => 
+                    product.productName.toUpperCase() !== 'EXPRESS EASY' && 
+                    product.productName.toUpperCase() !== 'MEDICAL EXPRESS'
+                );
+
+                if (!productsToDisplay || productsToDisplay.length === 0) {
                     quoteResultsContainer.innerHTML = `<p class="text-center p-4">${getTranslatedText('noResults')}</p>`;
                     return;
                 }
@@ -260,7 +267,7 @@
                         </thead>
                         <tbody>`;
 
-                data.products.forEach((product, index) => {
+                productsToDisplay.forEach((product, index) => {
                     const totalPriceInfo = product.totalPrice.find(p => p.currencyType === 'BILLC');
                     if (!totalPriceInfo) return;
 
@@ -378,11 +385,10 @@
                     if (!response.ok) {
                         let errorDetails = response.statusText;
                         try {
-                            const errorJson = await response.json();
-                            // [FIX] Prioritize the 'detail' key from the JSON response
-                            errorDetails = errorJson.detail || JSON.stringify(errorJson);
-                        } catch (e) {
-                            // If parsing fails, use the original statusText
+                           const errorJson = await response.json();
+                           errorDetails = errorJson.detail || JSON.stringify(errorJson);
+                        } catch(e) {
+                           // Response was not JSON
                         }
                         throw new Error(errorDetails);
                     }
@@ -396,7 +402,6 @@
 
                 } catch (error) {
                     let displayMessage = error.message;
-                    // [FIX] If the message is a JSON string, parse it to get the detail
                     try {
                         const errorJson = JSON.parse(displayMessage);
                         if (errorJson && errorJson.detail) {
