@@ -83,7 +83,6 @@
                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="space-y-4 p-4 border rounded-lg bg-yellow-50">
                         <h2 class="text-xl font-semibold" data-i18n="originInfo"></h2>
-                        <!-- [UI REORDER] Country > Postal Code > City -->
                         <div>
                             <label for="origin-country-input" class="block text-sm font-medium mb-1" data-i18n="originCountry"></label>
                             <div class="relative">
@@ -97,7 +96,6 @@
                     </div>
                     <div class="space-y-4 p-4 border rounded-lg bg-yellow-50">
                         <h2 class="text-xl font-semibold" data-i18n="destinationInfo"></h2>
-                        <!-- [UI REORDER] Country > Postal Code > City -->
                          <div>
                             <label for="destination-country-input" class="block text-sm font-medium mb-1" data-i18n="destinationCountry"></label>
                             <div class="relative">
@@ -378,15 +376,14 @@
                     });
 
                     if (!response.ok) {
-                        // [ERROR HANDLING FIX] Attempt to parse JSON first for detailed error
-                        let errorJson = null;
+                        let errorDetails = response.statusText;
                         try {
-                           errorJson = await response.json();
-                        } catch(e) {
-                           // Response was not JSON
+                            const errorJson = await response.json();
+                            // [FIX] Prioritize the 'detail' key from the JSON response
+                            errorDetails = errorJson.detail || JSON.stringify(errorJson);
+                        } catch (e) {
+                            // If parsing fails, use the original statusText
                         }
-                        // Use the detailed message from JSON if available, otherwise use status text
-                        const errorDetails = errorJson?.details || response.statusText;
                         throw new Error(errorDetails);
                     }
                     
@@ -398,8 +395,18 @@
                     hasUnsavedChanges = false;
 
                 } catch (error) {
-                    // [ERROR HANDLING FIX] Display the detailed error message directly
-                    formMessage.innerHTML = `<span class="font-bold">${getTranslatedText('apiError')}:</span><br>${error.message}`;
+                    let displayMessage = error.message;
+                    // [FIX] If the message is a JSON string, parse it to get the detail
+                    try {
+                        const errorJson = JSON.parse(displayMessage);
+                        if (errorJson && errorJson.detail) {
+                            displayMessage = errorJson.detail;
+                        }
+                    } catch (e) {
+                        // Not a JSON string, display as is
+                    }
+                    
+                    formMessage.innerHTML = `<span class="font-bold">${getTranslatedText('apiError')}:</span><br>${displayMessage}`;
                     formMessage.className = 'p-4 rounded-md text-center bg-red-100 text-red-700';
                     formMessage.classList.remove('hidden'); 
                 } finally {
