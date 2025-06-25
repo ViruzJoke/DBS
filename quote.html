@@ -7,7 +7,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* เพิ่มสไตล์สำหรับตารางผลลัพธ์ */
         .results-table { border-collapse: collapse; width: 100%; margin-top: 1rem; }
         .results-table th, .results-table td { border: 1px solid #d1d5db; padding: 0.75rem; text-align: left; }
         .results-table th { background-color: #f3f4f6; font-weight: 600; }
@@ -98,7 +97,7 @@
             
             let currentLanguage = localStorage.getItem('language') || 'th';
             let hasUnsavedChanges = false;
-            let lastQuoteData = null; // [FIX] Variable to store the last successful quote data
+            let lastQuoteData = null;
 
             const quoteForm = document.getElementById('quote-form');
             const formMessage = document.getElementById('form-message');
@@ -110,7 +109,6 @@
             const populateCountrySelects = () => { ['quote-origin-country', 'quote-destination-country'].forEach(id => { const select = document.getElementById(id); if (!select) return; const val = select.value; select.innerHTML = `<option value="">${getTranslatedText('selectCountry')}</option>`; countryList.forEach(c => { select.innerHTML += `<option value="${c.code}">${c.name}</option>`; }); select.value = val; }); };
             function pageSetup() { document.title = `DHL Backup Solution - ${getTranslatedText('calculateQuote')}`; populateCountrySelects(); }
             
-            // [FIX] Modified the language update function to prevent re-submitting the form.
             function updateContentLanguage(pageSpecificSetup) { 
                 document.querySelectorAll('[data-i18n]').forEach(el => { const key = el.getAttribute('data-i18n'); if (el.hasAttribute('data-i18n-html')) el.innerHTML = getTranslatedText(key); else el.textContent = getTranslatedText(key); }); document.querySelectorAll('[data-i18n-placeholder]').forEach(el => { el.placeholder = getTranslatedText(el.getAttribute('data-i18n-placeholder')); }); 
                 const langDisplay = document.getElementById('current-language-display');
@@ -118,7 +116,6 @@
                 if (typeof pageSpecificSetup === 'function') { 
                     pageSpecificSetup(); 
                 } 
-                // [FIX] Instead of re-submitting, we re-render the results table with the stored data.
                 if (lastQuoteData && !quoteResultsSection.classList.contains('hidden')) {
                     displayQuoteResults(lastQuoteData);
                 }
@@ -128,7 +125,6 @@
             function setupLanguageSwitch(pageSpecificSetup) { document.getElementById('language-toggle-button').addEventListener('click', () => document.getElementById('language-dropdown').classList.toggle('hidden')); document.querySelectorAll('[data-lang]').forEach(link => { link.addEventListener('click', (e) => { e.preventDefault(); currentLanguage = e.target.dataset.lang; localStorage.setItem('language', currentLanguage); updateContentLanguage(pageSpecificSetup); document.getElementById('language-dropdown').classList.add('hidden'); }); }); }
             function initializeSharedComponents(pageSpecificSetup) { setupTheme(); setupLanguageSwitch(pageSpecificSetup); document.getElementById('current-year').textContent = new Date().getFullYear(); updateContentLanguage(pageSpecificSetup); }
             
-            // [FIX] Added lastQuoteData = null to the reset function.
             const resetForm = () => { 
                 quoteForm.reset(); 
                 formMessage.classList.add('hidden'); 
@@ -245,7 +241,9 @@
             
             quoteForm.addEventListener('submit', async (event) => {
                 event.preventDefault();
+                console.log("Form submitted. Validating..."); // DEBUG
                 if (!quoteForm.checkValidity()) {
+                    console.log("Form is invalid."); // DEBUG
                     formMessage.textContent = getTranslatedText('fillAllFields');
                     formMessage.className = 'p-4 rounded-md text-center bg-red-100 text-red-700';
                     formMessage.classList.remove('hidden');
@@ -268,12 +266,14 @@
                     shipDate: document.getElementById('quote-ship-date').value,
                     isParcel: document.getElementById('quote-is-parcel').checked,
                     packages: [{
-                        length: document.getElementById('quote-length').value || "0",
-                        width: document.getElementById('quote-width').value || "0",
-                        height: document.getElementById('quote-height').value || "0",
-                        weight: document.getElementById('quote-weight').value || "0"
+                        length: document.getElementById('quote-length').value || "1",
+                        width: document.getElementById('quote-width').value || "1",
+                        height: document.getElementById('quote-height').value || "1",
+                        weight: document.getElementById('quote-weight').value || "0.5"
                     }]
                 };
+
+                console.log("Form is valid. Sending data to /api/quote:", formData); // DEBUG
 
                 try {
                     const response = await fetch('/api/quote', {
@@ -282,23 +282,38 @@
                         body: JSON.stringify(formData)
                     });
 
+                    console.log("Received response from /api/quote. Status:", response.status); // DEBUG
+
                     if (!response.ok) {
-                        const errData = await response.json();
-                        throw new Error(errData.details || response.statusText);
+                        // [FIX] Improved error handling for non-JSON responses
+                        let errorDetails = response.statusText;
+                        const contentType = response.headers.get("content-type");
+                        if (contentType && contentType.indexOf("application/json") !== -1) {
+                            const errData = await response.json();
+                            errorDetails = errData.details || errData.error || JSON.stringify(errData);
+                        } else {
+                            errorDetails = await response.text();
+                        }
+                         console.error("API response not OK. Details:", errorDetails); // DEBUG
+                        throw new Error(errorDetails);
                     }
                     
                     const data = await response.json();
-                    lastQuoteData = data; // [FIX] Store data on successful fetch
+                    console.log("Successfully received data:", data); // DEBUG
+                    lastQuoteData = data;
                     formMessage.classList.add('hidden'); 
                     quoteResultsSection.classList.remove('hidden');
                     displayQuoteResults(data);
                     hasUnsavedChanges = false;
 
                 } catch (error) {
-                    console.error("Quote API Error:", error);
+                    console.error("FETCH CATCH BLOCK ERROR:", error); // DEBUG
                     formMessage.textContent = `${getTranslatedText('apiError')} ${error.message}`;
                     formMessage.className = 'p-4 rounded-md text-center bg-red-100 text-red-700';
+                    // Make sure message is visible
+                    formMessage.classList.remove('hidden'); 
                 } finally {
+                    console.log("Executing finally block. Re-enabling button."); // DEBUG
                     getQuoteBtn.disabled = false;
                 }
             });
