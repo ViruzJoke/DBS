@@ -35,21 +35,19 @@
                         <textarea id="tracking-number-input" class="input-field w-full sm:flex-grow px-5 py-3 rounded-md text-gray-800 resize-none" rows="1" data-i18n-placeholder="enterTrackingNumberPlaceholder"></textarea>
                         <button id="track-button" class="btn-primary btn-red w-full sm:w-auto mt-2 sm:mt-0" data-i18n="trackButton"></button>
                     </div>
-                    <div id="tracking-result" class="mt-4 p-3 bg-white text-black rounded-lg shadow-md hidden"></div>
+                    <div id="tracking-result" class="mt-4 p-3 bg-white text-black rounded-lg shadow-md hidden break-words"></div>
                 </div>
             </section>
             
             <section class="card my-8">
                 <h2 class="text-3xl font-extrabold text-center text-gray-800 mb-8" data-i18n="gettingStartedTitle"></h2>
                 <div class="flex flex-col md:flex-row justify-center gap-6 max-w-3xl mx-auto">
-                    <!-- [FIX] Changed icon for Calculate Quote button to a solid, black version -->
                     <a href="quote.html" class="main-action-button bg-yellow-500 text-black hover:bg-yellow-600">
                         <svg class="w-14 h-14 mb-3" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1s-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm-2 14l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/>
                         </svg>
                         <span data-i18n="calculateQuote"></span>
                     </a>
-                    <!-- [FIX] Changed icon for Create Shipment button to a solid, black version -->
                     <a href="ship.html" class="main-action-button bg-yellow-500 text-black hover:bg-yellow-600">
                         <svg class="w-14 h-14 mb-3" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path d="M3.375 3C2.339 3 1.5 3.84 1.5 4.875v.75c0 1.036.84 1.875 1.875 1.875h17.25c1.035 0 1.875-.84 1.875-1.875v-.75C22.5 3.839 21.66 3 20.625 3H3.375Z" />
@@ -76,7 +74,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const translations = { 'th': { 'homepage': 'หน้าหลัก', 'trackYourPackageTitle': 'ติดตามพัสดุของคุณ', 'enterTrackingNumber': 'ป้อนหมายเลขติดตามพัสดุได้สูงสุด 10 หมายเลข โดยคั่นด้วยเครื่องหมายจุลภาค (,) หรือขึ้นบรรทัดใหม่', 'trackButton': 'ติดตาม', 'gettingStartedTitle': 'เริ่มต้นใช้งาน', 'calculateQuote': 'คำนวณค่าขนส่ง', 'createShipment': 'สร้างใบนำส่ง', 'allRightsReserved': 'สงวนลิขสิทธิ์.', 'enterTrackingNumberPlaceholder': 'กรอกหมายเลขติดตามพัสดุ', 'emergencyOnlyTitle': 'เฉพาะกรณีฉุกเฉิน', 'emergencySystemMessage': 'ระบบนี้จะถูกเปิดใช้งานในกรณีที่ระบบ MyDHL+ ไม่สามารถใช้งานได้เท่านั้น หากระบบ MyDHL+ สามารถกลับมาใช้งานได้ปกติแล้ว ระบบนี้จะถูกระงับใช้ภายใน 30 นาที ขอบคุณที่ใช้บริการ DHL Express', 'trackingDetailsTitle': 'รายละเอียดการจัดส่ง', 'multiTrackingResultTitle': 'ผลการติดตามพัสดุ', 'trackingNumberDisplay': 'หมายเลขติดตามพัสดุ:', 'status': 'สถานะ:', 'origin': 'ต้นทาง:', 'destination': 'ปลายทาง:', 'pieces': 'จำนวนกล่อง:', 'totalWeight': 'น้ำหนักรวม:', 'eventHistory': 'อัพเดทการจัดส่งทั้งหมด', 'eventAt': 'ที่', 'eventOn': 'เมื่อ', 'noEventsFound': 'ไม่พบประวัติเหตุการณ์', 'backToMain': 'กลับหน้าหลัก', 'trackingSimulated': 'กำลังติดตาม...', 'trackingError': 'เกิดข้อผิดพลาด:', 'serverError': 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้', 'trackingResultUnexpected': 'ไม่พบข้อมูลการจัดส่ง', 'noValidNumbers': 'กรุณากรอกหมายเลขติดตามพัสดุ 10 หลักที่ถูกต้อง' }, 'en': { 'homepage': 'Home', 'trackYourPackageTitle': 'Track Your Shipment', 'enterTrackingNumber': 'Enter up to 10 tracking numbers, separated by a comma (,) or a new line.', 'trackButton': 'Track', 'gettingStartedTitle': 'Get Started', 'calculateQuote': 'Calculate Quote', 'createShipment': 'Create Shipment', 'allRightsReserved': 'All rights reserved.', 'enterTrackingNumberPlaceholder': 'Enter tracking number(s)', 'emergencyOnlyTitle': 'For Emergency Only', 'emergencySystemMessage': 'This system will be activated only if the MyDHL+ system is unavailable. If MyDHL+ system becomes operational again, this system will be temporarily suspended within 30 minutes. Thank you for using DHL Express.', 'trackingDetailsTitle': 'Shipment Details', 'multiTrackingResultTitle': 'Shipment Tracking Results', 'trackingNumberDisplay': 'Tracking Number:', 'status': 'Status:', 'origin': 'Origin:', 'destination': 'Destination:', 'pieces': 'Piece(s):', 'totalWeight': 'Total Weight:', 'eventHistory': 'All Shipment Updates', 'eventAt': 'at', 'eventOn': 'on', 'noEventsFound': 'No event history found', 'backToMain': 'Back to Main', 'trackingSimulated': 'Tracking...', 'trackingError': 'An error occurred:', 'serverError': 'Could not connect to the server', 'trackingResultUnexpected': 'Shipment information not found', 'noValidNumbers': 'Please enter valid 10-digit tracking numbers.' } };
+            const translations = { 'th': { 'homepage': 'หน้าหลัก', 'trackYourPackageTitle': 'ติดตามพัสดุของคุณ', 'enterTrackingNumber': 'ป้อนหมายเลขติดตามพัสดุได้สูงสุด 10 หมายเลข โดยคั่นด้วยเครื่องหมายจุลภาค (,) หรือขึ้นบรรทัดใหม่', 'trackButton': 'ติดตาม', 'gettingStartedTitle': 'เริ่มต้นใช้งาน', 'calculateQuote': 'คำนวณค่าขนส่ง', 'createShipment': 'สร้างใบนำส่ง', 'allRightsReserved': 'สงวนลิขสิทธิ์.', 'enterTrackingNumberPlaceholder': 'กรอกหมายเลขติดตามพัสดุ', 'emergencyOnlyTitle': 'เฉพาะกรณีฉุกเฉิน', 'emergencySystemMessage': 'ระบบนี้จะถูกเปิดใช้งานในกรณีที่ระบบ MyDHL+ ไม่สามารถใช้งานได้เท่านั้น หากระบบ MyDHL+ สามารถกลับมาใช้งานได้ปกติแล้ว ระบบนี้จะถูกระงับใช้ภายใน 30 นาที ขอบคุณที่ใช้บริการ DHL Express', 'trackingDetailsTitle': 'รายละเอียดการจัดส่ง', 'multiTrackingResultTitle': 'ผลการติดตามพัสดุ', 'trackingNumberDisplay': 'หมายเลขติดตามพัสดุ:', 'status': 'สถานะ:', 'origin': 'ต้นทาง:', 'destination': 'ปลายทาง:', 'pieces': 'จำนวนกล่อง:', 'totalWeight': 'น้ำหนักรวม:', 'eventHistory': 'อัพเดทการจัดส่งทั้งหมด', 'eventAt': 'ที่', 'eventOn': 'เมื่อ', 'noEventsFound': 'ไม่พบประวัติเหตุการณ์', 'backToMain': 'กลับหน้าหลัก', 'trackingSimulated': 'กำลังติดตาม...', 'trackingError': 'เกิดข้อผิดพลาดในการติดตามพัสดุ', 'serverError': 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้', 'trackingResultUnexpected': 'ไม่พบข้อมูลการจัดส่ง', 'noValidNumbers': 'กรุณากรอกหมายเลขติดตามพัสดุ 10 หลักที่ถูกต้อง' }, 'en': { 'homepage': 'Home', 'trackYourPackageTitle': 'Track Your Shipment', 'enterTrackingNumber': 'Enter up to 10 tracking numbers, separated by a comma (,) or a new line.', 'trackButton': 'Track', 'gettingStartedTitle': 'Get Started', 'calculateQuote': 'Calculate Quote', 'createShipment': 'Create Shipment', 'allRightsReserved': 'All rights reserved.', 'enterTrackingNumberPlaceholder': 'Enter tracking number(s)', 'emergencyOnlyTitle': 'For Emergency Only', 'emergencySystemMessage': 'This system will be activated only if the MyDHL+ system is unavailable. If MyDHL+ system becomes operational again, this system will be temporarily suspended within 30 minutes. Thank you for using DHL Express.', 'trackingDetailsTitle': 'Shipment Details', 'multiTrackingResultTitle': 'Shipment Tracking Results', 'trackingNumberDisplay': 'Tracking Number:', 'status': 'Status:', 'origin': 'Origin:', 'destination': 'Destination:', 'pieces': 'Piece(s):', 'totalWeight': 'Total Weight:', 'eventHistory': 'All Shipment Updates', 'eventAt': 'at', 'eventOn': 'on', 'noEventsFound': 'No event history found', 'backToMain': 'Back to Main', 'trackingSimulated': 'Tracking...', 'trackingError': 'An error occurred while tracking', 'serverError': 'Could not connect to the server', 'trackingResultUnexpected': 'Shipment information not found', 'noValidNumbers': 'Please enter valid 10-digit tracking numbers.' } };
             let currentLanguage = localStorage.getItem('language') || 'th';
             let lastResultsData = null; 
             function getTranslatedText(key, replacements = {}) { let text = translations[currentLanguage]?.[key] || key; for (const p in replacements) { text = text.replace(`{${p}}`, replacements[p]); } return text; }
@@ -142,24 +140,41 @@
                 const trackingInput = document.getElementById('tracking-number-input').value;
                 const trackingResultDiv = document.getElementById('tracking-result');
                 const cleanedNumbersString = cleanTrackingNumbers(trackingInput);
-                if (!cleanedNumbersString) { trackingResultDiv.textContent = getTranslatedText('noValidNumbers'); trackingResultDiv.classList.remove('hidden'); return; }
+
+                if (!cleanedNumbersString) { 
+                    trackingResultDiv.textContent = getTranslatedText('noValidNumbers'); 
+                    trackingResultDiv.className = 'mt-4 p-3 bg-red-100 text-red-700 rounded-lg shadow-md break-words';
+                    trackingResultDiv.classList.remove('hidden'); 
+                    return; 
+                }
+                
                 trackingResultDiv.textContent = getTranslatedText('trackingSimulated');
+                trackingResultDiv.className = 'mt-4 p-3 bg-blue-100 text-blue-700 rounded-lg shadow-md break-words';
                 trackingResultDiv.classList.remove('hidden');
                 trackButton.disabled = true;
+                
                 try {
                     const response = await fetch(`https://dbs-back-viruzjokes-projects.vercel.app/api/track?trackingNumber=${cleanedNumbersString}`);
-                    if (!response.ok) throw new Error(getTranslatedText('serverError'));
                     const data = await response.json();
-                    if (data?.shipments) {
-                        displayMultiTrackingResults(data);
-                        corporatePage.classList.add('hidden-page');
-                        trackingDisplayPage.classList.remove('hidden-page');
-                        trackingResultDiv.classList.add('hidden');
-                    } else {
-                        trackingResultDiv.textContent = getTranslatedText('trackingResultUnexpected');
+
+                    if (!response.ok) {
+                        const errorMessage = data.additionalDetails || data.detail || data.title || getTranslatedText('trackingResultUnexpected');
+                        throw new Error(errorMessage);
                     }
+                    
+                    if (!data.shipments || data.shipments.length === 0) {
+                        throw new Error(getTranslatedText('trackingResultUnexpected'));
+                    }
+
+                    displayMultiTrackingResults(data);
+                    corporatePage.classList.add('hidden-page');
+                    trackingDisplayPage.classList.remove('hidden-page');
+                    trackingResultDiv.classList.add('hidden');
+
                 } catch (error) {
-                    trackingResultDiv.textContent = `${getTranslatedText('trackingError')} ${error.message}`;
+                    trackingResultDiv.innerHTML = `<span class="font-bold">${getTranslatedText('trackingError')}:</span><br>${error.message}`;
+                    trackingResultDiv.className = 'mt-4 p-3 bg-red-100 text-red-700 rounded-lg shadow-md break-words';
+                    trackingResultDiv.classList.remove('hidden');
                 } finally {
                     trackButton.disabled = false;
                 }
