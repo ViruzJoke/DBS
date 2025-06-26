@@ -12,6 +12,8 @@
         .country-dropdown-item:hover { background-color: #f3f4f6; }
         .dark-mode .country-dropdown { background-color: #374151; border-color: #4b5563; }
         .dark-mode .country-dropdown-item:hover { background-color: #4b5563; }
+        .package-piece-item, .line-item { border: 1px solid #e5e7eb; }
+        .dark-mode .package-piece-item, .dark-mode .line-item { border-color: #4b5563; }
     </style>
 </head>
 <body>
@@ -35,7 +37,6 @@
         <section id="ship-now-page" class="card max-w-5xl mx-auto">
             <h1 class="text-3xl font-extrabold text-center mb-8" data-i18n="createShipment"></h1>
             <div class="relative mb-8">
-                <!-- 7-Step Progress Bar -->
                 <div class="progress-bar" style="--step-count: 7;">
                     <div class="progress-line-fill"></div>
                     <div id="step-1" class="progress-step"><div class="step-circle">1</div><p class="step-text" data-i18n="addressStep"></p></div>
@@ -51,30 +52,24 @@
             <form id="ship-now-form" class="space-y-6" novalidate>
                  <div id="form-message" class="p-4 rounded-md text-center hidden break-words"></div>
 
-                 <!-- Step 1: ที่อยู่ต้นทางและปลายทาง -->
                  <div id="ship-now-step-1" class="ship-now-step space-y-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Shipper Details -->
                         <div class="p-4 border rounded-lg bg-yellow-50 dark:bg-gray-800 space-y-4">
                             <h3 class="text-xl font-semibold" data-i18n="shipperInfo"></h3>
-                            <!-- Fields for postalAddress and contactInformation -->
                             <div><label class="block text-sm font-medium mb-1" data-i18n="shipperName"></label><input type="text" id="shipper-name" class="input-field" required></div>
                             <div><label class="block text-sm font-medium mb-1" data-i18n="shipperCompany"></label><input type="text" id="shipper-company" class="input-field" required></div>
                             <div><label class="block text-sm font-medium mb-1" data-i18n="shipperPhone"></label><input type="tel" id="shipper-phone" class="input-field" required></div>
                             <div><label class="block text-sm font-medium mb-1" data-i18n="shipperAddress1"></label><input type="text" id="shipper-address1" class="input-field" required></div>
-                            <div><label class="block text-sm font-medium mb-1" data-i18n="shipperAddress2"></label><input type="text" id="shipper-address2" class="input-field"></div>
                             <div class="relative"><label class="block text-sm font-medium mb-1" data-i18n="shipperCountry"></label><input type="text" id="shipper-country-input" class="input-field" autocomplete="off" required><input type="hidden" id="shipper-country-value"><div id="shipper-country-dropdown" class="country-dropdown hidden"></div></div>
                             <div><label class="block text-sm font-medium mb-1" data-i18n="shipperPostalCode"></label><input type="text" id="shipper-postalcode" class="input-field" required></div>
                             <div><label class="block text-sm font-medium mb-1" data-i18n="shipperCity"></label><input type="text" id="shipper-city" class="input-field" required></div>
                         </div>
-                        <!-- Receiver Details -->
                         <div class="p-4 border rounded-lg bg-yellow-50 dark:bg-gray-800 space-y-4">
                             <h3 class="text-xl font-semibold" data-i18n="receiverInfo"></h3>
                             <div><label class="block text-sm font-medium mb-1" data-i18n="receiverName"></label><input type="text" id="receiver-name" class="input-field" required></div>
                             <div><label class="block text-sm font-medium mb-1" data-i18n="receiverCompany"></label><input type="text" id="receiver-company" class="input-field" required></div>
                             <div><label class="block text-sm font-medium mb-1" data-i18n="receiverPhone"></label><input type="tel" id="receiver-phone" class="input-field" required></div>
                             <div><label class="block text-sm font-medium mb-1" data-i18n="receiverAddress1"></label><input type="text" id="receiver-address1" class="input-field" required></div>
-                            <div><label class="block text-sm font-medium mb-1" data-i18n="receiverAddress2"></label><input type="text" id="receiver-address2" class="input-field"></div>
                             <div class="relative"><label class="block text-sm font-medium mb-1" data-i18n="receiverCountry"></label><input type="text" id="receiver-country-input" class="input-field" autocomplete="off" required><input type="hidden" id="receiver-country-value"><div id="receiver-country-dropdown" class="country-dropdown hidden"></div></div>
                             <div><label class="block text-sm font-medium mb-1" data-i18n="receiverPostalCode"></label><input type="text" id="receiver-postalcode" class="input-field" required></div>
                             <div><label class="block text-sm font-medium mb-1" data-i18n="receiverCity"></label><input type="text" id="receiver-city" class="input-field" required></div>
@@ -82,25 +77,19 @@
                     </div>
                 </div>
 
-                <!-- Step 2: รายละเอียดของสินค้า -->
                 <div id="ship-now-step-2" class="ship-now-step hidden space-y-4">
                     <div class="p-4 border rounded-lg bg-yellow-50 dark:bg-gray-800 space-y-4">
                         <h3 class="text-xl font-semibold" data-i18n="contentDetails"></h3>
-                        <!-- isCustomsDeclarable -->
-                        <div class="flex items-center"><input type="checkbox" id="is-document" class="form-checkbox h-5 w-5"><label for="is-document" class="ml-2" data-i18n="isDocument"></label></div>
-                        <!-- exportDeclaration section, hidden if isDocument is checked -->
+                        <div class="flex items-center"><input type="checkbox" id="is-document" class="form-checkbox h-5 w-5 text-red-600"><label for="is-document" class="ml-2" data-i18n="isDocument"></label></div>
                         <div id="parcel-details-container" class="space-y-4">
                             <div id="line-items-container"></div>
                             <button type="button" id="add-line-item-btn" class="w-full btn-primary btn-gray" data-i18n="addLineItem"></button>
                         </div>
-                         <!-- customerReferences -->
                         <div><label class="block text-sm font-medium mb-1" data-i18n="shipmentRef"></label><input type="text" id="shipment-reference" class="input-field"></div>
-                        <!-- valueAddedServices (Insurance) -->
-                        <div class="flex items-center"><input type="checkbox" id="add-insurance" class="form-checkbox h-5 w-5"><label for="add-insurance" class="ml-2" data-i18n="addInsurance"></label></div>
+                        <div class="flex items-center"><input type="checkbox" id="add-insurance" class="form-checkbox h-5 w-5 text-red-600"><label for="add-insurance" class="ml-2" data-i18n="addInsurance"></label></div>
                     </div>
                 </div>
                 
-                <!-- Step 3: รายละเอียดของกล่องที่จะส่ง -->
                 <div id="ship-now-step-3" class="ship-now-step hidden space-y-4">
                      <div class="p-4 border rounded-lg bg-yellow-50 dark:bg-gray-800 space-y-4">
                         <h3 class="text-xl font-semibold" data-i18n="packageDetails"></h3>
@@ -109,7 +98,6 @@
                     </div>
                 </div>
 
-                <!-- Step 4: การจัดการหมายเลขสมาชิก -->
                  <div id="ship-now-step-4" class="ship-now-step hidden space-y-4">
                      <div class="p-4 border rounded-lg bg-yellow-50 dark:bg-gray-800 space-y-4">
                         <h3 class="text-xl font-semibold" data-i18n="accountAndDetails"></h3>
@@ -120,7 +108,6 @@
                     </div>
                 </div>
 
-                 <!-- Step 5: Upload Document -->
                 <div id="ship-now-step-5" class="ship-now-step hidden space-y-4">
                      <div class="p-4 border rounded-lg bg-yellow-50 dark:bg-gray-800 space-y-4">
                         <h3 class="text-xl font-semibold" data-i18n="docUpload"></h3>
@@ -130,11 +117,10 @@
                     </div>
                 </div>
 
-                <!-- Step 6: Booking -->
                 <div id="ship-now-step-6" class="ship-now-step hidden space-y-4">
                      <div class="p-4 border rounded-lg bg-yellow-50 dark:bg-gray-800 space-y-4">
                         <h3 class="text-xl font-semibold" data-i18n="pickupBooking"></h3>
-                        <div class="flex items-center"><input type="checkbox" id="request-pickup" class="form-checkbox h-5 w-5"><label for="request-pickup" class="ml-2" data-i18n="requestPickup"></label></div>
+                        <div class="flex items-center"><input type="checkbox" id="request-pickup" class="form-checkbox h-5 w-5 text-red-600"><label for="request-pickup" class="ml-2" data-i18n="requestPickup"></label></div>
                         <div id="pickup-details-container" class="hidden space-y-4">
                              <div><label class="block text-sm font-medium mb-1" data-i18n="pickupCloseTime"></label><input type="time" id="pickup-close-time" class="input-field"></div>
                              <div><label class="block text-sm font-medium mb-1" data-i18n="pickupLocation"></label><input type="text" id="pickup-location" class="input-field"></div>
@@ -142,7 +128,6 @@
                     </div>
                 </div>
 
-                 <!-- Step 7: สรุป -->
                 <div id="ship-now-step-7" class="ship-now-step hidden space-y-4">
                      <div class="p-4 border rounded-lg bg-yellow-50 dark:bg-gray-800 space-y-6">
                         <h3 class="text-xl font-semibold" data-i18n="summary"></h3>
@@ -150,7 +135,6 @@
                     </div>
                 </div>
 
-                <!-- Navigation Buttons -->
                  <div class="flex justify-between gap-4 mt-6">
                     <button type="button" id="ship-now-prev-step" class="btn-primary btn-gray hidden" data-i18n="previous"></button>
                     <button type="button" id="ship-now-next-step" class="flex-1 btn-primary btn-yellow" data-i18n="next"></button>
@@ -159,14 +143,101 @@
             </form>
         </section>
     </main>
+    <footer class="bg-gray-800 text-white py-8 mt-8"><div class="text-center text-sm text-gray-400">&copy; <span id="current-year"></span> DHL Express. <span data-i18n="allRightsReserved"></span></div></footer>
 
     <script>
-        // Placeholder script to demonstrate multi-step form logic
-        document.addEventListener('DOMContentLoaded', () => {
-            // This would contain all the logic for translations, combo boxes, dynamic fields, validation, and API calls.
-            // Due to complexity, this is a simplified skeleton.
-            console.log("Shipment page loaded. Full JS logic to be implemented.");
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- Data & State ---
+        const translations = {'th':{'createShipment':'สร้างใบนำส่ง','addressStep':'ที่อยู่','contentStep':'สินค้า','packageStep':'แพ็คเกจ','detailsStep':'รายละเอียด','docsStep':'เอกสาร','bookingStep':'บุ๊คกิ้ง','summaryStep':'สรุป','shipperInfo':'ข้อมูลผู้ส่ง','receiverInfo':'ข้อมูลผู้รับ','shipperName':'ชื่อผู้ส่ง','shipperCompany':'บริษัทผู้ส่ง','shipperPhone':'เบอร์โทรผู้ส่ง','shipperAddress1':'ที่อยู่ 1','shipperAddress2':'ที่อยู่ 2 (optional)','shipperCountry':'ประเทศ','shipperPostalCode':'รหัสไปรษณีย์','shipperCity':'เมือง','receiverName':'ชื่อผู้รับ','receiverCompany':'บริษัทผู้รับ','receiverPhone':'เบอร์โทรผู้รับ','receiverAddress1':'ที่อยู่ 1','receiverAddress2':'ที่อยู่ 2 (optional)','receiverCountry':'ประเทศ','receiverPostalCode':'รหัสไปรษณีย์','receiverCity':'เมือง','contentDetails':'รายละเอียดสินค้า','isDocument':'เป็นการจัดส่งเอกสาร','addLineItem':'เพิ่มรายการสินค้า','shipmentRef':'เลขที่อ้างอิง (optional)','addInsurance':'เพิ่มประกัน (optional)','packageDetails':'รายละเอียดแพ็คเกจ','addPiece':'เพิ่มกล่อง','accountAndDetails':'บัญชีและรายละเอียดเพิ่มเติม','shipperAccount':'บัญชีผู้ส่ง','dutiesAccount':'บัญชีผู้ชำระภาษี','incoterm':'Incoterm','shipmentDate':'วันที่ส่ง','docUpload':'อัปโหลดเอกสาร','docUploadDesc':'อัปโหลดเอกสารเพิ่มเติม (ไม่เกิน 5MB)','pickupBooking':'บุ๊คกิ้งรถเข้ารับ','requestPickup':'ต้องการให้รถเข้ารับ','pickupCloseTime':'เวลาปิดทำการ','pickupLocation':'สถานที่รับของ (เช่น Reception)','summary':'สรุปข้อมูล','previous':'ย้อนกลับ','next':'ถัดไป','createShipmentBtn':'สร้างใบนำส่ง','allRightsReserved':'สงวนลิขสิทธิ์.','fillAllFields':'กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วน','typeOrSelectCountry': 'พิมพ์หรือเลือกประเทศ'},'en':{'createShipment':'Create Shipment','addressStep':'Address','contentStep':'Content','packageStep':'Package','detailsStep':'Details','docsStep':'Documents','bookingStep':'Booking','summaryStep':'Summary','shipperInfo':'Shipper Information','receiverInfo':'Receiver Information','shipperName':'Shipper Name','shipperCompany':'Shipper Company','shipperPhone':'Shipper Phone','shipperAddress1':'Address Line 1','shipperAddress2':'Address Line 2 (optional)','shipperCountry':'Country','shipperPostalCode':'Postal Code','shipperCity':'City','receiverName':'Receiver Name','receiverCompany':'Receiver Company','receiverPhone':'Receiver Phone','receiverAddress1':'Address Line 1','receiverAddress2':'Address Line 2 (optional)','receiverCountry':'Country','receiverPostalCode':'Postal Code','receiverCity':'City','contentDetails':'Content Details','isDocument':'This is a document shipment','addLineItem':'Add Line Item','shipmentRef':'Shipment Reference (optional)','addInsurance':'Add Insurance (optional)','packageDetails':'Package Details','addPiece':'Add Piece','accountAndDetails':'Account & Details','shipperAccount':'Shipper Account','dutiesAccount':'Duties & Taxes Account','incoterm':'Incoterm','shipmentDate':'Shipment Date','docUpload':'Document Upload','docUploadDesc':'Upload additional documents (max 5MB)','pickupBooking':'Pickup Booking','requestPickup':'Request a pickup','pickupCloseTime':'Pickup Close Time','pickupLocation':'Pickup Location (e.g., Reception)','summary':'Summary','previous':'Previous','next':'Next','createShipmentBtn':'Create Shipment','allRightsReserved':'All rights reserved.','fillAllFields':'Please fill in all required fields.','typeOrSelectCountry': 'Type or select a country'}};
+        const countryList = [ { "name": "Afghanistan", "code": "AF" }, { "name": "Albania", "code": "AL" }, { "name": "Algeria", "code": "DZ" }, { "name": "American Samoa", "code": "AS" }, { "name": "Andorra", "code": "AD" }, { "name": "Angola", "code": "AO" }, { "name": "Anguilla", "code": "AI" }, { "name": "Antigua", "code": "AG" }, { "name": "Argentina", "code": "AR" }, { "name": "Armenia", "code": "AM" }, { "name": "Aruba", "code": "AW" }, { "name": "Australia", "code": "AU" }, { "name": "Austria", "code": "AT" }, { "name": "Azerbaijan", "code": "AZ" }, { "name": "Bahamas", "code": "BS" }, { "name": "Bahrain", "code": "BH" }, { "name": "Bangladesh", "code": "BD" }, { "name": "Barbados", "code": "BB" }, { "name": "Belarus", "code": "BY" }, { "name": "Belgium", "code": "BE" }, { "name": "Belize", "code": "BZ" }, { "name": "Benin", "code": "BJ" }, { "name": "Bermuda", "code": "BM" }, { "name": "Bhutan", "code": "BT" }, { "name": "Bolivia", "code": "BO" }, { "name": "Bonaire", "code": "BQ" }, { "name": "Bosnia and Herzegovina", "code": "BA" }, { "name": "Botswana", "code": "BW" }, { "name": "Brazil", "code": "BR" }, { "name": "Brunei", "code": "BN" }, { "name": "Bulgaria", "code": "BG" }, { "name": "Burkina Faso", "code": "BF" }, { "name": "Burundi", "code": "BI" }, { "name": "Cambodia", "code": "KH" }, { "name": "Cameroon", "code": "CM" }, { "name": "Canada", "code": "CA" }, { "name": "Canary Islands, The", "code": "IC" }, { "name": "Cape Verde", "code": "CV" }, { "name": "Cayman Islands", "code": "KY" }, { "name": "Central African Republic", "code": "CF" }, { "name": "Chad", "code": "TD" }, { "name": "Chile", "code": "CL" }, { "name": "China, People's Republic", "code": "CN" }, { "name": "Colombia", "code": "CO" }, { "name": "Comoros", "code": "KM" }, { "name": "Congo", "code": "CG" }, { "name": "Congo, The Democratic Republic of", "code": "CD" }, { "name": "Cook Islands", "code": "CK" }, { "name": "Costa Rica", "code": "CR" }, { "name": "Cote D'ivoire", "code": "CI" }, { "name": "Croatia", "code": "HR" }, { "name": "Cuba", "code": "CU" }, { "name": "Curacao", "code": "CW" }, { "name": "Cyprus", "code": "CY" }, { "name": "Czech Republic, The", "code": "CZ" }, { "name": "Denmark", "code": "DK" }, { "name": "Djibouti", "code": "DJ" }, { "name": "Dominica", "code": "DM" }, { "name": "Dominican Republic", "code": "DO" }, { "name": "East Timor", "code": "TL" }, { "name": "Ecuador", "code": "EC" }, { "name": "Egypt", "code": "EG" }, { "name": "El Salvador", "code": "SV" }, { "name": "Eritrea", "code": "ER" }, { "name": "Estonia", "code": "EE" }, { "name": "Ethiopia", "code": "ET" }, { "name": "Falkland Islands", "code": "FK" }, { "name": "Faroe Islands", "code": "FO" }, { "name": "Fiji", "code": "FJ" }, { "name": "Finland", "code": "FI" }, { "name": "France", "code": "FR" }, { "name": "French Guyana", "code": "GF" }, { "name": "Gabon", "code": "GA" }, { "name": "Gambia", "code": "GM" }, { "name": "Georgia", "code": "GE" }, { "name": "Germany", "code": "DE" }, { "name": "Ghana", "code": "GH" }, { "name": "Gibraltar", "code": "GI" }, { "name": "Greece", "code": "GR" }, { "name": "Greenland", "code": "GL" }, { "name": "Grenada", "code": "GD" }, { "name": "Guadeloupe", "code": "GP" }, { "name": "Guam", "code": "GU" }, { "name": "Guatemala", "code": "GT" }, { "name": "Guernsey", "code": "GG" }, { "name": "Guinea Republic", "code": "GN" }, { "name": "Guinea-Bissau", "code": "GW" }, { "name": "Guinea-Equatorial", "code": "GQ" }, { "name": "Guyana", "code": "GY" }, { "name": "Haiti", "code": "HT" }, { "name": "Honduras", "code": "HN" }, { "name": "Hong Kong", "code": "HK" }, { "name": "Hungary", "code": "HU" }, { "name": "Iceland", "code": "IS" }, { "name": "India", "code": "IN" }, { "name": "Indonesia", "code": "ID" }, { "name": "Iran (Islamic Republic of)", "code": "IR" }, { "name": "Iraq", "code": "IQ" }, { "name": "Ireland, Republic of", "code": "IE" }, { "name": "Israel", "code": "IL" }, { "name": "Italy", "code": "IT" }, { "name": "Jamaica", "code": "JM" }, { "name": "Japan", "code": "JP" }, { "name": "Jersey", "code": "JE" }, { "name": "Jordan", "code": "JO" }, { "name": "Kazakhstan", "code": "KZ" }, { "name": "Kenya", "code": "KE" }, { "name": "Kiribati", "code": "KI" }, { "name": "Korea, Republic of", "code": "KR" }, { "name": "Korea, The D.P.R of (North K.)", "code": "KP" }, { "name": "Kosovo", "code": "KV" }, { "name": "Kuwait", "code": "KW" }, { "name": "Kyrgyzstan", "code": "KG" }, { "name": "Lao People's Democratic Republic", "code": "LA" }, { "name": "Latvia", "code": "LV" }, { "name": "Lebanon", "code": "LB" }, { "name": "Lesotho", "code": "LS" }, { "name": "Liberia", "code": "LR" }, { "name": "Libya", "code": "LY" }, { "name": "Liechtenstein", "code": "LI" }, { "name": "Lithuania", "code": "LT" }, { "name": "Luxembourg", "code": "LU" }, { "name": "Macau", "code": "MO" }, { "name": "Macedonia, Republic of", "code": "MK" }, { "name": "Madagascar", "code": "MG" }, { "name": "Malawi", "code": "MW" }, { "name": "Malaysia", "code": "MY" }, { "name": "Maldives", "code": "MV" }, { "name": "Mali", "code": "ML" }, { "name": "Malta", "code": "MT" }, { "name": "Marshall Islands", "code": "MH" }, { "name": "Martinique", "code": "MQ" }, { "name": "Mauritania", "code": "MR" }, { "name": "Mauritius", "code": "MU" }, { "name": "Mayotte", "code": "YT" }, { "name": "Mexico", "code": "MX" }, { "name": "Micronesia, Federated States of", "code": "FM" }, { "name": "Moldova, Republic of", "code": "MD" }, { "name": "Monaco", "code": "MC" }, { "name": "Mongolia", "code": "MN" }, { "name": "Montenegro, Republic of", "code": "ME" }, { "name": "Montserrat", "code": "MS" }, { "name": "Morocco", "code": "MA" }, { "name": "Mozambique", "code": "MZ" }, { "name": "Myanmar", "code": "MM" }, { "name": "Namibia", "code": "NA" }, { "name": "Nauru, Republic of", "code": "NR" }, { "name": "Nepal", "code": "NP" }, { "name": "Netherlands, The", "code": "NL" }, { "name": "New Caledonia", "code": "NC" }, { "name": "New Zealand", "code": "NZ" }, { "name": "Nicaragua", "code": "NI" }, { "name": "Niger", "code": "NE" }, { "name": "Nigeria", "code": "NG" }, { "name": "Niue", "code": "NU" }, { "name": "Northern Mariana Islands", "code": "MP" }, { "name": "Norway", "code": "NO" }, { "name": "Oman", "code": "OM" }, { "name": "Pakistan", "code": "PK" }, { "name": "Palau", "code": "PW" }, { "name": "Panama", "code": "PA" }, { "name": "Papua New Guinea", "code": "PG" }, { "name": "Paraguay", "code": "PY" }, { "name": "Peru", "code": "PE" }, { "name": "Philippines, The", "code": "PH" }, { "name": "Poland", "code": "PL" }, { "name": "Portugal", "code": "PT" }, { "name": "Puerto Rico", "code": "PR" }, { "name": "Qatar", "code": "QA" }, { "name": "Reunion, Island of", "code": "RE" }, { "name": "Romania", "code": "RO" }, { "name": "Russian Federation, The", "code": "RU" }, { "name": "Rwanda", "code": "RW" }, { "name": "Saipan", "code": "SP" }, { "name": "San Marino", "code": "SM" }, { "name": "Sao Tome and Principe", "code": "ST" }, { "name": "Saudi Arabia", "code": "SA" }, { "name": "Senegal", "code": "SN" }, { "name": "Serbia, Republic of", "code": "RS" }, { "name": "Seychelles", "code": "SC" }, { "name": "Sierra Leone", "code": "SL" }, { "name": "Singapore", "code": "SG" }, { "name": "Slovakia", "code": "SK" }, { "name": "Slovenia", "code": "SI" }, { "name": "Solomon Islands", "code": "SB" }, { "name": "Somalia", "code": "SO" }, { "name": "Somaliland, Rep of (North Somalia)", "code": "XS" }, { "name": "South Africa", "code": "ZA" }, { "name": "South Sudan", "code": "SS" }, { "name": "Spain", "code": "ES" }, { "name": "Sri Lanka", "code": "LK" }, { "name": "St. Barthelemy", "code": "XY" }, { "name": "St. Eustatius", "code": "XE" }, { "name": "St. Helena", "code": "SH" }, { "name": "St. Kitts and Nevis", "code": "KN" }, { "name": "St. Lucia", "code": "LC" }, { "name": "St. Maarten", "code": "SX" }, { "name": "St. Vincent", "code": "VC" }, { "name": "Sudan", "code": "SD" }, { "name": "Suriname", "code": "SR" }, { "name": "Swaziland", "code": "SZ" }, { "name": "Sweden", "code": "SE" }, { "name": "Switzerland", "code": "CH" }, { "name": "Syria", "code": "SY" }, { "name": "Tahiti", "code": "PF" }, { "name": "Taiwan", "code": "TW" }, { "name": "Tanzania", "code": "TZ" }, { "name": "Thailand", "code": "TH" }, { "name": "Togo", "code": "TG" }, { "name": "Tonga", "code": "TO" }, { "name": "Trinidad and Tobago", "code": "TT" }, { "name": "Tunisia", "code": "TN" }, { "name": "Turkey", "code": "TR" }, { "name": "Turkmenistan", "code": "TM" }, { "name": "Turks and Caicos Islands", "code": "TC" }, { "name": "Tuvalu", "code": "TV" }, { "name": "Uganda", "code": "UG" }, { "name": "Ukraine", "code": "UA" }, { "name": "United Arab Emirates", "code": "AE" }, { "name": "United Kingdom", "code": "GB" }, { "name": "United States of America", "code": "US" }, { "name": "Uruguay", "code": "UY" }, { "name": "Uzbekistan", "code": "UZ" }, { "name": "Vanuatu", "code": "VU" }, { "name": "Vatican City", "code": "VA" }, { "name": "Venezuela", "code": "VE" }, { "name": "Vietnam", "code": "VN" }, { "name": "Virgin Islands (British)", "code": "VG" }, { "name": "Virgin Islands (US)", "code": "VI" }, { "name": "Yemen, Republic of", "code": "YE" }, { "name": "Zambia", "code": "ZM" }, { "name": "Zimbabwe", "code": "ZW" } ];
+        
+        let currentLanguage = localStorage.getItem('language') || 'th';
+        let currentStep = 1;
+        const totalSteps = 7;
+
+        // --- Shared Functions ---
+        function getTranslatedText(key) { return translations[currentLanguage]?.[key] || key; }
+        function updateContentLanguage() {
+            document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = getTranslatedText(el.getAttribute('data-i18n')); });
+            document.getElementById('current-language-display').textContent = currentLanguage.toUpperCase();
+            document.title = `DHL Backup Solution - ${getTranslatedText('createShipment')}`;
+        }
+        function setupTheme() {
+            const themeToggle = document.getElementById('theme-toggle');
+            const lightIcon = document.getElementById('theme-icon-light');
+            const darkIcon = document.getElementById('theme-icon-dark');
+            const enableDarkMode = () => { document.body.classList.add('dark-mode'); localStorage.setItem('theme', 'dark'); lightIcon.classList.add('hidden'); darkIcon.classList.remove('hidden'); };
+            const disableDarkMode = () => { document.body.classList.remove('dark-mode'); localStorage.setItem('theme', 'light'); lightIcon.classList.remove('hidden'); darkIcon.classList.add('hidden'); };
+            themeToggle.addEventListener('click', () => document.body.classList.contains('dark-mode') ? disableDarkMode() : enableDarkMode());
+            if (localStorage.getItem('theme') === 'dark') { enableDarkMode(); } else { disableDarkMode(); }
+        }
+        function setupLanguageSwitch() {
+            document.getElementById('language-toggle-button').addEventListener('click', () => document.getElementById('language-dropdown').classList.toggle('hidden'));
+            document.querySelectorAll('[data-lang]').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    currentLanguage = e.target.dataset.lang;
+                    localStorage.setItem('language', currentLanguage);
+                    updateContentLanguage();
+                    document.getElementById('language-dropdown').classList.add('hidden');
+                });
+            });
+        }
+        
+        // --- Step Navigation Logic ---
+        const prevButton = document.getElementById('ship-now-prev-step');
+        const nextButton = document.getElementById('ship-now-next-step');
+        const confirmButton = document.getElementById('confirm-shipment-button');
+        
+        function changeStep(step) {
+            document.getElementById(`ship-now-step-${currentStep}`).classList.add('hidden');
+            currentStep = step;
+            document.getElementById(`ship-now-step-${currentStep}`).classList.remove('hidden');
+            updateStepIndicator();
+            updateNavButtons();
+        }
+
+        function updateNavButtons() {
+            prevButton.classList.toggle('hidden', currentStep === 1);
+            nextButton.classList.toggle('hidden', currentStep === totalSteps);
+            confirmButton.classList.toggle('hidden', currentStep !== totalSteps);
+        }
+
+        function updateStepIndicator() {
+            const lineFill = document.querySelector('.progress-line-fill');
+            for (let i = 1; i <= totalSteps; i++) {
+                const stepEl = document.getElementById(`step-${i}`);
+                stepEl.classList.remove('is-active', 'is-complete');
+                if (i === currentStep) {
+                    stepEl.classList.add('is-active');
+                } else if (i < currentStep) {
+                    stepEl.classList.add('is-complete');
+                }
+            }
+            if(lineFill) {
+                const percentage = (currentStep - 1) / (totalSteps - 1);
+                const totalWidth = 100 - (100 / totalSteps);
+                lineFill.style.width = `${percentage * totalWidth}%`;
+            }
+        }
+        
+        nextButton.addEventListener('click', () => { if (currentStep < totalSteps) changeStep(currentStep + 1); });
+        prevButton.addEventListener('click', () => { if (currentStep > 1) changeStep(currentStep - 1); });
+        
+        document.getElementById('is-document').addEventListener('change', (e) => {
+             document.getElementById('parcel-details-container').classList.toggle('hidden', e.target.checked);
         });
+        
+        document.getElementById('request-pickup').addEventListener('change', (e) => {
+             document.getElementById('pickup-details-container').classList.toggle('hidden', !e.target.checked);
+        });
+
+        // --- Initial Setup ---
+        setupTheme();
+        setupLanguageSwitch();
+        updateContentLanguage();
+        changeStep(1); 
+    });
     </script>
 </body>
 </html>
