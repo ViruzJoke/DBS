@@ -8,28 +8,42 @@
     <link rel="stylesheet" href="styles.css">
     <style>
         .country-dropdown { position: absolute; z-index: 20; width: 100%; background-color: white; border: 1px solid #d1d5db; border-radius: 0.375rem; margin-top: 0.25rem; max-height: 15rem; overflow-y: auto; }
-        .country-dropdown-item { padding: 0.5rem 1rem; cursor: pointer; }
+        .country-dropdown-item { padding: 0.5rem 1rem; cursor: pointer; display: flex; align-items: center; gap: 0.75rem; }
         .country-dropdown-item:hover { background-color: #f3f4f6; }
+        .country-dropdown-item img { width: 1.25rem; height: auto; flex-shrink: 0; }
         .dark-mode .country-dropdown { background-color: #374151; border-color: #4b5563; }
         .dark-mode .country-dropdown-item:hover { background-color: #4b5563; }
-        .package-piece-item, .line-item { border: 1px solid #e5e7eb; }
-        .dark-mode .package-piece-item, .dark-mode .line-item { border-color: #4b5563; }
         
-        .input-field.is-invalid {
-            border-color: #ef4444; /* red-500 */
-            box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
-        }
-        .input-indicator {
-            position: absolute;
-            right: 0.75rem; /* pr-3 */
-            top: 50%;
-            transform: translateY(-50%);
-            pointer-events: none;
-            font-size: 1.25rem;
-            line-height: 1;
-        }
-        .indicator-required { color: #ef4444; } /* red-500 */
-        .indicator-valid { color: #10b981; } /* green-500 */
+        .input-field.is-invalid { border-color: #ef4444; box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2); }
+        .input-indicator { position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 1.25rem; line-height: 1; }
+        .indicator-required { color: #ef4444; }
+        .indicator-valid { color: #10b981; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        #leave-confirm-modal { animation: fadeIn 0.2s ease-out; }
+
+        .shipment-type-button { border: 2px solid #d1d5db; transition: all 0.2s ease; }
+        .shipment-type-button.active { border-color: #f59e0b; background-color: #fefce8; } /* Amber color for light mode */
+        .dark-mode .shipment-type-button.active { border-color: #f59e0b; background-color: #453315; }
+        
+        .line-item { border: 1px solid #e5e7eb; border-radius: 0.5rem; background-color: #ffffff; }
+        .dark-mode .line-item { border-color: #4b5563; background-color: #2d3748; }
+        .line-item-header { cursor: pointer; }
+        .line-item-body { max-height: 1000px; overflow: hidden; transition: all 0.4s ease-in-out; opacity: 1; }
+        .line-item.is-collapsed .line-item-body { max-height: 0 !important; opacity: 0; padding-top: 0; padding-bottom: 0; margin-top: 0; border-top: none; }
+        .line-item-arrow { transition: transform 0.3s ease; }
+        .line-item.is-collapsed .line-item-arrow { transform: rotate(-90deg); }
+        
+        /* Logic to show/hide summary */
+        .line-item .line-item-summary { display: none; }
+        .line-item.is-collapsed .line-item-summary { display: grid; }
+        
+        .dark-mode .language-dropdown { background-color: #374151; border-color: #4b5563; }
+        .dark-mode .language-dropdown a:hover { background-color: #4b5563; }
+        
+        /* Dark mode input contrast fix */
+        .dark-mode .bg-yellow-50 { background-color: #1f2937; }
+        .dark-mode .input-field { background-color: #374151; }
     </style>
 </head>
 <body>
@@ -57,7 +71,7 @@
                     <div class="progress-bar" style="--step-count: 7;">
                         <div class="progress-line-fill"></div>
                         <div id="step-1" class="progress-step"><div class="step-circle"><span class="step-number">1</span><svg class="step-check" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></div><p class="step-text" data-i18n="addressStep"></p></div>
-                        <div id="step-2" class="progress-step"><div class="step-circle"><span class="step-number">2</span><svg class="step-check" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></div><p class="step-text" data-i18n="contentStep"></p></div>
+                        <div id="step-2" class="progress-step"><div class="step-circle"><span class="step-number">2</span><svg class="step-check" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></div><p class="step-text" data-i18n="shipmentDetailsStep"></p></div>
                         <div id="step-3" class="progress-step"><div class="step-circle"><span class="step-number">3</span><svg class="step-check" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></div><p class="step-text" data-i18n="packageStep"></p></div>
                         <div id="step-4" class="progress-step"><div class="step-circle"><span class="step-number">4</span><svg class="step-check" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></div><p class="step-text" data-i18n="detailsStep"></p></div>
                         <div id="step-5" class="progress-step"><div class="step-circle"><span class="step-number">5</span><svg class="step-check" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></div><p class="step-text" data-i18n="docsStep"></p></div>
@@ -68,78 +82,149 @@
             </div>
             
             <form id="ship-now-form" class="space-y-6" novalidate>
-                 <div id="form-message" class="p-4 rounded-md text-center hidden break-words"></div>
+                <div id="form-message" class="p-4 rounded-md text-center hidden break-words"></div>
 
-                 <div id="ship-now-step-1" class="ship-now-step space-y-6">
+                <div id="ship-now-step-1" class="ship-now-step space-y-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="p-4 border rounded-lg bg-yellow-50 space-y-4">
+                        <div class="p-4 border rounded-lg bg-yellow-50 dark:border-gray-700 space-y-4">
                             <h3 class="text-xl font-semibold" data-i18n="shipperInfo"></h3>
-                            <div><label class="block text-sm font-medium mb-1" data-i18n="shipperName">Name <span class="text-red-500">*</span></label><div class="relative"><input type="text" id="shipper-name" class="input-field pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
-                            <div><label class="block text-sm font-medium mb-1" data-i18n="shipperCompany">Company <span class="text-red-500">*</span></label><div class="relative"><input type="text" id="shipper-company" class="input-field pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
-                            <div><label class="block text-sm font-medium mb-1" data-i18n="shipperCountry">Country <span class="text-red-500">*</span></label><div class="relative"><input type="text" id="shipper-country-input" class="input-field pr-8" autocomplete="off" required data-i18n-placeholder="typeOrSelectCountry"><input type="hidden" id="shipper-country-value"><div id="shipper-country-dropdown" class="country-dropdown hidden"></div><span class="input-indicator indicator-required">*</span></div></div>
-                            <div><label class="block text-sm font-medium mb-1" data-i18n="shipperAddress1">Address Line 1 <span class="text-red-500">*</span></label><div class="relative"><input type="text" id="shipper-address1" class="input-field pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
-                            <div><label class="block text-sm font-medium mb-1" data-i18n="shipperAddress2">Address Line 2</label><input type="text" id="shipper-address2" class="input-field"></div>
-                            <div><label class="block text-sm font-medium mb-1" data-i18n="shipperAddress3">Address Line 3</label><input type="text" id="shipper-address3" class="input-field"></div>
+                            <div><label for="shipper-name" class="block text-sm font-medium mb-1" data-i18n="shipperName">Name</label><div class="relative"><input type="text" id="shipper-name" class="input-field pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
+                            <div><label for="shipper-company" class="block text-sm font-medium mb-1" data-i18n="shipperCompany">Company</label><div class="relative"><input type="text" id="shipper-company" class="input-field pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
+                            <div><label for="shipper-country-input" class="block text-sm font-medium mb-1" data-i18n="shipperCountry">Country</label><div class="relative"><input type="text" id="shipper-country-input" class="input-field pr-8" autocomplete="off" required data-i18n-placeholder="typeOrSelectCountry"><input type="hidden" id="shipper-country-value"><div id="shipper-country-dropdown" class="country-dropdown hidden"></div><span class="input-indicator indicator-required">*</span></div></div>
+                            <div><label for="shipper-address1" class="block text-sm font-medium mb-1" data-i18n="shipperAddress1">Address Line 1</label><div class="relative"><input type="text" id="shipper-address1" class="input-field pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
+                            <div><label for="shipper-address2" class="block text-sm font-medium mb-1" data-i18n="shipperAddress2">Address Line 2</label><input type="text" id="shipper-address2" class="input-field"></div>
+                            <div><label for="shipper-address3" class="block text-sm font-medium mb-1" data-i18n="shipperAddress3">Address Line 3</label><input type="text" id="shipper-address3" class="input-field"></div>
                             <div class="grid grid-cols-2 gap-4">
-                                <div><label class="block text-sm font-medium mb-1" data-i18n="shipperPostalCode">Postal Code</label><input type="text" id="shipper-postalcode" class="input-field"></div>
-                                <div><label class="block text-sm font-medium mb-1" data-i18n="shipperCity">City <span class="text-red-500">*</span></label><div class="relative"><input type="text" id="shipper-city" class="input-field pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
+                                <div><label for="shipper-postalcode" class="block text-sm font-medium mb-1" data-i18n="shipperPostalCode">Postal Code</label><input type="text" id="shipper-postalcode" class="input-field"></div>
+                                <div><label for="shipper-city" class="block text-sm font-medium mb-1" data-i18n="shipperCity">City</label><div class="relative"><input type="text" id="shipper-city" class="input-field pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
                             </div>
-                            <div><label class="block text-sm font-medium mb-1" data-i18n="shipperEmail">Email Address</label><input type="email" id="shipper-email" class="input-field"></div>
-                            <div><label class="block text-sm font-medium mb-1" data-i18n="shipperPhone">Phone <span class="text-red-500">*</span></label><div class="relative"><input type="tel" id="shipper-phone" class="input-field pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
-                            <div><label class="block text-sm font-medium mb-1" data-i18n="shipperVat">VAT / Tax ID</label><input type="text" id="shipper-vat" class="input-field"></div>
+                            <div><label for="shipper-email" class="block text-sm font-medium mb-1" data-i18n="shipperEmail">Email Address</label><input type="email" id="shipper-email" class="input-field"></div>
+                            <div><label for="shipper-phone" class="block text-sm font-medium mb-1" data-i18n="shipperPhone">Phone</label><div class="relative"><input type="tel" id="shipper-phone" class="input-field pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
+                            <div><label for="shipper-vat" class="block text-sm font-medium mb-1" data-i18n="shipperVat">VAT / Tax ID</label><input type="text" id="shipper-vat" class="input-field"></div>
                         </div>
-                        <div class="p-4 border rounded-lg bg-yellow-50 space-y-4">
+                        <div class="p-4 border rounded-lg bg-yellow-50 dark:border-gray-700 space-y-4">
                             <h3 class="text-xl font-semibold" data-i18n="receiverInfo"></h3>
-                            <div><label class="block text-sm font-medium mb-1" data-i18n="receiverName">Name <span class="text-red-500">*</span></label><div class="relative"><input type="text" id="receiver-name" class="input-field pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
-                            <div><label class="block text-sm font-medium mb-1" data-i18n="receiverCompany">Company <span class="text-red-500">*</span></label><div class="relative"><input type="text" id="receiver-company" class="input-field pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
-                            <div><label class="block text-sm font-medium mb-1" data-i18n="receiverCountry">Country <span class="text-red-500">*</span></label><div class="relative"><input type="text" id="receiver-country-input" class="input-field pr-8" autocomplete="off" required data-i18n-placeholder="typeOrSelectCountry"><input type="hidden" id="receiver-country-value"><div id="receiver-country-dropdown" class="country-dropdown hidden"></div><span class="input-indicator indicator-required">*</span></div></div>
-                            <div><label class="block text-sm font-medium mb-1" data-i18n="receiverAddress1">Address Line 1 <span class="text-red-500">*</span></label><div class="relative"><input type="text" id="receiver-address1" class="input-field pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
-                            <div><label class="block text-sm font-medium mb-1" data-i18n="receiverAddress2">Address Line 2</label><input type="text" id="receiver-address2" class="input-field"></div>
-                             <div><label class="block text-sm font-medium mb-1" data-i18n="receiverAddress3">Address Line 3</label><input type="text" id="receiver-address3" class="input-field"></div>
+                            <div><label for="receiver-name" class="block text-sm font-medium mb-1" data-i18n="receiverName">Name</label><div class="relative"><input type="text" id="receiver-name" class="input-field pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
+                            <div><label for="receiver-company" class="block text-sm font-medium mb-1" data-i18n="receiverCompany">Company</label><div class="relative"><input type="text" id="receiver-company" class="input-field pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
+                            <div><label for="receiver-country-input" class="block text-sm font-medium mb-1" data-i18n="receiverCountry">Country</label><div class="relative"><input type="text" id="receiver-country-input" class="input-field pr-8" autocomplete="off" required data-i18n-placeholder="typeOrSelectCountry"><input type="hidden" id="receiver-country-value"><div id="receiver-country-dropdown" class="country-dropdown hidden"></div><span class="input-indicator indicator-required">*</span></div></div>
+                            <div><label for="receiver-address1" class="block text-sm font-medium mb-1" data-i18n="receiverAddress1">Address Line 1</label><div class="relative"><input type="text" id="receiver-address1" class="input-field pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
+                            <div><label for="receiver-address2" class="block text-sm font-medium mb-1" data-i18n="receiverAddress2">Address Line 2</label><input type="text" id="receiver-address2" class="input-field"></div>
+                             <div><label for="receiver-address3" class="block text-sm font-medium mb-1" data-i18n="receiverAddress3">Address Line 3</label><input type="text" id="receiver-address3" class="input-field"></div>
                              <div class="grid grid-cols-2 gap-4">
-                                <div><label class="block text-sm font-medium mb-1" data-i18n="receiverPostalCode">Postal Code</label><input type="text" id="receiver-postalcode" class="input-field"></div>
-                                <div><label class="block text-sm font-medium mb-1" data-i18n="receiverCity">City <span class="text-red-500">*</span></label><div class="relative"><input type="text" id="receiver-city" class="input-field pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
+                                <div><label for="receiver-postalcode" class="block text-sm font-medium mb-1" data-i18n="receiverPostalCode">Postal Code</label><input type="text" id="receiver-postalcode" class="input-field"></div>
+                                <div><label for="receiver-city" class="block text-sm font-medium mb-1" data-i18n="receiverCity">City</label><div class="relative"><input type="text" id="receiver-city" class="input-field pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
                             </div>
-                            <div><label class="block text-sm font-medium mb-1" data-i18n="receiverEmail">Email Address</label><input type="email" id="receiver-email" class="input-field"></div>
-                            <div><label class="block text-sm font-medium mb-1" data-i18n="receiverPhone">Phone <span class="text-red-500">*</span></label><div class="relative"><input type="tel" id="receiver-phone" class="input-field pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
-                            <div><label class="block text-sm font-medium mb-1" data-i18n="receiverVat">VAT / Tax ID</label><input type="text" id="receiver-vat" class="input-field"></div>
+                            <div><label for="receiver-email" class="block text-sm font-medium mb-1" data-i18n="receiverEmail">Email Address</label><input type="email" id="receiver-email" class="input-field"></div>
+                            <div><label for="receiver-phone" class="block text-sm font-medium mb-1" data-i18n="receiverPhone">Phone</label><div class="relative"><input type="tel" id="receiver-phone" class="input-field pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
+                            <div><label for="receiver-vat" class="block text-sm font-medium mb-1" data-i18n="receiverVat">VAT / Tax ID</label><input type="text" id="receiver-vat" class="input-field"></div>
                         </div>
                     </div>
                 </div>
 
-                <div id="ship-now-step-2" class="ship-now-step hidden space-y-4">
-                    <div class="p-4 border rounded-lg bg-yellow-50 space-y-4">
-                        <h3 class="text-xl font-semibold" data-i18n="contentDetails"></h3>
-                        <div class="flex items-center"><input type="checkbox" id="is-document" class="form-checkbox h-5 w-5 text-red-600"><label for="is-document" class="ml-2" data-i18n="isDocument"></label></div>
-                        <div id="parcel-details-container" class="space-y-4">
-                            <div id="line-items-container"></div>
-                            <button type="button" id="add-line-item-btn" class="w-full btn-primary btn-gray" data-i18n="addLineItem"></button>
+                <div id="ship-now-step-2" class="ship-now-step hidden space-y-6">
+                    <div class="p-4 border rounded-lg bg-yellow-50 dark:border-gray-700 space-y-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <button type="button" id="ship-type-document" class="shipment-type-button p-4 rounded-lg flex flex-col items-center justify-center text-center">
+                                <svg class="w-8 h-8 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                <span class="font-semibold" data-i18n="document"></span>
+                            </button>
+                            <button type="button" id="ship-type-package" class="shipment-type-button p-4 rounded-lg flex flex-col items-center justify-center text-center active">
+                                <svg class="w-8 h-8 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-14L4 7m0 10l8 4m-8-4v-4"></path></svg>
+                                <span class="font-semibold" data-i18n="package"></span>
+                            </button>
                         </div>
-                        <div><label class="block text-sm font-medium mb-1" data-i18n="shipmentRef"></label><input type="text" id="shipment-reference" class="input-field"></div>
-                        <div class="flex items-center"><input type="checkbox" id="add-insurance" class="form-checkbox h-5 w-5 text-red-600"><label for="add-insurance" class="ml-2" data-i18n="addInsurance"></label></div>
+                    </div>
+                    
+                    <div id="document-details-container" class="hidden p-4 border rounded-lg bg-yellow-50 dark:border-gray-700 space-y-4">
+                        <div>
+                            <label for="document-description" class="block text-sm font-medium mb-1" data-i18n="describeDocuments"></label>
+                            <select id="document-description" class="input-field">
+                                <option>Placeholder Option 1</option>
+                                <option>Placeholder Option 2</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="package-details-container" class="space-y-4">
+                        <div id="line-items-container" class="space-y-4"></div>
+                        <button type="button" id="add-line-item-btn" class="w-full btn-primary btn-gray flex items-center justify-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                            <span data-i18n="addLineItem"></span>
+                        </button>
+                        
+                        <div class="p-4 border-t-2 border-dashed dark:border-gray-600 mt-4 space-y-4">
+                             <div class="space-y-2 text-right">
+                                <div class="flex justify-end items-center gap-4"><span class="font-semibold" data-i18n="totalUnits"></span><span id="summary-total-units" class="font-bold text-lg">0</span></div>
+                                <div class="flex justify-end items-center gap-4"><span class="font-semibold" data-i18n="totalWeight"></span><span id="summary-total-weight" class="font-bold text-lg">0.00 KG</span></div>
+                                <div class="flex justify-end items-center gap-4"><span class="font-semibold" data-i18n="totalValue"></span><span id="summary-total-value" class="font-bold text-lg text-red-600 dark:text-amber-400">0.00 THB</span></div>
+                            </div>
+
+                            <div id="summarize-shipment-container" class="hidden text-left space-y-2">
+                                 <label for="summarize-shipment" class="block text-sm font-medium" data-i18n="summarizeShipment"></label>
+                                 <div class="relative"><input type="text" id="summarize-shipment" class="input-field pr-8"><span class="input-indicator indicator-required hidden">*</span></div>
+                            </div>
+                            
+                            <div class="text-left space-y-2">
+                                <label for="shipment-reference" class="block text-sm font-medium" data-i18n="shipmentRef"></label>
+                                <input type="text" id="shipment-reference" class="input-field">
+                            </div>
+                        </div>
+
+                        <div class="p-4 border-t-2 border-dashed dark:border-gray-600 space-y-4">
+                            <h4 class="font-semibold text-lg text-left" data-i18n="customsInvoiceDetails"></h4>
+                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <button type="button" id="create-invoice-btn" class="shipment-type-button p-3 rounded-lg">
+                                    <span data-i18n="createInvoice"></span>
+                                </button>
+                                <button type="button" id="use-my-own-invoice-btn" class="shipment-type-button p-3 rounded-lg active">
+                                    <span data-i18n="useMyOwnInvoice"></span>
+                                </button>
+                            </div>
+                            <div>
+                                <label id="invoice-number-label" for="invoice-number" class="block text-sm font-medium mb-1" data-i18n="invoiceNumber"></label>
+                                <div class="relative">
+                                    <input type="text" id="invoice-number" class="input-field pr-8">
+                                    <span id="invoice-number-indicator" class="input-indicator indicator-required hidden">*</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-4 border rounded-lg bg-yellow-50 dark:border-gray-700 space-y-4">
+                        <div class="flex items-center"><input type="checkbox" id="protect-shipment" class="form-checkbox h-5 w-5 text-red-600"><label for="protect-shipment" class="ml-2" data-i18n="protectShipment"></label></div>
+                        <div id="insurance-value-container" class="hidden">
+                            <label for="insurance-value" class="block text-sm font-medium mb-1" data-i18n="insuredValue"></label>
+                            <div class="flex items-center gap-2">
+                                <div class="relative w-full">
+                                    <input type="text" id="insurance-value" class="input-field w-full pr-8">
+                                    <span id="insurance-value-indicator" class="input-indicator indicator-required hidden">*</span>
+                                </div>
+                                <span id="insurance-currency" class="font-semibold whitespace-nowrap">THB</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
                 <div id="ship-now-step-3" class="ship-now-step hidden space-y-4">
-                     <div class="p-4 border rounded-lg bg-yellow-50 space-y-4">
+                    <div class="p-4 border rounded-lg bg-yellow-50 dark:border-gray-700 space-y-4">
                         <h3 class="text-xl font-semibold" data-i18n="packageDetails"></h3>
                         <div id="package-pieces-container"></div>
                         <button type="button" id="add-piece-button" class="w-full btn-primary btn-gray" data-i18n="addPiece"></button>
                     </div>
                 </div>
 
-                 <div id="ship-now-step-4" class="ship-now-step hidden space-y-4">
-                     <div class="p-4 border rounded-lg bg-yellow-50 space-y-4">
+                <div id="ship-now-step-4" class="ship-now-step hidden space-y-4">
+                    <div class="p-4 border rounded-lg bg-yellow-50 dark:border-gray-700 space-y-4">
                         <h3 class="text-xl font-semibold" data-i18n="accountAndDetails"></h3>
-                        <div><label class="block text-sm font-medium mb-1" data-i18n="shipperAccount">Shipper Account <span class="text-red-500">*</span></label><div class="relative"><input type="text" id="shipper-account" class="input-field pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
-                        <div><label class="block text-sm font-medium mb-1" data-i18n="dutiesAccount">Duties & Taxes Account <span class="text-red-500">*</span></label><div class="relative"><input type="text" id="duties-account" class="input-field pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
-                        <div><label class="block text-sm font-medium mb-1" data-i18n="incoterm">Incoterm</label><select id="incoterm" class="input-field" required><option value="DDP">DDP</option><option value="DAP">DAP</option></select></div>
-                        <div><label class="block text-sm font-medium mb-1" data-i18n="shipmentDate">Shipment Date <span class="text-red-500">*</span></label><div class="relative"><input type="date" id="ship-date" class="input-field pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
+                        <div><label for="shipper-account" class="block text-sm font-medium mb-1" data-i18n="shipperAccount">Shipper Account</label><div class="relative"><input type="text" id="shipper-account" class="input-field pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
+                        <div><label for="duties-account" class="block text-sm font-medium mb-1" data-i18n="dutiesAccount">Duties & Taxes Account</label><div class="relative"><input type="text" id="duties-account" class="input-field pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
+                        <div><label for="incoterm" class="block text-sm font-medium mb-1" data-i18n="incoterm">Incoterm</label><select id="incoterm" class="input-field" required><option value="DDP">DDP</option><option value="DAP" selected>DAP</option></select></div>
+                        <div><label for="ship-date" class="block text-sm font-medium mb-1" data-i18n="shipmentDate">Shipment Date</label><div class="relative"><input type="date" id="ship-date" class="input-field pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
                     </div>
                 </div>
 
                 <div id="ship-now-step-5" class="ship-now-step hidden space-y-4">
-                     <div class="p-4 border rounded-lg bg-yellow-50 space-y-4">
+                    <div class="p-4 border rounded-lg bg-yellow-50 dark:border-gray-700 space-y-4">
                         <h3 class="text-xl font-semibold" data-i18n="docUpload"></h3>
                         <p data-i18n="docUploadDesc"></p>
                         <input type="file" id="doc-uploader" class="input-field" accept=".pdf,.jpg,.png,.doc,.docx">
@@ -148,7 +233,7 @@
                 </div>
 
                 <div id="ship-now-step-6" class="ship-now-step hidden space-y-4">
-                     <div class="p-4 border rounded-lg bg-yellow-50 space-y-4">
+                    <div class="p-4 border rounded-lg bg-yellow-50 dark:border-gray-700 space-y-4">
                         <h3 class="text-xl font-semibold" data-i18n="pickupBooking"></h3>
                         <div class="flex items-center"><input type="checkbox" id="request-pickup" class="form-checkbox h-5 w-5 text-red-600"><label for="request-pickup" class="ml-2" data-i18n="requestPickup"></label></div>
                         <div id="pickup-details-container" class="hidden space-y-4">
@@ -159,57 +244,83 @@
                 </div>
 
                 <div id="ship-now-step-7" class="ship-now-step hidden space-y-4">
-                     <div class="p-4 border rounded-lg bg-yellow-50 space-y-6">
+                    <div class="p-4 border rounded-lg bg-yellow-50 dark:border-gray-700 space-y-6">
                         <h3 class="text-xl font-semibold" data-i18n="summary"></h3>
                         <div id="summary-content" class="text-sm space-y-4"></div>
                     </div>
                 </div>
 
-                 <div class="flex justify-between gap-4 mt-6">
-                    <a href="index.html" id="back-to-main-btn" class="btn-primary btn-gray" data-i18n="backToMain"></a>
+                <div class="flex justify-between gap-4 mt-6">
+                    <a href="index.html" id="back-to-main-btn" class="btn-primary btn-gray flex items-center justify-center whitespace-nowrap" data-i18n="backToMain"></a>
                     <button type="button" id="ship-now-prev-step" class="btn-primary btn-gray hidden" data-i18n="previous"></button>
                     <button type="button" id="ship-now-next-step" class="flex-1 btn-primary btn-yellow" data-i18n="next"></button>
                     <button type="submit" id="confirm-shipment-button" class="flex-1 btn-primary btn-red hidden" data-i18n="createShipmentBtn"></button>
                 </div>
             </form>
         </section>
+
+        <div id="leave-confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 w-full max-w-md mx-auto">
+                <h2 class="text-2xl font-bold mb-4" data-i18n="leaveSiteTitle"></h2>
+                <p class="text-gray-700 dark:text-gray-300 mb-6" data-i18n="leaveSiteBody"></p>
+                <div class="flex justify-end gap-4">
+                    <button id="stay-button" class="btn-primary btn-gray" data-i18n="stayButton"></button>
+                    <button id="leave-button" class="btn-primary btn-red" data-i18n="leaveButton"></button>
+                </div>
+            </div>
+        </div>
     </main>
     <footer class="bg-gray-800 text-white py-8 mt-8"><div class="text-center text-sm text-gray-400">&copy; <span id="current-year"></span> DHL Express. <span data-i18n="allRightsReserved"></span></div></footer>
 
     <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const translations = {'th':{'createShipment':'สร้างใบนำส่ง','addressStep':'ที่อยู่','contentStep':'สินค้า','packageStep':'แพ็คเกจ','detailsStep':'รายละเอียด','docsStep':'เอกสาร','bookingStep':'บุ๊คกิ้ง','summaryStep':'สรุป','shipperInfo':'ข้อมูลผู้ส่ง','receiverInfo':'ข้อมูลผู้รับ','shipperName':'ชื่อผู้ส่ง','shipperCompany':'บริษัทผู้ส่ง','shipperPhone':'เบอร์โทรผู้ส่ง','shipperAddress1':'ที่อยู่ 1','shipperAddress2':'ที่อยู่ 2','shipperAddress3':'ที่อยู่ 3','shipperCountry':'ประเทศ','shipperPostalCode':'รหัสไปรษณีย์','shipperCity':'เมือง','receiverName':'ชื่อผู้รับ','receiverCompany':'บริษัทผู้รับ','receiverPhone':'เบอร์โทรผู้รับ','receiverAddress1':'ที่อยู่ 1','receiverAddress2':'ที่อยู่ 2','receiverAddress3':'ที่อยู่ 3','receiverCountry':'ประเทศ','receiverPostalCode':'รหัสไปรษณีย์','receiverCity':'เมือง','contentDetails':'รายละเอียดสินค้า','isDocument':'เป็นการจัดส่งเอกสาร','addLineItem':'เพิ่มรายการสินค้า','shipmentRef':'เลขที่อ้างอิง (optional)','addInsurance':'เพิ่มประกัน (optional)','packageDetails':'รายละเอียดแพ็คเกจ','addPiece':'เพิ่มกล่อง','accountAndDetails':'บัญชีและรายละเอียดเพิ่มเติม','shipperAccount':'บัญชีผู้ส่ง','dutiesAccount':'บัญชีผู้ชำระภาษี','incoterm':'Incoterm','shipmentDate':'วันที่ส่ง','docUpload':'อัปโหลดเอกสาร','docUploadDesc':'อัปโหลดเอกสารเพิ่มเติม (ไม่เกิน 5MB)','pickupBooking':'บุ๊คกิ้งรถเข้ารับ','requestPickup':'ต้องการให้รถเข้ารับ','pickupCloseTime':'เวลาปิดทำการ','pickupLocation':'สถานที่รับของ (เช่น Reception)','summary':'สรุปข้อมูล','previous':'ย้อนกลับ','next':'ถัดไป','createShipmentBtn':'สร้างใบนำส่ง','allRightsReserved':'สงวนลิขสิทธิ์.','fillAllFields':'กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วน','typeOrSelectCountry': 'พิมพ์หรือเลือกประเทศ', 'backToMain': 'กลับหน้าหลัก', 'shipperEmail': 'อีเมลผู้ส่ง', 'receiverEmail': 'อีเมลผู้รับ', 'shipperVat': 'เลขประจำตัวผู้เสียภาษีผู้ส่ง', 'receiverVat': 'เลขประจำตัวผู้เสียภาษีผู้รับ'},'en':{'createShipment':'Create Shipment','addressStep':'Address','contentStep':'Content','packageStep':'Package','detailsStep':'Details','docsStep':'Documents','bookingStep':'Booking','summaryStep':'Summary','shipperInfo':'Shipper Information','receiverInfo':'Receiver Information','shipperName':'Name','shipperCompany':'Company','shipperPhone':'Phone','shipperAddress1':'Address Line 1','shipperAddress2':'Address Line 2','shipperAddress3':'Address Line 3','shipperCountry':'Country','shipperPostalCode':'Postal Code','shipperCity':'City','receiverName':'Name','receiverCompany':'Company','receiverPhone':'Phone','receiverAddress1':'Address Line 1','receiverAddress2':'Address Line 2','receiverAddress3':'Address Line 3','receiverCountry':'Country','receiverPostalCode':'Postal Code','receiverCity':'City','contentDetails':'Content Details','isDocument':'This is a document shipment','addLineItem':'Add Line Item','shipmentRef':'Shipment Reference (optional)','addInsurance':'Add Insurance (optional)','packageDetails':'Package Details','addPiece':'Add Piece','accountAndDetails':'Account & Details','shipperAccount':'Shipper Account','dutiesAccount':'Duties & Taxes Account','incoterm':'Incoterm','shipmentDate':'Shipment Date','docUpload':'Document Upload','docUploadDesc':'Upload additional documents (max 5MB)','pickupBooking':'Pickup Booking','requestPickup':'Request a pickup','pickupCloseTime':'Pickup Close Time','pickupLocation':'Pickup Location (e.g., Reception)','summary':'Summary','previous':'Previous','next':'Next','createShipmentBtn':'Create Shipment','allRightsReserved':'All rights reserved.','fillAllFields':'Please fill in all required fields.','typeOrSelectCountry': 'Type or select a country', 'backToMain': 'Back to Main', 'shipperEmail': 'Email Address', 'receiverEmail': 'Email Address', 'shipperVat': 'VAT / Tax ID', 'receiverVat': 'VAT / Tax ID'}};
+        const translations = {
+            'th': { 'leaveSiteTitle': 'ออกจากหน้านี้?', 'leaveSiteBody': 'การเปลี่ยนแปลงที่คุณทำอาจไม่ถูกบันทึก', 'stayButton': 'อยู่ต่อ', 'leaveButton': 'ออก', 'createShipment':'สร้างใบนำส่ง','addressStep':'ที่อยู่','shipmentDetailsStep':'รายละเอียดการจัดส่ง','packageStep':'แพ็คเกจ','detailsStep':'รายละเอียด','docsStep':'เอกสาร','bookingStep':'บุ๊คกิ้ง','summaryStep':'สรุป','shipperInfo':'ข้อมูลผู้ส่ง','receiverInfo':'ข้อมูลผู้รับ','shipperName':'ชื่อผู้ส่ง','shipperCompany':'บริษัทผู้ส่ง','shipperPhone':'เบอร์โทรผู้ส่ง','shipperAddress1':'ที่อยู่ 1','shipperAddress2':'ที่อยู่ 2','shipperAddress3':'ที่อยู่ 3','shipperCountry':'ประเทศ','shipperPostalCode':'รหัสไปรษณีย์','shipperCity':'เมือง','receiverName':'ชื่อผู้รับ','receiverCompany':'บริษัทผู้รับ','receiverPhone':'เบอร์โทรผู้รับ','receiverAddress1':'ที่อยู่ 1','receiverAddress2':'ที่อยู่ 2','receiverAddress3':'ที่อยู่ 3','receiverCountry':'ประเทศ','receiverPostalCode':'รหัสไปรษณีย์','receiverCity':'เมือง','document':'เอกสาร','package':'พัสดุ','addLineItem':'เพิ่มรายการสินค้า','shipmentRef':'เลขที่อ้างอิง (optional)','protectShipment':'เพิ่มความคุ้มครองการจัดส่ง (ประกัน)','packageDetails':'รายละเอียดแพ็คเกจ','addPiece':'เพิ่มกล่อง','accountAndDetails':'บัญชีและรายละเอียดเพิ่มเติม','shipperAccount':'บัญชีผู้ส่ง','dutiesAccount':'บัญชีผู้ชำระภาษี','incoterm':'Incoterm','shipmentDate':'วันที่ส่ง','docUpload':'อัปโหลดเอกสาร','docUploadDesc':'อัปโหลดเอกสารเพิ่มเติม (ไม่เกิน 5MB)','pickupBooking':'บุ๊คกิ้งรถเข้ารับ','requestPickup':'ต้องการให้รถเข้ารับ','pickupCloseTime':'เวลาปิดทำการ','pickupLocation':'สถานที่รับของ (เช่น Reception)','summary':'สรุปข้อมูล','previous':'ย้อนกลับ','next':'ถัดไป','createShipmentBtn':'สร้างใบนำส่ง','allRightsReserved':'สงวนลิขสิทธิ์.','fillAllFields':'กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วน','typeOrSelectCountry': 'พิมพ์หรือเลือกประเทศ', 'backToMain': 'กลับหน้าหลัก', 'shipperEmail': 'อีเมลผู้ส่ง', 'receiverEmail': 'อีเมลผู้รับ', 'shipperVat': 'เลขประจำตัวผู้เสียภาษีผู้ส่ง', 'receiverVat': 'เลขประจำตัวผู้เสียภาษีผู้รับ', 'whatIsTheItem': 'สินค้าคืออะไร?', 'commodityCode': 'รหัสพิกัดศุลกากร', 'quantity': 'จำนวน', 'units': 'หน่วย', 'valuePerItem': 'มูลค่า (ต่อชิ้น)', 'weight': 'น้ำหนัก (KG)', 'whereWasItMade': 'ผลิตที่ประเทศ', 'totalUnits': 'จำนวนรวม:', 'totalWeight': 'น้ำหนักรวม:', 'totalValue': 'มูลค่ารวม:', 'insuredValue': 'มูลค่าประกัน', 'describeDocuments': 'ระบุประเภทเอกสารในชิปเมนต์ของคุณ', 'fillAllFieldsInItem': 'กรุณากรอกข้อมูลในรายการก่อนหน้าให้ครบถ้วน', 'customsInvoiceDetails': 'รายละเอียดใบกำกับสินค้า', 'createInvoice': 'สร้าง Invoice', 'useMyOwnInvoice': 'ใช้ Invoice ของฉัน', 'invoiceNumber': 'หมายเลข Invoice', 'itemDescription': 'รายละเอียดสินค้า', 'totalItemValue': 'มูลค่ารวม', 'summarizeShipment': 'สรุปรายการสินค้าในชิปเมนต์'},
+            'en': { 'leaveSiteTitle': 'Leave Site?', 'leaveSiteBody': 'Changes you made may not be saved.', 'stayButton': 'Stay', 'leaveButton': 'Leave', 'createShipment':'Create Shipment','addressStep':'Address','shipmentDetailsStep':'Shipment Details','packageStep':'Package','detailsStep':'Details','docsStep':'Documents','bookingStep':'Booking','summaryStep':'Summary','shipperInfo':'Shipper Information','receiverInfo':'Receiver Information','shipperName':'Name','shipperCompany':'Company','shipperPhone':'Phone','shipperAddress1':'Address Line 1','shipperAddress2':'Address Line 2','shipperAddress3':'Address Line 3','shipperCountry':'Country','shipperPostalCode':'Postal Code','shipperCity':'City','receiverName':'Name','receiverCompany':'Company','receiverPhone':'Phone','receiverAddress1':'Address Line 1','receiverAddress2':'Address Line 2','receiverAddress3':'Address Line 3','receiverCountry':'Country','receiverPostalCode':'Postal Code','receiverCity':'City','document':'Document','package':'Package','addLineItem':'Add Line Item','shipmentRef':'Shipment Reference (optional)','protectShipment':'Protect Your Shipment (Insurance)','packageDetails':'Package Details','addPiece':'Add Piece','accountAndDetails':'Account & Details','shipperAccount':'Shipper Account','dutiesAccount':'Duties & Taxes Account','incoterm':'Incoterm','shipmentDate':'Shipment Date','docUpload':'Document Upload','docUploadDesc':'Upload additional documents (max 5MB)','pickupBooking':'Pickup Booking','requestPickup':'Request a pickup','pickupCloseTime':'Pickup Close Time','pickupLocation':'Pickup Location (e.g., Reception)','summary':'Summary','previous':'Previous','next':'Next','createShipmentBtn':'Create Shipment','allRightsReserved':'All rights reserved.','fillAllFields':'Please fill in all required fields.','typeOrSelectCountry': 'Type or select a country', 'backToMain': 'Back to Main', 'shipperEmail': 'Email Address', 'receiverEmail': 'Email Address', 'shipperVat': 'VAT / Tax ID', 'receiverVat': 'VAT / Tax ID', 'whatIsTheItem': 'What is the item?', 'commodityCode': 'Commodity Code', 'quantity': 'Quantity', 'units': 'Units', 'valuePerItem': 'Value (Per Item)', 'weight': 'Weight (KG)', 'whereWasItMade': 'Where was the item made?', 'totalUnits': 'Total Units:', 'totalWeight': 'Total Weight:', 'totalValue': 'Total Value:', 'insuredValue': 'Insured Value', 'describeDocuments': 'Describe the documents in your shipment', 'fillAllFieldsInItem': 'Please fill in the previous item completely.', 'customsInvoiceDetails': 'Customs Invoice Details', 'createInvoice': 'Create Invoice', 'useMyOwnInvoice': 'Use My Own Invoice', 'invoiceNumber': 'Invoice Number', 'itemDescription': 'Item Description', 'totalItemValue': 'Total Item Value', 'summarizeShipment': 'Summarize the contents of your shipment'}
+        };
         const countryList = [ { "name": "Afghanistan", "code": "AF" }, { "name": "Albania", "code": "AL" }, { "name": "Algeria", "code": "DZ" }, { "name": "American Samoa", "code": "AS" }, { "name": "Andorra", "code": "AD" }, { "name": "Angola", "code": "AO" }, { "name": "Anguilla", "code": "AI" }, { "name": "Antigua", "code": "AG" }, { "name": "Argentina", "code": "AR" }, { "name": "Armenia", "code": "AM" }, { "name": "Aruba", "code": "AW" }, { "name": "Australia", "code": "AU" }, { "name": "Austria", "code": "AT" }, { "name": "Azerbaijan", "code": "AZ" }, { "name": "Bahamas", "code": "BS" }, { "name": "Bahrain", "code": "BH" }, { "name": "Bangladesh", "code": "BD" }, { "name": "Barbados", "code": "BB" }, { "name": "Belarus", "code": "BY" }, { "name": "Belgium", "code": "BE" }, { "name": "Belize", "code": "BZ" }, { "name": "Benin", "code": "BJ" }, { "name": "Bermuda", "code": "BM" }, { "name": "Bhutan", "code": "BT" }, { "name": "Bolivia", "code": "BO" }, { "name": "Bonaire", "code": "BQ" }, { "name": "Bosnia and Herzegovina", "code": "BA" }, { "name": "Botswana", "code": "BW" }, { "name": "Brazil", "code": "BR" }, { "name": "Brunei", "code": "BN" }, { "name": "Bulgaria", "code": "BG" }, { "name": "Burkina Faso", "code": "BF" }, { "name": "Burundi", "code": "BI" }, { "name": "Cambodia", "code": "KH" }, { "name": "Cameroon", "code": "CM" }, { "name": "Canada", "code": "CA" }, { "name": "Canary Islands, The", "code": "IC" }, { "name": "Cape Verde", "code": "CV" }, { "name": "Cayman Islands", "code": "KY" }, { "name": "Central African Republic", "code": "CF" }, { "name": "Chad", "code": "TD" }, { "name": "Chile", "code": "CL" }, { "name": "China, People's Republic", "code": "CN" }, { "name": "Colombia", "code": "CO" }, { "name": "Comoros", "code": "KM" }, { "name": "Congo", "code": "CG" }, { "name": "Congo, The Democratic Republic of", "code": "CD" }, { "name": "Cook Islands", "code": "CK" }, { "name": "Costa Rica", "code": "CR" }, { "name": "Cote D'ivoire", "code": "CI" }, { "name": "Croatia", "code": "HR" }, { "name": "Cuba", "code": "CU" }, { "name": "Curacao", "code": "CW" }, { "name": "Cyprus", "code": "CY" }, { "name": "Czech Republic, The", "code": "CZ" }, { "name": "Denmark", "code": "DK" }, { "name": "Djibouti", "code": "DJ" }, { "name": "Dominica", "code": "DM" }, { "name": "Dominican Republic", "code": "DO" }, { "name": "East Timor", "code": "TL" }, { "name": "Ecuador", "code": "EC" }, { "name": "Egypt", "code": "EG" }, { "name": "El Salvador", "code": "SV" }, { "name": "Eritrea", "code": "ER" }, { "name": "Estonia", "code": "EE" }, { "name": "Ethiopia", "code": "ET" }, { "name": "Falkland Islands", "code": "FK" }, { "name": "Faroe Islands", "code": "FO" }, { "name": "Fiji", "code": "FJ" }, { "name": "Finland", "code": "FI" }, { "name": "France", "code": "FR" }, { "name": "French Guyana", "code": "GF" }, { "name": "Gabon", "code": "GA" }, { "name": "Gambia", "code": "GM" }, { "name": "Georgia", "code": "GE" }, { "name": "Germany", "code": "DE" }, { "name": "Ghana", "code": "GH" }, { "name": "Gibraltar", "code": "GI" }, { "name": "Greece", "code": "GR" }, { "name": "Greenland", "code": "GL" }, { "name": "Grenada", "code": "GD" }, { "name": "Guadeloupe", "code": "GP" }, { "name": "Guam", "code": "GU" }, { "name": "Guatemala", "code": "GT" }, { "name": "Guernsey", "code": "GG" }, { "name": "Guinea Republic", "code": "GN" }, { "name": "Guinea-Bissau", "code": "GW" }, { "name": "Guinea-Equatorial", "code": "GQ" }, { "name": "Guyana", "code": "GY" }, { "name": "Haiti", "code": "HT" }, { "name": "Honduras", "code": "HN" }, { "name": "Hong Kong", "code": "HK" }, { "name": "Hungary", "code": "HU" }, { "name": "Iceland", "code": "IS" }, { "name": "India", "code": "IN" }, { "name": "Indonesia", "code": "ID" }, { "name": "Iran (Islamic Republic of)", "code": "IR" }, { "name": "Iraq", "code": "IQ" }, { "name": "Ireland, Republic of", "code": "IE" }, { "name": "Israel", "code": "IL" }, { "name": "Italy", "code": "IT" }, { "name": "Jamaica", "code": "JM" }, { "name": "Japan", "code": "JP" }, { "name": "Jersey", "code": "JE" }, { "name": "Jordan", "code": "JO" }, { "name": "Kazakhstan", "code": "KZ" }, { "name": "Kenya", "code": "KE" }, { "name": "Kiribati", "code": "KI" }, { "name": "Korea, Republic of", "code": "KR" }, { "name": "Korea, The D.P.R of (North K.)", "code": "KP" }, { "name": "Kosovo", "code": "KV" }, { "name": "Kuwait", "code": "KW" }, { "name": "Kyrgyzstan", "code": "KG" }, { "name": "Lao People's Democratic Republic", "code": "LA" }, { "name": "Latvia", "code": "LV" }, { "name": "Lebanon", "code": "LB" }, { "name": "Lesotho", "code": "LS" }, { "name": "Liberia", "code": "LR" }, { "name": "Libya", "code": "LY" }, { "name": "Liechtenstein", "code": "LI" }, { "name": "Lithuania", "code": "LT" }, { "name": "Luxembourg", "code": "LU" }, { "name": "Macau", "code": "MO" }, { "name": "Macedonia, Republic of", "code": "MK" }, { "name": "Madagascar", "code": "MG" }, { "name": "Malawi", "code": "MW" }, { "name": "Malaysia", "code": "MY" }, { "name": "Maldives", "code": "MV" }, { "name": "Mali", "code": "ML" }, { "name": "Malta", "code": "MT" }, { "name": "Marshall Islands", "code": "MH" }, { "name": "Martinique", "code": "MQ" }, { "name": "Mauritania", "code": "MR" }, { "name": "Mauritius", "code": "MU" }, { "name": "Mayotte", "code": "YT" }, { "name": "Mexico", "code": "MX" }, { "name": "Micronesia, Federated States of", "code": "FM" }, { "name": "Moldova, Republic of", "code": "MD" }, { "name": "Monaco", "code": "MC" }, { "name": "Mongolia", "code": "MN" }, { "name": "Montenegro, Republic of", "code": "ME" }, { "name": "Montserrat", "code": "MS" }, { "name": "Morocco", "code": "MA" }, { "name": "Mozambique", "code": "MZ" }, { "name": "Myanmar", "code": "MM" }, { "name": "Namibia", "code": "NA" }, { "name": "Nauru, Republic of", "code": "NR" }, { "name": "Nepal", "code": "NP" }, { "name": "Netherlands, The", "code": "NL" }, { "name": "New Caledonia", "code": "NC" }, { "name": "New Zealand", "code": "NZ" }, { "name": "Nicaragua", "code": "NI" }, { "name": "Niger", "code": "NE" }, { "name": "Nigeria", "code": "NG" }, { "name": "Niue", "code": "NU" }, { "name": "Northern Mariana Islands", "code": "MP" }, { "name": "Norway", "code": "NO" }, { "name": "Oman", "code": "OM" }, { "name": "Pakistan", "code": "PK" }, { "name": "Palau", "code": "PW" }, { "name": "Panama", "code": "PA" }, { "name": "Papua New Guinea", "code": "PG" }, { "name": "Paraguay", "code": "PY" }, { "name": "Peru", "code": "PE" }, { "name": "Philippines, The", "code": "PH" }, { "name": "Poland", "code": "PL" }, { "name": "Portugal", "code": "PT" }, { "name": "Puerto Rico", "code": "PR" }, { "name": "Qatar", "code": "QA" }, { "name": "Reunion, Island of", "code": "RE" }, { "name": "Romania", "code": "RO" }, { "name": "Russian Federation, The", "code": "RU" }, { "name": "Rwanda", "code": "RW" }, { "name": "Saipan", "code": "SP" }, { "name": "San Marino", "code": "SM" }, { "name": "Sao Tome and Principe", "code": "ST" }, { "name": "Saudi Arabia", "code": "SA" }, { "name": "Senegal", "code": "SN" }, { "name": "Serbia, Republic of", "code": "RS" }, { "name": "Seychelles", "code": "SC" }, { "name": "Sierra Leone", "code": "SL" }, { "name": "Singapore", "code": "SG" }, { "name": "Slovakia", "code": "SK" }, { "name": "Slovenia", "code": "SI" }, { "name": "Solomon Islands", "code": "SB" }, { "name": "Somalia", "code": "SO" }, { "name": "Somaliland, Rep of (North Somalia)", "code": "XS" }, { "name": "South Africa", "code": "ZA" }, { "name": "South Sudan", "code": "SS" }, { "name": "Spain", "code": "ES" }, { "name": "Sri Lanka", "code": "LK" }, { "name": "St. Barthelemy", "code": "XY" }, { "name": "St. Eustatius", "code": "XE" }, { "name": "St. Helena", "code": "SH" }, { "name": "St. Kitts and Nevis", "code": "KN" }, { "name": "St. Lucia", "code": "LC" }, { "name": "St. Maarten", "code": "SX" }, { "name": "St. Vincent", "code": "VC" }, { "name": "Sudan", "code": "SD" }, { "name": "Suriname", "code": "SR" }, { "name": "Swaziland", "code": "SZ" }, { "name": "Sweden", "code": "SE" }, { "name": "Switzerland", "code": "CH" }, { "name": "Syria", "code": "SY" }, { "name": "Tahiti", "code": "PF" }, { "name": "Taiwan", "code": "TW" }, { "name": "Tanzania", "code": "TZ" }, { "name": "Thailand", "code": "TH" }, { "name": "Togo", "code": "TG" }, { "name": "Tonga", "code": "TO" }, { "name": "Trinidad and Tobago", "code": "TT" }, { "name": "Tunisia", "code": "TN" }, { "name": "Turkey", "code": "TR" }, { "name": "Turkmenistan", "code": "TM" }, { "name": "Turks and Caicos Islands", "code": "TC" }, { "name": "Tuvalu", "code": "TV" }, { "name": "Uganda", "code": "UG" }, { "name": "Ukraine", "code": "UA" }, { "name": "United Arab Emirates", "code": "AE" }, { "name": "United Kingdom", "code": "GB" }, { "name": "United States of America", "code": "US" }, { "name": "Uruguay", "code": "UY" }, { "name": "Uzbekistan", "code": "UZ" }, { "name": "Vanuatu", "code": "VU" }, { "name": "Vatican City", "code": "VA" }, { "name": "Venezuela", "code": "VE" }, { "name": "Vietnam", "code": "VN" }, { "name": "Virgin Islands (British)", "code": "VG" }, { "name": "Virgin Islands (US)", "code": "VI" }, { "name": "Yemen, Republic of", "code": "YE" }, { "name": "Zambia", "code": "ZM" }, { "name": "Zimbabwe", "code": "ZW" } ];
         
         let currentLanguage = localStorage.getItem('language') || 'th';
         let currentStep = 1;
         const totalSteps = 7;
+        let hasUnsavedChanges = false;
+        let navigationTargetUrl = null;
+        let lineItemCounter = 0;
 
-        // --- Shared Functions ---
+        const leaveModal = document.getElementById('leave-confirm-modal');
+        const stayButton = document.getElementById('stay-button');
+        const leaveButton = document.getElementById('leave-button');
+        const formMessage = document.getElementById('form-message');
+
         function getTranslatedText(key, replacements = {}) { 
             let text = translations[currentLanguage]?.[key] || key; 
-            for (const placeholder in replacements) { 
-                text = text.replace(`{${placeholder}}`, replacements[placeholder]);
-            }
+            for (const placeholder in replacements) { text = text.replace(`{${placeholder}}`, replacements[placeholder]); }
             return text; 
         }
         
         function updateContentLanguage() {
-            document.querySelectorAll('[data-i18n]').forEach(el => { 
+            document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
                 if (el.placeholder !== undefined && (el.hasAttribute('data-i18n-placeholder') || el.matches('[data-i18n-placeholder]'))) {
                     el.placeholder = getTranslatedText(key);
-                } else if(el.tagName === 'LABEL') {
-                    // Manual handling for labels with spans to keep the asterisk
-                    const labelText = getTranslatedText(key);
-                    const asterisk = el.querySelector('.text-red-500');
-                    el.innerHTML = labelText + (asterisk ? ' <span class="text-red-500">*</span>' : '');
                 } else {
-                    el.textContent = getTranslatedText(key);
+                     // Check if the element or its parent is the summary div to avoid re-translating labels
+                    if (!el.closest('.line-item-summary')) {
+                        el.textContent = getTranslatedText(key);
+                    }
                 }
+            });
+            document.querySelectorAll('label[data-i18n]').forEach(label => {
+                const key = label.getAttribute('data-i18n');
+                const asterisk = label.querySelector('.text-red-500');
+                label.innerHTML = getTranslatedText(key) + (asterisk ? ' <span class="text-red-500">*</span>' : '');
             });
             document.getElementById('current-language-display').textContent = currentLanguage.toUpperCase();
             document.title = `DHL Backup Solution - ${getTranslatedText('createShipment')}`;
+            // Re-translate summary labels after general translation
+            document.querySelectorAll('.line-item-summary strong[data-i18n]').forEach(el => {
+                 el.textContent = getTranslatedText(el.getAttribute('data-i18n'));
+            });
         }
 
         function setupTheme() {
@@ -218,7 +329,7 @@
             const darkIcon = document.getElementById('theme-icon-dark');
             const enableDarkMode = () => { document.body.classList.add('dark-mode'); localStorage.setItem('theme', 'dark'); lightIcon.classList.remove('hidden'); darkIcon.classList.add('hidden'); };
             const disableDarkMode = () => { document.body.classList.remove('dark-mode'); localStorage.setItem('theme', 'light'); lightIcon.classList.add('hidden'); darkIcon.classList.remove('hidden'); };
-            themeToggle.addEventListener('click', () => document.body.classList.contains('dark-mode') ? disableDarkMode() : enableDarkMode());
+            themeToggle.addEventListener('click', () => { document.body.classList.contains('dark-mode') ? disableDarkMode() : enableDarkMode(); });
             if (localStorage.getItem('theme') === 'dark') { enableDarkMode(); } else { disableDarkMode(); }
         }
 
@@ -239,24 +350,63 @@
             const input = document.getElementById(inputId);
             const valueHolder = document.getElementById(valueId);
             const dropdown = document.getElementById(dropdownId);
+            if (!input || !valueHolder || !dropdown) {
+                console.error("ComboBox setup failed for:", inputId);
+                return;
+            }
             input.setAttribute('data-i18n-placeholder', 'typeOrSelectCountry');
-
             const renderDropdown = (filter = '') => {
                 const filteredList = countryList.filter(c => c.name.toLowerCase().includes(filter.toLowerCase()));
-                dropdown.innerHTML = filteredList.map(c => `<div class="country-dropdown-item" data-code="${c.code}" data-name="${c.name}">${c.name}</div>`).join('');
+                dropdown.innerHTML = filteredList.map(c => 
+                    `<div class="country-dropdown-item" data-code="${c.code}" data-name="${c.name}">
+                        <img src="https://flagcdn.com/w20/${c.code.toLowerCase()}.png" alt="${c.name} flag">
+                        <span>${c.name}</span>
+                    </div>`
+                ).join('');
             };
             input.addEventListener('focus', () => { renderDropdown(input.value); dropdown.classList.remove('hidden'); });
-            input.addEventListener('input', () => { renderDropdown(input.value); valueHolder.value = ''; dropdown.classList.remove('hidden'); });
+            input.addEventListener('input', () => { 
+                renderDropdown(input.value); 
+                valueHolder.value = '';
+                dropdown.classList.remove('hidden'); 
+                updateInputValidationState(input);
+            });
             dropdown.addEventListener('click', (e) => {
-                if (e.target.classList.contains('country-dropdown-item')) {
-                    input.value = e.target.dataset.name;
-                    valueHolder.value = e.target.dataset.code;
+                const item = e.target.closest('.country-dropdown-item');
+                if (item) {
+                    input.value = item.dataset.name;
+                    valueHolder.value = item.dataset.code;
                     dropdown.classList.add('hidden');
-                    // Trigger input event for validation
-                    input.dispatchEvent(new Event('input', { bubbles: true }));
+                    updateInputValidationState(input);
                 }
             });
             document.addEventListener('click', (e) => { if (!input.contains(e.target) && !dropdown.contains(e.target)) { dropdown.classList.add('hidden'); } });
+        }
+        
+        function updateInputValidationState(inputElement) {
+             if (!inputElement.hasAttribute('required')) return;
+             const wrapper = inputElement.closest('.relative');
+             if (!wrapper) return;
+             const indicator = wrapper.querySelector('.input-indicator');
+             if (!indicator) return;
+             let hasValue = false;
+             if (inputElement.id.includes('-country-input')) {
+                 const valueHolderId = inputElement.id.replace('-input', '-value');
+                 const valueHolder = document.getElementById(valueHolderId);
+                 hasValue = !!valueHolder && !!valueHolder.value;
+             } else {
+                 hasValue = inputElement.value.trim() !== '';
+             }
+             if (hasValue) {
+                 indicator.textContent = '✓';
+                 indicator.classList.remove('indicator-required');
+                 indicator.classList.add('indicator-valid');
+                 inputElement.classList.remove('is-invalid');
+             } else {
+                 indicator.textContent = '*';
+                 indicator.classList.remove('indicator-valid');
+                 indicator.classList.add('indicator-required');
+             }
         }
 
         function initializeForm() {
@@ -266,15 +416,19 @@
              if (thailand) {
                 shipperCountryInput.value = thailand.name;
                 shipperCountryValue.value = thailand.code;
-                shipperCountryInput.dispatchEvent(new Event('input', { bubbles: true }));
+                updateInputValidationState(shipperCountryInput);
+             }
+             const shipDateInput = document.getElementById('ship-date');
+             if(shipDateInput) {
+                const today = new Date().toISOString().slice(0, 10);
+                shipDateInput.value = today;
+                shipDateInput.min = today;
+                updateInputValidationState(shipDateInput);
              }
         }
         
-        // --- Step Navigation Logic ---
         const prevButton = document.getElementById('ship-now-prev-step');
         const nextButton = document.getElementById('ship-now-next-step');
-        const confirmButton = document.getElementById('confirm-shipment-button');
-        const backToMainBtn = document.getElementById('back-to-main-btn');
         
         function changeStep(step) {
             document.querySelectorAll('.ship-now-step').forEach(el => el.classList.add('hidden'));
@@ -285,6 +439,8 @@
         }
 
         function updateNavButtons() {
+            const backToMainBtn = document.getElementById('back-to-main-btn');
+            const confirmButton = document.getElementById('confirm-shipment-button');
             prevButton.classList.toggle('hidden', currentStep === 1);
             nextButton.classList.toggle('hidden', currentStep === totalSteps);
             confirmButton.classList.toggle('hidden', currentStep !== totalSteps);
@@ -296,28 +452,43 @@
 
         function updateStepIndicator() {
             const lineFill = document.querySelector('.progress-line-fill');
+            const progressBar = document.querySelector('.progress-bar');
             for (let i = 1; i <= totalSteps; i++) {
                 const stepEl = document.getElementById(`step-${i}`);
                 stepEl.classList.remove('is-active', 'is-complete');
                 if (i === currentStep) { stepEl.classList.add('is-active'); } 
                 else if (i < currentStep) { stepEl.classList.add('is-complete'); }
             }
-            if(lineFill) {
-                const percentage = (currentStep - 1) / (totalSteps - 1);
-                lineFill.style.width = `calc((100% - 2.5rem) * ${percentage})`;
+            if(lineFill && progressBar) {
+                const percentage = (currentStep > 1) ? (currentStep - 1) / (totalSteps - 1) : 0;
+                const stepCircleWidthRem = 2.5;
+                const progressBarWidthPx = progressBar.offsetWidth;
+                const rootFontSizePx = parseFloat(getComputedStyle(document.documentElement).fontSize);
+                const stepCircleWidthPx = stepCircleWidthRem * rootFontSizePx;
+                
+                const trackWidthPx = progressBarWidthPx - stepCircleWidthPx;
+                const fillWidthPx = trackWidthPx * percentage;
+
+                lineFill.style.width = `${fillWidthPx}px`;
             }
         }
 
         function validateCurrentStep() {
             let isValid = true;
             const stepDiv = document.getElementById(`ship-now-step-${currentStep}`);
-            const requiredInputs = stepDiv.querySelectorAll('input[required], select[required]');
             
+            let requiredInputs;
+            if (currentStep === 2 && document.getElementById('ship-type-document').classList.contains('active')) {
+                requiredInputs = Array.from(stepDiv.querySelectorAll('input[required]:not(:disabled), select[required]:not(:disabled)'))
+                                    .filter(el => !el.closest('#package-details-container'));
+            } else {
+                requiredInputs = stepDiv.querySelectorAll('input[required]:not(:disabled), select[required]:not(:disabled)');
+            }
+
             stepDiv.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
             
             requiredInputs.forEach(input => {
                 let isEmpty = !input.value.trim();
-                // Special check for country combo box
                 if (input.id.includes('-country-input')) {
                     const valueHolderId = input.id.replace('-input', '-value');
                     isEmpty = !document.getElementById(valueHolderId).value;
@@ -328,77 +499,346 @@
                 }
             });
 
-            const formMessage = document.getElementById('form-message');
             formMessage.classList.toggle('hidden', isValid);
             if(!isValid) {
                  formMessage.textContent = getTranslatedText('fillAllFields');
                  formMessage.className = 'p-4 rounded-md text-center bg-red-100 text-red-700 break-words';
             }
-
             return isValid;
         }
 
-        // --- Event Listeners ---
-        nextButton.addEventListener('click', () => { 
-            if (validateCurrentStep() && currentStep < totalSteps) {
-                changeStep(currentStep + 1); 
+        // --- Step 2 Logic ---
+        const lineItemsContainer = document.getElementById('line-items-container');
+        const packageDetailsContainer = document.getElementById('package-details-container');
+        const documentDetailsContainer = document.getElementById('document-details-container');
+        const insuranceValueContainer = document.getElementById('insurance-value-container');
+        const summarizeShipmentContainer = document.getElementById('summarize-shipment-container');
+
+        function renumberLineItemHeaders() {
+            const headers = lineItemsContainer.querySelectorAll('.line-item-header h4');
+            const summarizeInput = document.getElementById('summarize-shipment');
+            const summarizeLabel = document.querySelector('label[for="summarize-shipment"]');
+            
+            headers.forEach((header, index) => {
+                header.textContent = `Item #${index + 1}`;
+            });
+            
+            const showSummarize = headers.length > 1;
+            summarizeShipmentContainer.classList.toggle('hidden', !showSummarize);
+            summarizeInput.required = showSummarize;
+            if (summarizeLabel) {
+                const asterisk = summarizeLabel.querySelector('.text-red-500');
+                if (showSummarize && !asterisk) {
+                    summarizeLabel.insertAdjacentHTML('beforeend', ' <span class="text-red-500">*</span>');
+                } else if (!showSummarize && asterisk) {
+                    asterisk.remove();
+                }
+            }
+        }
+        
+        function createLineItem() {
+            lineItemCounter++;
+            const itemId = lineItemCounter;
+            const currencyOptions = ['THB', 'USD', 'EUR', 'GBP', 'JPY', 'CNY'].map(c => `<option value="${c}">${c}</option>`).join('');
+            const unitOptions = ['PCS', 'BOX', 'EA'].map(u => `<option value="${u}">${u}</option>`).join('');
+            const countryOptions = countryList.map(c => `<option value="${c.code}" ${c.code === 'TH' ? 'selected' : ''}>${c.name}</option>`).join('');
+
+            const itemHTML = `
+                <div class="line-item" id="item-wrapper-${itemId}">
+                    <div class="line-item-header flex justify-between items-center p-4">
+                        <div>
+                            <h4 class="font-bold text-lg">Item #${itemId}</h4>
+                            <!-- Collapsed Summary View -->
+                            <div class="line-item-summary text-sm text-gray-500 dark:text-gray-400 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-1 mt-2">
+                                <div class="truncate"><strong data-i18n="itemDescription" class="font-semibold text-current"></strong>: <span class="summary-description">...</span></div>
+                                <div><strong data-i18n="quantity" class="font-semibold text-current"></strong>: <span class="summary-quantity">...</span></div>
+                                <div><strong data-i18n="totalWeight" class="font-semibold text-current"></strong>: <span class="summary-weight">...</span></div>
+                                <div><strong data-i18n="totalItemValue" class="font-semibold text-current"></strong>: <span class="summary-value font-semibold">...</span></div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button type="button" class="delete-item-btn text-gray-400 hover:text-red-500">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                            </button>
+                            <div class="line-item-arrow p-1">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Expanded Form View -->
+                    <div class="line-item-body p-4 pt-0 space-y-4 border-t border-gray-200 dark:border-gray-700 mt-4">
+                        <div><label class="block text-sm font-medium mb-1" data-i18n="whatIsTheItem"></label><div class="relative"><input type="text" class="input-field item-description pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
+                        <div><label class="block text-sm font-medium mb-1" data-i18n="commodityCode"></label><input type="text" class="input-field commodity-code" placeholder="xxxx.xx.xxxx"></div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div><label class="block text-sm font-medium mb-1" data-i18n="quantity"></label><div class="relative"><input type="number" min="1" value="1" class="input-field item-quantity pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
+                            <div><label class="block text-sm font-medium mb-1" data-i18n="units"></label><select class="input-field item-units">${unitOptions}</select></div>
+                            <div><label class="block text-sm font-medium mb-1" data-i18n="weight"></label><div class="relative"><input type="number" min="0.1" step="0.1" value="0.5" class="input-field item-weight pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-1" data-i18n="valuePerItem"></label>
+                                <div class="flex items-center">
+                                    <div class="relative w-full"><input type="number" min="0" step="0.01" value="1" class="input-field item-value rounded-r-none pr-8" required><span class="input-indicator indicator-required">*</span></div>
+                                    <select class="input-field item-currency rounded-l-none border-l-0 w-24">${currencyOptions}</select>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1" data-i18n="whereWasItMade"></label>
+                                <select class="input-field item-made-in">${countryOptions}</select>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            lineItemsContainer.insertAdjacentHTML('beforeend', itemHTML);
+            const newItem = document.getElementById(`item-wrapper-${itemId}`);
+            newItem.querySelectorAll('input[required], select[required]').forEach(updateInputValidationState);
+            updateLineItemSummary(newItem);
+            
+            // Start collapsed by default
+            newItem.classList.add('is-collapsed');
+            
+            updateContentLanguage();
+            renumberLineItemHeaders();
+        }
+
+        function validateLastLineItem() {
+            const lastItem = lineItemsContainer.querySelector('.line-item:last-child');
+            if (!lastItem) return true;
+            let isLastItemValid = true;
+            const requiredInputs = lastItem.querySelectorAll('input[required], select[required]');
+            requiredInputs.forEach(input => {
+                if (!input.value.trim()) {
+                    isLastItemValid = false;
+                    input.classList.add('is-invalid');
+                } else {
+                    input.classList.remove('is-invalid');
+                }
+            });
+            return isLastItemValid;
+        }
+        
+        function updateLineItemSummary(itemElement) {
+            const summaryDiv = itemElement.querySelector('.line-item-summary');
+            if (!summaryDiv) return;
+            const descSpan = summaryDiv.querySelector('.summary-description');
+            const qtySpan = summaryDiv.querySelector('.summary-quantity');
+            const weightSpan = summaryDiv.querySelector('.summary-weight');
+            const valSpan = summaryDiv.querySelector('.summary-value');
+
+            const description = itemElement.querySelector('.item-description').value;
+            const quantity = itemElement.querySelector('.item-quantity').value;
+            const weight = parseFloat(itemElement.querySelector('.item-weight').value) || 0;
+            const value = parseFloat(itemElement.querySelector('.item-value').value) || 0;
+            const currency = itemElement.querySelector('.item-currency').value;
+            const totalItemWeight = (quantity * weight).toFixed(2);
+            const totalValue = (quantity * value).toFixed(2);
+            
+            descSpan.textContent = description || '...';
+            qtySpan.textContent = quantity;
+            weightSpan.textContent = `${totalItemWeight} KG`;
+            valSpan.textContent = `${totalValue} ${currency}`;
+        }
+
+        function updateAllLineItemSummaries() {
+            document.querySelectorAll('.line-item').forEach(updateLineItemSummary);
+        }
+
+        function updateSummary() {
+            let totalUnits = 0;
+            let totalWeight = 0;
+            let totalValue = 0;
+            const currency = document.querySelector('.item-currency')?.value || 'THB';
+
+            document.querySelectorAll('.line-item').forEach(item => {
+                const quantity = parseFloat(item.querySelector('.item-quantity')?.value) || 0;
+                const weight = parseFloat(item.querySelector('.item-weight')?.value) || 0;
+                const value = parseFloat(item.querySelector('.item-value')?.value) || 0;
+                totalUnits += quantity;
+                totalWeight += weight * quantity;
+                totalValue += value * quantity;
+            });
+
+            document.getElementById('summary-total-units').textContent = totalUnits;
+            document.getElementById('summary-total-weight').textContent = `${totalWeight.toFixed(2)} KG`;
+            document.getElementById('summary-total-value').textContent = `${totalValue.toFixed(2)} ${currency}`;
+            updateAllLineItemSummaries();
+        }
+
+        document.getElementById('add-line-item-btn').addEventListener('click', () => {
+             const lastItem = lineItemsContainer.querySelector('.line-item:last-child');
+             if (lastItem && !lastItem.classList.contains('is-collapsed')) {
+                 lastItem.classList.add('is-collapsed');
+             }
+            if (validateLastLineItem()) {
+                formMessage.classList.add('hidden');
+                createLineItem();
+                const newItem = lineItemsContainer.querySelector('.line-item:last-child');
+                if (newItem) {
+                    newItem.classList.remove('is-collapsed'); // Expand the new item
+                }
+            } else {
+                formMessage.textContent = getTranslatedText('fillAllFieldsInItem');
+                formMessage.className = 'p-4 rounded-md text-center bg-red-100 text-red-700 break-words';
+                formMessage.classList.remove('hidden');
             }
         });
-        prevButton.addEventListener('click', () => { if (currentStep > 1) changeStep(currentStep - 1); });
-        
-        document.getElementById('is-document').addEventListener('change', (e) => {
-             document.getElementById('parcel-details-container').classList.toggle('hidden', e.target.checked);
-        });
-        
-        document.getElementById('request-pickup').addEventListener('change', (e) => {
-             document.getElementById('pickup-details-container').classList.toggle('hidden', !e.target.checked);
-        });
 
-        document.getElementById('ship-now-form').addEventListener('input', (e) => {
-            const englishSymbolRegex = /[^\u0000-\u007F]/g;
-            const phoneRegex = /[^\d+-]/g;
+        lineItemsContainer.addEventListener('click', (e) => {
+            const itemWrapper = e.target.closest('.line-item');
+            if (!itemWrapper) return;
 
-            // Apply validation based on input ID
-            const id = e.target.id;
-            if (id.includes('name') || id.includes('company') || id.includes('address')) {
-                e.target.value = e.target.value.replace(englishSymbolRegex, '');
-            } else if (e.target.type === 'tel') {
-                e.target.value = e.target.value.replace(phoneRegex, '');
+            if (e.target.closest('.delete-item-btn')) {
+                itemWrapper.remove();
+                renumberLineItemHeaders();
+                updateSummary();
+            } else if (e.target.closest('.line-item-header')) {
+                itemWrapper.classList.toggle('is-collapsed');
             }
+        });
 
-            if (e.target.hasAttribute('required')) {
-                const wrapper = e.target.closest('.relative');
-                if (wrapper) {
-                    const indicator = wrapper.querySelector('.input-indicator');
-                    if (indicator) {
-                        let hasValue = e.target.value.trim() !== '';
-                        if (e.target.id.includes('-country-input')) {
-                            const valueHolderId = e.target.id.replace('-input', '-value');
-                            hasValue = !!document.getElementById(valueHolderId).value;
-                        }
+        lineItemsContainer.addEventListener('input', (e) => {
+            const item = e.target.closest('.line-item');
+            if (item) {
+                updateLineItemSummary(item);
+            }
+            if (e.target.matches('.item-quantity, .item-weight, .item-value, .item-currency')) {
+                updateSummary();
+            }
+            if (e.target.matches('.item-currency')) {
+                const newCurrency = e.target.value;
+                document.querySelectorAll('.item-currency').forEach(select => select.value = newCurrency);
+                document.getElementById('insurance-currency').textContent = newCurrency;
+            }
+            if (e.target.matches('.commodity-code')) {
+                let val = e.target.value.replace(/\D/g, '');
+                if (val.length > 4) val = val.slice(0, 4) + '.' + val.slice(4);
+                if (val.length > 7) val = val.slice(0, 7) + '.' + val.slice(7);
+                e.target.value = val.slice(0, 12);
+            }
+        });
 
-                        if (hasValue) {
-                            indicator.textContent = '✓';
-                            indicator.classList.remove('indicator-required');
-                            indicator.classList.add('indicator-valid');
-                            e.target.classList.remove('is-invalid');
-                        } else {
-                            indicator.textContent = '*';
-                            indicator.classList.remove('indicator-valid');
-                            indicator.classList.add('indicator-required');
-                        }
-                    }
+        document.getElementById('ship-type-document').addEventListener('click', (e) => {
+            e.currentTarget.classList.add('active');
+            document.getElementById('ship-type-package').classList.remove('active');
+            packageDetailsContainer.classList.add('hidden');
+            documentDetailsContainer.classList.remove('hidden');
+            insuranceValueContainer.classList.add('hidden');
+            document.getElementById('insurance-value').required = false;
+        });
+
+        document.getElementById('ship-type-package').addEventListener('click', (e) => {
+            e.currentTarget.classList.add('active');
+            document.getElementById('ship-type-document').classList.remove('active');
+            packageDetailsContainer.classList.remove('hidden');
+            documentDetailsContainer.classList.add('hidden');
+            if (document.getElementById('protect-shipment').checked) {
+                insuranceValueContainer.classList.remove('hidden');
+                document.getElementById('insurance-value').required = true;
+            }
+        });
+        
+        document.getElementById('protect-shipment').addEventListener('change', (e) => {
+            const isPackage = document.getElementById('ship-type-package').classList.contains('active');
+            const insuranceInput = document.getElementById('insurance-value');
+            const insuranceIndicator = document.getElementById('insurance-value-indicator');
+            if (isPackage) {
+                const isChecked = e.target.checked;
+                insuranceValueContainer.classList.toggle('hidden', !isChecked);
+                insuranceInput.required = isChecked;
+                insuranceIndicator.classList.toggle('hidden', !isChecked);
+                if (!isChecked) {
+                    insuranceInput.classList.remove('is-invalid');
                 }
             }
         });
+        
+        const invoiceNumberInput = document.getElementById('invoice-number');
+        const invoiceNumberIndicator = document.getElementById('invoice-number-indicator');
+        const invoiceNumberLabel = document.getElementById('invoice-number-label');
+
+        document.getElementById('create-invoice-btn').addEventListener('click', (e) => {
+            e.currentTarget.classList.add('active');
+            document.getElementById('use-my-own-invoice-btn').classList.remove('active');
+            invoiceNumberInput.required = true;
+            invoiceNumberIndicator.classList.remove('hidden');
+            if (!invoiceNumberLabel.querySelector('.text-red-500')) {
+                invoiceNumberLabel.insertAdjacentHTML('beforeend', ' <span class="text-red-500">*</span>');
+            }
+        });
+        document.getElementById('use-my-own-invoice-btn').addEventListener('click', (e) => {
+            e.currentTarget.classList.add('active');
+            document.getElementById('create-invoice-btn').classList.remove('active');
+            invoiceNumberInput.required = false;
+            invoiceNumberIndicator.classList.add('hidden');
+            invoiceNumberInput.classList.remove('is-invalid');
+            invoiceNumberLabel.querySelector('.text-red-500')?.remove();
+        });
+
+        function showLeaveModal(url) {
+            navigationTargetUrl = url;
+            leaveModal.classList.remove('hidden');
+            updateContentLanguage();
+        }
+        function hideLeaveModal() {
+            navigationTargetUrl = null;
+            leaveModal.classList.add('hidden');
+        }
+        stayButton.addEventListener('click', hideLeaveModal);
+        leaveButton.addEventListener('click', () => {
+            if (navigationTargetUrl) {
+                hasUnsavedChanges = false;
+                window.location.href = navigationTargetUrl;
+            }
+        });
+        document.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                if (link.getAttribute('href').startsWith('#') || link.getAttribute('href') === 'javascript:void(0)') return;
+                if (hasUnsavedChanges) { e.preventDefault(); showLeaveModal(link.href); }
+            });
+        });
+        window.addEventListener('beforeunload', (e) => {
+            if (hasUnsavedChanges) { e.preventDefault(); e.returnValue = ''; return ''; }
+        });
+
+        document.getElementById('ship-now-form').addEventListener('input', (e) => {
+            hasUnsavedChanges = true;
+            const target = e.target;
+            const id = target.id;
+            const asciiOnlyRegex = /[^\u0000-\u007F]/g;
+            const phoneRegex = /[^\d+-]/g;
+            const numberOnlyRegex = /[^\d]/g;
+
+            if (id.includes('name') || id.includes('company') || id.includes('address') || id.includes('city') || id.includes('postalcode') || id === 'shipment-reference' || target.classList.contains('item-description') || id === 'invoice-number' || id === 'summarize-shipment') {
+                target.value = target.value.replace(asciiOnlyRegex, '');
+            } else if (target.type === 'tel') {
+                target.value = target.value.replace(phoneRegex, '');
+            } else if (id === 'insurance-value') {
+                target.value = target.value.replace(numberOnlyRegex, '');
+            }
+            if (target.matches('input[required], select[required]')) {
+                 updateInputValidationState(target);
+            }
+        });
+        nextButton.addEventListener('click', () => { if (validateCurrentStep() && currentStep < totalSteps) { changeStep(currentStep + 1); } });
+        prevButton.addEventListener('click', () => { if (currentStep > 1) changeStep(currentStep - 1); });
 
         // --- Initial Setup ---
         setupTheme();
         setupLanguageSwitch();
+        updateContentLanguage();
         setupCountryComboBox('shipper-country-input', 'shipper-country-value', 'shipper-country-dropdown');
         setupCountryComboBox('receiver-country-input', 'receiver-country-value', 'receiver-country-dropdown');
-        updateContentLanguage();
         initializeForm();
+        
+        // Initial item starts expanded
+        createLineItem();
+        const firstItem = lineItemsContainer.querySelector('.line-item');
+        if (firstItem) {
+            firstItem.classList.remove('is-collapsed');
+        }
+        
+        updateSummary();
         changeStep(1); 
     });
     </script>
