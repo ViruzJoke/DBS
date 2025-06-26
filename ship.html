@@ -14,6 +14,22 @@
         .dark-mode .country-dropdown-item:hover { background-color: #4b5563; }
         .package-piece-item, .line-item { border: 1px solid #e5e7eb; }
         .dark-mode .package-piece-item, .dark-mode .line-item { border-color: #4b5563; }
+        
+        .input-field.is-invalid {
+            border-color: #ef4444; /* red-500 */
+            box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+        }
+        .input-indicator {
+            position: absolute;
+            right: 0.75rem; /* pr-3 */
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            font-size: 1.25rem;
+            line-height: 1;
+        }
+        .indicator-required { color: #ef4444; } /* red-500 */
+        .indicator-valid { color: #10b981; } /* green-500 */
     </style>
 </head>
 <body>
@@ -37,11 +53,9 @@
         <section id="ship-now-page" class="card max-w-5xl mx-auto">
             <h1 class="text-3xl font-extrabold text-center mb-8" data-i18n="createShipment"></h1>
             <div class="relative mb-8">
-                <!-- [FIX] Added a wrapper to position the line correctly -->
                 <div class="relative">
                     <div class="progress-bar" style="--step-count: 7;">
                         <div class="progress-line-fill"></div>
-                        <!-- [FIX] Updated step circles to include checkmark SVG -->
                         <div id="step-1" class="progress-step"><div class="step-circle"><span class="step-number">1</span><svg class="step-check" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></div><p class="step-text" data-i18n="addressStep"></p></div>
                         <div id="step-2" class="progress-step"><div class="step-circle"><span class="step-number">2</span><svg class="step-check" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></div><p class="step-text" data-i18n="contentStep"></p></div>
                         <div id="step-3" class="progress-step"><div class="step-circle"><span class="step-number">3</span><svg class="step-check" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></div><p class="step-text" data-i18n="packageStep"></p></div>
@@ -55,30 +69,44 @@
             
             <form id="ship-now-form" class="space-y-6" novalidate>
                  <div id="form-message" class="p-4 rounded-md text-center hidden break-words"></div>
+
                  <div id="ship-now-step-1" class="ship-now-step space-y-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="p-4 border rounded-lg bg-yellow-50 space-y-4">
                             <h3 class="text-xl font-semibold" data-i18n="shipperInfo"></h3>
-                            <div><label class="block text-sm font-medium mb-1" data-i18n="shipperName"></label><input type="text" id="shipper-name" class="input-field" required></div>
-                            <div><label class="block text-sm font-medium mb-1" data-i18n="shipperCompany"></label><input type="text" id="shipper-company" class="input-field" required></div>
-                            <div><label class="block text-sm font-medium mb-1" data-i18n="shipperPhone"></label><input type="tel" id="shipper-phone" class="input-field" required></div>
-                            <div><label class="block text-sm font-medium mb-1" data-i18n="shipperAddress1"></label><input type="text" id="shipper-address1" class="input-field" required></div>
-                            <div class="relative"><label class="block text-sm font-medium mb-1" data-i18n="shipperCountry"></label><input type="text" id="shipper-country-input" class="input-field" autocomplete="off" required data-i18n-placeholder="typeOrSelectCountry"><input type="hidden" id="shipper-country-value"><div id="shipper-country-dropdown" class="country-dropdown hidden"></div></div>
-                            <div><label class="block text-sm font-medium mb-1" data-i18n="shipperPostalCode"></label><input type="text" id="shipper-postalcode" class="input-field" required></div>
-                            <div><label class="block text-sm font-medium mb-1" data-i18n="shipperCity"></label><input type="text" id="shipper-city" class="input-field" required></div>
+                            <div><label class="block text-sm font-medium mb-1" data-i18n="shipperName">Name <span class="text-red-500">*</span></label><div class="relative"><input type="text" id="shipper-name" class="input-field pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
+                            <div><label class="block text-sm font-medium mb-1" data-i18n="shipperCompany">Company <span class="text-red-500">*</span></label><div class="relative"><input type="text" id="shipper-company" class="input-field pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
+                            <div><label class="block text-sm font-medium mb-1" data-i18n="shipperCountry">Country <span class="text-red-500">*</span></label><div class="relative"><input type="text" id="shipper-country-input" class="input-field pr-8" autocomplete="off" required data-i18n-placeholder="typeOrSelectCountry"><input type="hidden" id="shipper-country-value"><div id="shipper-country-dropdown" class="country-dropdown hidden"></div><span class="input-indicator indicator-required">*</span></div></div>
+                            <div><label class="block text-sm font-medium mb-1" data-i18n="shipperAddress1">Address Line 1 <span class="text-red-500">*</span></label><div class="relative"><input type="text" id="shipper-address1" class="input-field pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
+                            <div><label class="block text-sm font-medium mb-1" data-i18n="shipperAddress2">Address Line 2</label><input type="text" id="shipper-address2" class="input-field"></div>
+                            <div><label class="block text-sm font-medium mb-1" data-i18n="shipperAddress3">Address Line 3</label><input type="text" id="shipper-address3" class="input-field"></div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div><label class="block text-sm font-medium mb-1" data-i18n="shipperPostalCode">Postal Code</label><input type="text" id="shipper-postalcode" class="input-field"></div>
+                                <div><label class="block text-sm font-medium mb-1" data-i18n="shipperCity">City <span class="text-red-500">*</span></label><div class="relative"><input type="text" id="shipper-city" class="input-field pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
+                            </div>
+                            <div><label class="block text-sm font-medium mb-1" data-i18n="shipperEmail">Email Address</label><input type="email" id="shipper-email" class="input-field"></div>
+                            <div><label class="block text-sm font-medium mb-1" data-i18n="shipperPhone">Phone <span class="text-red-500">*</span></label><div class="relative"><input type="tel" id="shipper-phone" class="input-field pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
+                            <div><label class="block text-sm font-medium mb-1" data-i18n="shipperVat">VAT / Tax ID</label><input type="text" id="shipper-vat" class="input-field"></div>
                         </div>
                         <div class="p-4 border rounded-lg bg-yellow-50 space-y-4">
                             <h3 class="text-xl font-semibold" data-i18n="receiverInfo"></h3>
-                            <div><label class="block text-sm font-medium mb-1" data-i18n="receiverName"></label><input type="text" id="receiver-name" class="input-field" required></div>
-                            <div><label class="block text-sm font-medium mb-1" data-i18n="receiverCompany"></label><input type="text" id="receiver-company" class="input-field" required></div>
-                            <div><label class="block text-sm font-medium mb-1" data-i18n="receiverPhone"></label><input type="tel" id="receiver-phone" class="input-field" required></div>
-                            <div><label class="block text-sm font-medium mb-1" data-i18n="receiverAddress1"></label><input type="text" id="receiver-address1" class="input-field" required></div>
-                            <div class="relative"><label class="block text-sm font-medium mb-1" data-i18n="receiverCountry"></label><input type="text" id="receiver-country-input" class="input-field" autocomplete="off" required data-i18n-placeholder="typeOrSelectCountry"><input type="hidden" id="receiver-country-value"><div id="receiver-country-dropdown" class="country-dropdown hidden"></div></div>
-                            <div><label class="block text-sm font-medium mb-1" data-i18n="receiverPostalCode"></label><input type="text" id="receiver-postalcode" class="input-field" required></div>
-                            <div><label class="block text-sm font-medium mb-1" data-i18n="receiverCity"></label><input type="text" id="receiver-city" class="input-field" required></div>
+                            <div><label class="block text-sm font-medium mb-1" data-i18n="receiverName">Name <span class="text-red-500">*</span></label><div class="relative"><input type="text" id="receiver-name" class="input-field pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
+                            <div><label class="block text-sm font-medium mb-1" data-i18n="receiverCompany">Company <span class="text-red-500">*</span></label><div class="relative"><input type="text" id="receiver-company" class="input-field pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
+                            <div><label class="block text-sm font-medium mb-1" data-i18n="receiverCountry">Country <span class="text-red-500">*</span></label><div class="relative"><input type="text" id="receiver-country-input" class="input-field pr-8" autocomplete="off" required data-i18n-placeholder="typeOrSelectCountry"><input type="hidden" id="receiver-country-value"><div id="receiver-country-dropdown" class="country-dropdown hidden"></div><span class="input-indicator indicator-required">*</span></div></div>
+                            <div><label class="block text-sm font-medium mb-1" data-i18n="receiverAddress1">Address Line 1 <span class="text-red-500">*</span></label><div class="relative"><input type="text" id="receiver-address1" class="input-field pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
+                            <div><label class="block text-sm font-medium mb-1" data-i18n="receiverAddress2">Address Line 2</label><input type="text" id="receiver-address2" class="input-field"></div>
+                             <div><label class="block text-sm font-medium mb-1" data-i18n="receiverAddress3">Address Line 3</label><input type="text" id="receiver-address3" class="input-field"></div>
+                             <div class="grid grid-cols-2 gap-4">
+                                <div><label class="block text-sm font-medium mb-1" data-i18n="receiverPostalCode">Postal Code</label><input type="text" id="receiver-postalcode" class="input-field"></div>
+                                <div><label class="block text-sm font-medium mb-1" data-i18n="receiverCity">City <span class="text-red-500">*</span></label><div class="relative"><input type="text" id="receiver-city" class="input-field pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
+                            </div>
+                            <div><label class="block text-sm font-medium mb-1" data-i18n="receiverEmail">Email Address</label><input type="email" id="receiver-email" class="input-field"></div>
+                            <div><label class="block text-sm font-medium mb-1" data-i18n="receiverPhone">Phone <span class="text-red-500">*</span></label><div class="relative"><input type="tel" id="receiver-phone" class="input-field pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
+                            <div><label class="block text-sm font-medium mb-1" data-i18n="receiverVat">VAT / Tax ID</label><input type="text" id="receiver-vat" class="input-field"></div>
                         </div>
                     </div>
                 </div>
+
                 <div id="ship-now-step-2" class="ship-now-step hidden space-y-4">
                     <div class="p-4 border rounded-lg bg-yellow-50 space-y-4">
                         <h3 class="text-xl font-semibold" data-i18n="contentDetails"></h3>
@@ -91,22 +119,25 @@
                         <div class="flex items-center"><input type="checkbox" id="add-insurance" class="form-checkbox h-5 w-5 text-red-600"><label for="add-insurance" class="ml-2" data-i18n="addInsurance"></label></div>
                     </div>
                 </div>
-                 <div id="ship-now-step-3" class="ship-now-step hidden space-y-4">
+                
+                <div id="ship-now-step-3" class="ship-now-step hidden space-y-4">
                      <div class="p-4 border rounded-lg bg-yellow-50 space-y-4">
                         <h3 class="text-xl font-semibold" data-i18n="packageDetails"></h3>
                         <div id="package-pieces-container"></div>
                         <button type="button" id="add-piece-button" class="w-full btn-primary btn-gray" data-i18n="addPiece"></button>
                     </div>
                 </div>
+
                  <div id="ship-now-step-4" class="ship-now-step hidden space-y-4">
                      <div class="p-4 border rounded-lg bg-yellow-50 space-y-4">
                         <h3 class="text-xl font-semibold" data-i18n="accountAndDetails"></h3>
-                        <div><label class="block text-sm font-medium mb-1" data-i18n="shipperAccount"></label><input type="text" id="shipper-account" class="input-field" required></div>
-                        <div><label class="block text-sm font-medium mb-1" data-i18n="dutiesAccount"></label><input type="text" id="duties-account" class="input-field" required></div>
-                        <div><label class="block text-sm font-medium mb-1" data-i18n="incoterm"></label><select id="incoterm" class="input-field" required><option value="DDP">DDP</option><option value="DAP">DAP</option></select></div>
-                        <div><label class="block text-sm font-medium mb-1" data-i18n="shipmentDate"></label><input type="date" id="ship-date" class="input-field" required></div>
+                        <div><label class="block text-sm font-medium mb-1" data-i18n="shipperAccount">Shipper Account <span class="text-red-500">*</span></label><div class="relative"><input type="text" id="shipper-account" class="input-field pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
+                        <div><label class="block text-sm font-medium mb-1" data-i18n="dutiesAccount">Duties & Taxes Account <span class="text-red-500">*</span></label><div class="relative"><input type="text" id="duties-account" class="input-field pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
+                        <div><label class="block text-sm font-medium mb-1" data-i18n="incoterm">Incoterm</label><select id="incoterm" class="input-field" required><option value="DDP">DDP</option><option value="DAP">DAP</option></select></div>
+                        <div><label class="block text-sm font-medium mb-1" data-i18n="shipmentDate">Shipment Date <span class="text-red-500">*</span></label><div class="relative"><input type="date" id="ship-date" class="input-field pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
                     </div>
                 </div>
+
                 <div id="ship-now-step-5" class="ship-now-step hidden space-y-4">
                      <div class="p-4 border rounded-lg bg-yellow-50 space-y-4">
                         <h3 class="text-xl font-semibold" data-i18n="docUpload"></h3>
@@ -115,6 +146,7 @@
                         <div id="uploaded-file-name" class="text-sm italic mt-2"></div>
                     </div>
                 </div>
+
                 <div id="ship-now-step-6" class="ship-now-step hidden space-y-4">
                      <div class="p-4 border rounded-lg bg-yellow-50 space-y-4">
                         <h3 class="text-xl font-semibold" data-i18n="pickupBooking"></h3>
@@ -125,13 +157,16 @@
                         </div>
                     </div>
                 </div>
+
                 <div id="ship-now-step-7" class="ship-now-step hidden space-y-4">
                      <div class="p-4 border rounded-lg bg-yellow-50 space-y-6">
                         <h3 class="text-xl font-semibold" data-i18n="summary"></h3>
                         <div id="summary-content" class="text-sm space-y-4"></div>
                     </div>
                 </div>
+
                  <div class="flex justify-between gap-4 mt-6">
+                    <a href="index.html" id="back-to-main-btn" class="btn-primary btn-gray" data-i18n="backToMain"></a>
                     <button type="button" id="ship-now-prev-step" class="btn-primary btn-gray hidden" data-i18n="previous"></button>
                     <button type="button" id="ship-now-next-step" class="flex-1 btn-primary btn-yellow" data-i18n="next"></button>
                     <button type="submit" id="confirm-shipment-button" class="flex-1 btn-primary btn-red hidden" data-i18n="createShipmentBtn"></button>
@@ -143,7 +178,7 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const translations = {'th':{'createShipment':'สร้างใบนำส่ง','addressStep':'ที่อยู่','contentStep':'สินค้า','packageStep':'แพ็คเกจ','detailsStep':'รายละเอียด','docsStep':'เอกสาร','bookingStep':'บุ๊คกิ้ง','summaryStep':'สรุป','shipperInfo':'ข้อมูลผู้ส่ง','receiverInfo':'ข้อมูลผู้รับ','shipperName':'ชื่อผู้ส่ง','shipperCompany':'บริษัทผู้ส่ง','shipperPhone':'เบอร์โทรผู้ส่ง','shipperAddress1':'ที่อยู่ 1','shipperAddress2':'ที่อยู่ 2 (optional)','shipperCountry':'ประเทศ','shipperPostalCode':'รหัสไปรษณีย์','shipperCity':'เมือง','receiverName':'ชื่อผู้รับ','receiverCompany':'บริษัทผู้รับ','receiverPhone':'เบอร์โทรผู้รับ','receiverAddress1':'ที่อยู่ 1','receiverAddress2':'ที่อยู่ 2 (optional)','receiverCountry':'ประเทศ','receiverPostalCode':'รหัสไปรษณีย์','receiverCity':'เมือง','contentDetails':'รายละเอียดสินค้า','isDocument':'เป็นการจัดส่งเอกสาร','addLineItem':'เพิ่มรายการสินค้า','shipmentRef':'เลขที่อ้างอิง (optional)','addInsurance':'เพิ่มประกัน (optional)','packageDetails':'รายละเอียดแพ็คเกจ','addPiece':'เพิ่มกล่อง','accountAndDetails':'บัญชีและรายละเอียดเพิ่มเติม','shipperAccount':'บัญชีผู้ส่ง','dutiesAccount':'บัญชีผู้ชำระภาษี','incoterm':'Incoterm','shipmentDate':'วันที่ส่ง','docUpload':'อัปโหลดเอกสาร','docUploadDesc':'อัปโหลดเอกสารเพิ่มเติม (ไม่เกิน 5MB)','pickupBooking':'บุ๊คกิ้งรถเข้ารับ','requestPickup':'ต้องการให้รถเข้ารับ','pickupCloseTime':'เวลาปิดทำการ','pickupLocation':'สถานที่รับของ (เช่น Reception)','summary':'สรุปข้อมูล','previous':'ย้อนกลับ','next':'ถัดไป','createShipmentBtn':'สร้างใบนำส่ง','allRightsReserved':'สงวนลิขสิทธิ์.','fillAllFields':'กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วน','typeOrSelectCountry': 'พิมพ์หรือเลือกประเทศ'},'en':{'createShipment':'Create Shipment','addressStep':'Address','contentStep':'Content','packageStep':'Package','detailsStep':'Details','docsStep':'Documents','bookingStep':'Booking','summaryStep':'Summary','shipperInfo':'Shipper Information','receiverInfo':'Receiver Information','shipperName':'Shipper Name','shipperCompany':'Shipper Company','shipperPhone':'Shipper Phone','shipperAddress1':'Address Line 1','shipperAddress2':'Address Line 2 (optional)','shipperCountry':'Country','shipperPostalCode':'Postal Code','shipperCity':'City','receiverName':'Receiver Name','receiverCompany':'Receiver Company','receiverPhone':'Receiver Phone','receiverAddress1':'Address Line 1','receiverAddress2':'Address Line 2 (optional)','receiverCountry':'Country','receiverPostalCode':'Postal Code','receiverCity':'City','contentDetails':'Content Details','isDocument':'This is a document shipment','addLineItem':'Add Line Item','shipmentRef':'Shipment Reference (optional)','addInsurance':'Add Insurance (optional)','packageDetails':'Package Details','addPiece':'Add Piece','accountAndDetails':'Account & Details','shipperAccount':'Shipper Account','dutiesAccount':'Duties & Taxes Account','incoterm':'Incoterm','shipmentDate':'Shipment Date','docUpload':'Document Upload','docUploadDesc':'Upload additional documents (max 5MB)','pickupBooking':'Pickup Booking','requestPickup':'Request a pickup','pickupCloseTime':'Pickup Close Time','pickupLocation':'Pickup Location (e.g., Reception)','summary':'Summary','previous':'Previous','next':'Next','createShipmentBtn':'Create Shipment','allRightsReserved':'All rights reserved.','fillAllFields':'Please fill in all required fields.','typeOrSelectCountry': 'Type or select a country'}};
+        const translations = {'th':{'createShipment':'สร้างใบนำส่ง','addressStep':'ที่อยู่','contentStep':'สินค้า','packageStep':'แพ็คเกจ','detailsStep':'รายละเอียด','docsStep':'เอกสาร','bookingStep':'บุ๊คกิ้ง','summaryStep':'สรุป','shipperInfo':'ข้อมูลผู้ส่ง','receiverInfo':'ข้อมูลผู้รับ','shipperName':'ชื่อผู้ส่ง','shipperCompany':'บริษัทผู้ส่ง','shipperPhone':'เบอร์โทรผู้ส่ง','shipperAddress1':'ที่อยู่ 1','shipperAddress2':'ที่อยู่ 2','shipperAddress3':'ที่อยู่ 3','shipperCountry':'ประเทศ','shipperPostalCode':'รหัสไปรษณีย์','shipperCity':'เมือง','receiverName':'ชื่อผู้รับ','receiverCompany':'บริษัทผู้รับ','receiverPhone':'เบอร์โทรผู้รับ','receiverAddress1':'ที่อยู่ 1','receiverAddress2':'ที่อยู่ 2','receiverAddress3':'ที่อยู่ 3','receiverCountry':'ประเทศ','receiverPostalCode':'รหัสไปรษณีย์','receiverCity':'เมือง','contentDetails':'รายละเอียดสินค้า','isDocument':'เป็นการจัดส่งเอกสาร','addLineItem':'เพิ่มรายการสินค้า','shipmentRef':'เลขที่อ้างอิง (optional)','addInsurance':'เพิ่มประกัน (optional)','packageDetails':'รายละเอียดแพ็คเกจ','addPiece':'เพิ่มกล่อง','accountAndDetails':'บัญชีและรายละเอียดเพิ่มเติม','shipperAccount':'บัญชีผู้ส่ง','dutiesAccount':'บัญชีผู้ชำระภาษี','incoterm':'Incoterm','shipmentDate':'วันที่ส่ง','docUpload':'อัปโหลดเอกสาร','docUploadDesc':'อัปโหลดเอกสารเพิ่มเติม (ไม่เกิน 5MB)','pickupBooking':'บุ๊คกิ้งรถเข้ารับ','requestPickup':'ต้องการให้รถเข้ารับ','pickupCloseTime':'เวลาปิดทำการ','pickupLocation':'สถานที่รับของ (เช่น Reception)','summary':'สรุปข้อมูล','previous':'ย้อนกลับ','next':'ถัดไป','createShipmentBtn':'สร้างใบนำส่ง','allRightsReserved':'สงวนลิขสิทธิ์.','fillAllFields':'กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วน','typeOrSelectCountry': 'พิมพ์หรือเลือกประเทศ', 'backToMain': 'กลับหน้าหลัก', 'shipperEmail': 'อีเมลผู้ส่ง', 'receiverEmail': 'อีเมลผู้รับ', 'shipperVat': 'เลขประจำตัวผู้เสียภาษีผู้ส่ง', 'receiverVat': 'เลขประจำตัวผู้เสียภาษีผู้รับ'},'en':{'createShipment':'Create Shipment','addressStep':'Address','contentStep':'Content','packageStep':'Package','detailsStep':'Details','docsStep':'Documents','bookingStep':'Booking','summaryStep':'Summary','shipperInfo':'Shipper Information','receiverInfo':'Receiver Information','shipperName':'Name','shipperCompany':'Company','shipperPhone':'Phone','shipperAddress1':'Address Line 1','shipperAddress2':'Address Line 2','shipperAddress3':'Address Line 3','shipperCountry':'Country','shipperPostalCode':'Postal Code','shipperCity':'City','receiverName':'Name','receiverCompany':'Company','receiverPhone':'Phone','receiverAddress1':'Address Line 1','receiverAddress2':'Address Line 2','receiverAddress3':'Address Line 3','receiverCountry':'Country','receiverPostalCode':'Postal Code','receiverCity':'City','contentDetails':'Content Details','isDocument':'This is a document shipment','addLineItem':'Add Line Item','shipmentRef':'Shipment Reference (optional)','addInsurance':'Add Insurance (optional)','packageDetails':'Package Details','addPiece':'Add Piece','accountAndDetails':'Account & Details','shipperAccount':'Shipper Account','dutiesAccount':'Duties & Taxes Account','incoterm':'Incoterm','shipmentDate':'Shipment Date','docUpload':'Document Upload','docUploadDesc':'Upload additional documents (max 5MB)','pickupBooking':'Pickup Booking','requestPickup':'Request a pickup','pickupCloseTime':'Pickup Close Time','pickupLocation':'Pickup Location (e.g., Reception)','summary':'Summary','previous':'Previous','next':'Next','createShipmentBtn':'Create Shipment','allRightsReserved':'All rights reserved.','fillAllFields':'Please fill in all required fields.','typeOrSelectCountry': 'Type or select a country', 'backToMain': 'Back to Main', 'shipperEmail': 'Email Address', 'receiverEmail': 'Email Address', 'shipperVat': 'VAT / Tax ID', 'receiverVat': 'VAT / Tax ID'}};
         const countryList = [ { "name": "Afghanistan", "code": "AF" }, { "name": "Albania", "code": "AL" }, { "name": "Algeria", "code": "DZ" }, { "name": "American Samoa", "code": "AS" }, { "name": "Andorra", "code": "AD" }, { "name": "Angola", "code": "AO" }, { "name": "Anguilla", "code": "AI" }, { "name": "Antigua", "code": "AG" }, { "name": "Argentina", "code": "AR" }, { "name": "Armenia", "code": "AM" }, { "name": "Aruba", "code": "AW" }, { "name": "Australia", "code": "AU" }, { "name": "Austria", "code": "AT" }, { "name": "Azerbaijan", "code": "AZ" }, { "name": "Bahamas", "code": "BS" }, { "name": "Bahrain", "code": "BH" }, { "name": "Bangladesh", "code": "BD" }, { "name": "Barbados", "code": "BB" }, { "name": "Belarus", "code": "BY" }, { "name": "Belgium", "code": "BE" }, { "name": "Belize", "code": "BZ" }, { "name": "Benin", "code": "BJ" }, { "name": "Bermuda", "code": "BM" }, { "name": "Bhutan", "code": "BT" }, { "name": "Bolivia", "code": "BO" }, { "name": "Bonaire", "code": "BQ" }, { "name": "Bosnia and Herzegovina", "code": "BA" }, { "name": "Botswana", "code": "BW" }, { "name": "Brazil", "code": "BR" }, { "name": "Brunei", "code": "BN" }, { "name": "Bulgaria", "code": "BG" }, { "name": "Burkina Faso", "code": "BF" }, { "name": "Burundi", "code": "BI" }, { "name": "Cambodia", "code": "KH" }, { "name": "Cameroon", "code": "CM" }, { "name": "Canada", "code": "CA" }, { "name": "Canary Islands, The", "code": "IC" }, { "name": "Cape Verde", "code": "CV" }, { "name": "Cayman Islands", "code": "KY" }, { "name": "Central African Republic", "code": "CF" }, { "name": "Chad", "code": "TD" }, { "name": "Chile", "code": "CL" }, { "name": "China, People's Republic", "code": "CN" }, { "name": "Colombia", "code": "CO" }, { "name": "Comoros", "code": "KM" }, { "name": "Congo", "code": "CG" }, { "name": "Congo, The Democratic Republic of", "code": "CD" }, { "name": "Cook Islands", "code": "CK" }, { "name": "Costa Rica", "code": "CR" }, { "name": "Cote D'ivoire", "code": "CI" }, { "name": "Croatia", "code": "HR" }, { "name": "Cuba", "code": "CU" }, { "name": "Curacao", "code": "CW" }, { "name": "Cyprus", "code": "CY" }, { "name": "Czech Republic, The", "code": "CZ" }, { "name": "Denmark", "code": "DK" }, { "name": "Djibouti", "code": "DJ" }, { "name": "Dominica", "code": "DM" }, { "name": "Dominican Republic", "code": "DO" }, { "name": "East Timor", "code": "TL" }, { "name": "Ecuador", "code": "EC" }, { "name": "Egypt", "code": "EG" }, { "name": "El Salvador", "code": "SV" }, { "name": "Eritrea", "code": "ER" }, { "name": "Estonia", "code": "EE" }, { "name": "Ethiopia", "code": "ET" }, { "name": "Falkland Islands", "code": "FK" }, { "name": "Faroe Islands", "code": "FO" }, { "name": "Fiji", "code": "FJ" }, { "name": "Finland", "code": "FI" }, { "name": "France", "code": "FR" }, { "name": "French Guyana", "code": "GF" }, { "name": "Gabon", "code": "GA" }, { "name": "Gambia", "code": "GM" }, { "name": "Georgia", "code": "GE" }, { "name": "Germany", "code": "DE" }, { "name": "Ghana", "code": "GH" }, { "name": "Gibraltar", "code": "GI" }, { "name": "Greece", "code": "GR" }, { "name": "Greenland", "code": "GL" }, { "name": "Grenada", "code": "GD" }, { "name": "Guadeloupe", "code": "GP" }, { "name": "Guam", "code": "GU" }, { "name": "Guatemala", "code": "GT" }, { "name": "Guernsey", "code": "GG" }, { "name": "Guinea Republic", "code": "GN" }, { "name": "Guinea-Bissau", "code": "GW" }, { "name": "Guinea-Equatorial", "code": "GQ" }, { "name": "Guyana", "code": "GY" }, { "name": "Haiti", "code": "HT" }, { "name": "Honduras", "code": "HN" }, { "name": "Hong Kong", "code": "HK" }, { "name": "Hungary", "code": "HU" }, { "name": "Iceland", "code": "IS" }, { "name": "India", "code": "IN" }, { "name": "Indonesia", "code": "ID" }, { "name": "Iran (Islamic Republic of)", "code": "IR" }, { "name": "Iraq", "code": "IQ" }, { "name": "Ireland, Republic of", "code": "IE" }, { "name": "Israel", "code": "IL" }, { "name": "Italy", "code": "IT" }, { "name": "Jamaica", "code": "JM" }, { "name": "Japan", "code": "JP" }, { "name": "Jersey", "code": "JE" }, { "name": "Jordan", "code": "JO" }, { "name": "Kazakhstan", "code": "KZ" }, { "name": "Kenya", "code": "KE" }, { "name": "Kiribati", "code": "KI" }, { "name": "Korea, Republic of", "code": "KR" }, { "name": "Korea, The D.P.R of (North K.)", "code": "KP" }, { "name": "Kosovo", "code": "KV" }, { "name": "Kuwait", "code": "KW" }, { "name": "Kyrgyzstan", "code": "KG" }, { "name": "Lao People's Democratic Republic", "code": "LA" }, { "name": "Latvia", "code": "LV" }, { "name": "Lebanon", "code": "LB" }, { "name": "Lesotho", "code": "LS" }, { "name": "Liberia", "code": "LR" }, { "name": "Libya", "code": "LY" }, { "name": "Liechtenstein", "code": "LI" }, { "name": "Lithuania", "code": "LT" }, { "name": "Luxembourg", "code": "LU" }, { "name": "Macau", "code": "MO" }, { "name": "Macedonia, Republic of", "code": "MK" }, { "name": "Madagascar", "code": "MG" }, { "name": "Malawi", "code": "MW" }, { "name": "Malaysia", "code": "MY" }, { "name": "Maldives", "code": "MV" }, { "name": "Mali", "code": "ML" }, { "name": "Malta", "code": "MT" }, { "name": "Marshall Islands", "code": "MH" }, { "name": "Martinique", "code": "MQ" }, { "name": "Mauritania", "code": "MR" }, { "name": "Mauritius", "code": "MU" }, { "name": "Mayotte", "code": "YT" }, { "name": "Mexico", "code": "MX" }, { "name": "Micronesia, Federated States of", "code": "FM" }, { "name": "Moldova, Republic of", "code": "MD" }, { "name": "Monaco", "code": "MC" }, { "name": "Mongolia", "code": "MN" }, { "name": "Montenegro, Republic of", "code": "ME" }, { "name": "Montserrat", "code": "MS" }, { "name": "Morocco", "code": "MA" }, { "name": "Mozambique", "code": "MZ" }, { "name": "Myanmar", "code": "MM" }, { "name": "Namibia", "code": "NA" }, { "name": "Nauru, Republic of", "code": "NR" }, { "name": "Nepal", "code": "NP" }, { "name": "Netherlands, The", "code": "NL" }, { "name": "New Caledonia", "code": "NC" }, { "name": "New Zealand", "code": "NZ" }, { "name": "Nicaragua", "code": "NI" }, { "name": "Niger", "code": "NE" }, { "name": "Nigeria", "code": "NG" }, { "name": "Niue", "code": "NU" }, { "name": "Northern Mariana Islands", "code": "MP" }, { "name": "Norway", "code": "NO" }, { "name": "Oman", "code": "OM" }, { "name": "Pakistan", "code": "PK" }, { "name": "Palau", "code": "PW" }, { "name": "Panama", "code": "PA" }, { "name": "Papua New Guinea", "code": "PG" }, { "name": "Paraguay", "code": "PY" }, { "name": "Peru", "code": "PE" }, { "name": "Philippines, The", "code": "PH" }, { "name": "Poland", "code": "PL" }, { "name": "Portugal", "code": "PT" }, { "name": "Puerto Rico", "code": "PR" }, { "name": "Qatar", "code": "QA" }, { "name": "Reunion, Island of", "code": "RE" }, { "name": "Romania", "code": "RO" }, { "name": "Russian Federation, The", "code": "RU" }, { "name": "Rwanda", "code": "RW" }, { "name": "Saipan", "code": "SP" }, { "name": "San Marino", "code": "SM" }, { "name": "Sao Tome and Principe", "code": "ST" }, { "name": "Saudi Arabia", "code": "SA" }, { "name": "Senegal", "code": "SN" }, { "name": "Serbia, Republic of", "code": "RS" }, { "name": "Seychelles", "code": "SC" }, { "name": "Sierra Leone", "code": "SL" }, { "name": "Singapore", "code": "SG" }, { "name": "Slovakia", "code": "SK" }, { "name": "Slovenia", "code": "SI" }, { "name": "Solomon Islands", "code": "SB" }, { "name": "Somalia", "code": "SO" }, { "name": "Somaliland, Rep of (North Somalia)", "code": "XS" }, { "name": "South Africa", "code": "ZA" }, { "name": "South Sudan", "code": "SS" }, { "name": "Spain", "code": "ES" }, { "name": "Sri Lanka", "code": "LK" }, { "name": "St. Barthelemy", "code": "XY" }, { "name": "St. Eustatius", "code": "XE" }, { "name": "St. Helena", "code": "SH" }, { "name": "St. Kitts and Nevis", "code": "KN" }, { "name": "St. Lucia", "code": "LC" }, { "name": "St. Maarten", "code": "SX" }, { "name": "St. Vincent", "code": "VC" }, { "name": "Sudan", "code": "SD" }, { "name": "Suriname", "code": "SR" }, { "name": "Swaziland", "code": "SZ" }, { "name": "Sweden", "code": "SE" }, { "name": "Switzerland", "code": "CH" }, { "name": "Syria", "code": "SY" }, { "name": "Tahiti", "code": "PF" }, { "name": "Taiwan", "code": "TW" }, { "name": "Tanzania", "code": "TZ" }, { "name": "Thailand", "code": "TH" }, { "name": "Togo", "code": "TG" }, { "name": "Tonga", "code": "TO" }, { "name": "Trinidad and Tobago", "code": "TT" }, { "name": "Tunisia", "code": "TN" }, { "name": "Turkey", "code": "TR" }, { "name": "Turkmenistan", "code": "TM" }, { "name": "Turks and Caicos Islands", "code": "TC" }, { "name": "Tuvalu", "code": "TV" }, { "name": "Uganda", "code": "UG" }, { "name": "Ukraine", "code": "UA" }, { "name": "United Arab Emirates", "code": "AE" }, { "name": "United Kingdom", "code": "GB" }, { "name": "United States of America", "code": "US" }, { "name": "Uruguay", "code": "UY" }, { "name": "Uzbekistan", "code": "UZ" }, { "name": "Vanuatu", "code": "VU" }, { "name": "Vatican City", "code": "VA" }, { "name": "Venezuela", "code": "VE" }, { "name": "Vietnam", "code": "VN" }, { "name": "Virgin Islands (British)", "code": "VG" }, { "name": "Virgin Islands (US)", "code": "VI" }, { "name": "Yemen, Republic of", "code": "YE" }, { "name": "Zambia", "code": "ZM" }, { "name": "Zimbabwe", "code": "ZW" } ];
         
         let currentLanguage = localStorage.getItem('language') || 'th';
@@ -164,6 +199,11 @@
                 const key = el.getAttribute('data-i18n');
                 if (el.placeholder !== undefined && (el.hasAttribute('data-i18n-placeholder') || el.matches('[data-i18n-placeholder]'))) {
                     el.placeholder = getTranslatedText(key);
+                } else if(el.tagName === 'LABEL') {
+                    // Manual handling for labels with spans to keep the asterisk
+                    const labelText = getTranslatedText(key);
+                    const asterisk = el.querySelector('.text-red-500');
+                    el.innerHTML = labelText + (asterisk ? ' <span class="text-red-500">*</span>' : '');
                 } else {
                     el.textContent = getTranslatedText(key);
                 }
@@ -212,15 +252,29 @@
                     input.value = e.target.dataset.name;
                     valueHolder.value = e.target.dataset.code;
                     dropdown.classList.add('hidden');
+                    // Trigger input event for validation
+                    input.dispatchEvent(new Event('input', { bubbles: true }));
                 }
             });
             document.addEventListener('click', (e) => { if (!input.contains(e.target) && !dropdown.contains(e.target)) { dropdown.classList.add('hidden'); } });
+        }
+
+        function initializeForm() {
+             const shipperCountryInput = document.getElementById('shipper-country-input');
+             const shipperCountryValue = document.getElementById('shipper-country-value');
+             const thailand = countryList.find(c => c.code === 'TH');
+             if (thailand) {
+                shipperCountryInput.value = thailand.name;
+                shipperCountryValue.value = thailand.code;
+                shipperCountryInput.dispatchEvent(new Event('input', { bubbles: true }));
+             }
         }
         
         // --- Step Navigation Logic ---
         const prevButton = document.getElementById('ship-now-prev-step');
         const nextButton = document.getElementById('ship-now-next-step');
         const confirmButton = document.getElementById('confirm-shipment-button');
+        const backToMainBtn = document.getElementById('back-to-main-btn');
         
         function changeStep(step) {
             document.querySelectorAll('.ship-now-step').forEach(el => el.classList.add('hidden'));
@@ -234,6 +288,10 @@
             prevButton.classList.toggle('hidden', currentStep === 1);
             nextButton.classList.toggle('hidden', currentStep === totalSteps);
             confirmButton.classList.toggle('hidden', currentStep !== totalSteps);
+            backToMainBtn.classList.toggle('hidden', currentStep !== 1);
+            nextButton.classList.toggle('w-full', currentStep === 1);
+            nextButton.classList.toggle('flex-1', currentStep > 1 && currentStep < totalSteps);
+            prevButton.classList.toggle('flex-1', currentStep > 1);
         }
 
         function updateStepIndicator() {
@@ -246,12 +304,46 @@
             }
             if(lineFill) {
                 const percentage = (currentStep - 1) / (totalSteps - 1);
-                const totalWidth = 100 - (100 / totalSteps);
-                lineFill.style.width = `${percentage * totalWidth}%`;
+                lineFill.style.width = `calc((100% - 2.5rem) * ${percentage})`;
             }
         }
-        
-        nextButton.addEventListener('click', () => { if (currentStep < totalSteps) changeStep(currentStep + 1); });
+
+        function validateCurrentStep() {
+            let isValid = true;
+            const stepDiv = document.getElementById(`ship-now-step-${currentStep}`);
+            const requiredInputs = stepDiv.querySelectorAll('input[required], select[required]');
+            
+            stepDiv.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
+            
+            requiredInputs.forEach(input => {
+                let isEmpty = !input.value.trim();
+                // Special check for country combo box
+                if (input.id.includes('-country-input')) {
+                    const valueHolderId = input.id.replace('-input', '-value');
+                    isEmpty = !document.getElementById(valueHolderId).value;
+                }
+                if (isEmpty) {
+                    isValid = false;
+                    input.classList.add('is-invalid');
+                }
+            });
+
+            const formMessage = document.getElementById('form-message');
+            formMessage.classList.toggle('hidden', isValid);
+            if(!isValid) {
+                 formMessage.textContent = getTranslatedText('fillAllFields');
+                 formMessage.className = 'p-4 rounded-md text-center bg-red-100 text-red-700 break-words';
+            }
+
+            return isValid;
+        }
+
+        // --- Event Listeners ---
+        nextButton.addEventListener('click', () => { 
+            if (validateCurrentStep() && currentStep < totalSteps) {
+                changeStep(currentStep + 1); 
+            }
+        });
         prevButton.addEventListener('click', () => { if (currentStep > 1) changeStep(currentStep - 1); });
         
         document.getElementById('is-document').addEventListener('change', (e) => {
@@ -262,12 +354,51 @@
              document.getElementById('pickup-details-container').classList.toggle('hidden', !e.target.checked);
         });
 
+        document.getElementById('ship-now-form').addEventListener('input', (e) => {
+            const englishSymbolRegex = /[^\u0000-\u007F]/g;
+            const phoneRegex = /[^\d+-]/g;
+
+            // Apply validation based on input ID
+            const id = e.target.id;
+            if (id.includes('name') || id.includes('company') || id.includes('address')) {
+                e.target.value = e.target.value.replace(englishSymbolRegex, '');
+            } else if (e.target.type === 'tel') {
+                e.target.value = e.target.value.replace(phoneRegex, '');
+            }
+
+            if (e.target.hasAttribute('required')) {
+                const wrapper = e.target.closest('.relative');
+                if (wrapper) {
+                    const indicator = wrapper.querySelector('.input-indicator');
+                    if (indicator) {
+                        let hasValue = e.target.value.trim() !== '';
+                        if (e.target.id.includes('-country-input')) {
+                            const valueHolderId = e.target.id.replace('-input', '-value');
+                            hasValue = !!document.getElementById(valueHolderId).value;
+                        }
+
+                        if (hasValue) {
+                            indicator.textContent = '✓';
+                            indicator.classList.remove('indicator-required');
+                            indicator.classList.add('indicator-valid');
+                            e.target.classList.remove('is-invalid');
+                        } else {
+                            indicator.textContent = '*';
+                            indicator.classList.remove('indicator-valid');
+                            indicator.classList.add('indicator-required');
+                        }
+                    }
+                }
+            }
+        });
+
         // --- Initial Setup ---
         setupTheme();
         setupLanguageSwitch();
         setupCountryComboBox('shipper-country-input', 'shipper-country-value', 'shipper-country-dropdown');
         setupCountryComboBox('receiver-country-input', 'receiver-country-value', 'receiver-country-dropdown');
         updateContentLanguage();
+        initializeForm();
         changeStep(1); 
     });
     </script>

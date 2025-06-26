@@ -1,6 +1,6 @@
 /*
-  DHL Backup Solution - Central Stylesheet v10.2
-  แก้ไขปัญหา Tracking Result แสดงผลในหน้า Index
+  DHL Backup Solution - Central Stylesheet v10.1
+  ปรับปรุง Progress Bar ให้เส้นเชื่อมสุดขอบ และเปลี่ยนสถานะ Complete เป็นเครื่องหมายติ๊กถูก
 */
 
 /* --- Base and Layout --- */
@@ -63,8 +63,7 @@ main { flex-grow: 1; padding: 1rem; }
 .utility-button:hover { background-color: #d1d5db; }
 
 /* --- Components --- */
-/* [FIX] Added .hidden-page back to the rule */
-.hidden, .hidden-page, .ship-now-step.hidden { display: none !important; }
+.hidden-page, .hidden, .ship-now-step.hidden { display: none !important; }
 header, footer { width: 100%; z-index: 10; }
 .card {
     background-color: #ffffff;
