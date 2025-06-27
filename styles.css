@@ -156,9 +156,98 @@ header, footer { width: 100%; z-index: 10; }
 
 
 /* --- Accordion for Tracking, etc. --- */
-.accordion-item { border-bottom: 1px solid #e5e7eb; }
-.accordion-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem; cursor: pointer; background-color: #f3f4f6; }
-.accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; }
+.accordion-item { 
+    border-bottom: 1px solid #e5e7eb; 
+}
+.accordion-item:last-child {
+    border-bottom: none;
+}
+.accordion-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 1rem; 
+    cursor: pointer; 
+    background-color: #f9fafb; 
+    transition: background-color 0.2s;
+}
+.accordion-header:hover {
+    background-color: #f3f4f6;
+}
+.accordion-body { 
+    max-height: 0; 
+    overflow: hidden; 
+    transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+    background-color: #ffffff;
+}
+.accordion-body-content {
+    padding: 1rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+/* --- Tracking Timeline --- */
+.tracking-timeline {
+    position: relative;
+    padding-left: 1.5rem; /* Space for the line and icons */
+    border-left: 2px solid #e5e7eb;
+}
+.timeline-item {
+    position: relative;
+    padding-bottom: 1.5rem;
+    padding-left: 1.5rem;
+}
+.timeline-item:last-child {
+    padding-bottom: 0;
+}
+.timeline-icon {
+    position: absolute;
+    left: -0.625rem; /* (Icon width - Border width) / 2 -> (1.25rem - 2px) / 2 */
+    top: 4px; /* Adjust vertical alignment */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.25rem; /* 20px */
+    height: 1.25rem; /* 20px */
+    border-radius: 9999px; /* full */
+    background-color: #d1d5db; /* gray-300 */
+    color: white;
+}
+.timeline-item.is-latest .timeline-icon {
+    background-color: #10B981; /* green-500 */
+    transform: scale(1.1);
+}
+.timeline-icon svg {
+    width: 0.75rem; /* 12px */
+    height: 0.75rem; /* 12px */
+}
+.timeline-content {
+    position: relative;
+    top: -4px; /* Align text with icon */
+}
+.timeline-date-header {
+    font-weight: 600;
+    margin-bottom: 1rem;
+    margin-top: 1.5rem;
+}
+.timeline-item:first-of-type {
+    padding-top: 0;
+}
+.timeline-item:first-of-type .timeline-date-header {
+    margin-top: 0;
+}
+.timeline-timestamp {
+    font-weight: 500;
+    font-size: 0.875rem;
+}
+.timeline-status {
+    font-weight: 600;
+    color: #1f2937;
+}
+.timeline-location {
+    font-size: 0.875rem; /* text-sm */
+    color: #6b7280; /* gray-500 */
+}
+
 
 /* --- Dark Mode --- */
 body.dark-mode { background-color: #111827; color: #d1d5db; }
@@ -176,5 +265,13 @@ body.dark-mode .progress-step.is-active .step-text { color: #f87171; }
 body.dark-mode .progress-step.is-complete .step-text { color: #d1d5db; }
 body.dark-mode .progress-step.is-complete .step-circle { background-color: #10B981; border-color: #10B981; }
 body.dark-mode .accordion-header { background-color: #2c374a; }
+body.dark-mode .accordion-header:hover { background-color: #374151; }
+body.dark-mode .accordion-body { background-color: #1f2937; }
+body.dark-mode .accordion-body-content { border-top-color: #374151; }
+body.dark-mode .tracking-timeline { border-left-color: #4b5563; }
+body.dark-mode .timeline-icon { background-color: #4b5563; }
+body.dark-mode .timeline-item.is-latest .timeline-icon { background-color: #10B981; }
+body.dark-mode .timeline-status { color: #e5e7eb; }
+body.dark-mode .timeline-location { color: #9ca3af; }
 
 }
