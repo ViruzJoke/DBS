@@ -85,34 +85,36 @@
                 const contentDiv = document.getElementById('tracking-content');
                 const shipments = data.shipments || [];
                 contentDiv.innerHTML = shipments.map(shipment => {
-                    const trackingNumber = shipment.shipmentTrackingNumber;
-                    const status = shipment.status || getTranslatedText('trackingResultUnexpected');
-                    const shipperLocation = shipment.shipperDetails?.serviceArea?.[0]?.description || 'N/A';
-                    const receiverLocation = shipment.receiverDetails?.serviceArea?.[0]?.description || 'N/A';
-                    const pieceCount = shipment.numberOfPieces || 0;
-                    const weightUnit = shipment.unitOfMeasurements?.toLowerCase() === 'metric' ? 'KG' : 'LBS';
-                    const totalWeight = shipment.totalWeight ? `${shipment.totalWeight} ${weightUnit}` : 'N/A';
+                    const trackingNumber = shipment.id;
+                    const status = shipment.status?.description || getTranslatedText('trackingResultUnexpected');
+                    const shipperLocation = shipment.origin?.address?.addressLocality || 'N/A';
+                    const receiverLocation = shipment.destination?.address?.addressLocality || 'N/A';
+                    const pieceCount = shipment.details?.totalNumberOfPieces || 0;
+                    const weightUnit = shipment.details?.totalWeight?.unit || 'KG';
+                    const totalWeight = shipment.details?.totalWeight?.value ? `${shipment.details.totalWeight.value} ${weightUnit}` : 'N/A';
                     
                     return `
                         <div class="accordion-item">
                             <button class="accordion-header w-full text-left" aria-expanded="false">
-                                <div class="flex-grow">
-                                    <div class="flex justify-between items-start">
+                                <div class="flex flex-col w-full">
+                                    <!-- Top row: Tracking #, Status, Arrow -->
+                                    <div class="flex justify-between items-center w-full">
                                         <div>
                                             <h4 class="font-bold text-lg">${trackingNumber}</h4>
                                             <p class="accordion-header-info text-green-600 dark:text-green-400 font-semibold">${status}</p>
                                         </div>
                                         <svg class="accordion-arrow w-6 h-6 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                                     </div>
-                                    <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-1 text-sm mt-2 pt-2 border-t border-gray-200 dark:border-gray-600">
-                                        <div><p class="font-semibold">${getTranslatedText('origin')}</p><p>${shipperLocation}</p></div>
-                                        <div><p class="font-semibold">${getTranslatedText('destination')}</p><p>${receiverLocation}</p></div>
+                                    <!-- Bottom row: Summary Details -->
+                                    <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-2 text-sm mt-3 pt-3 border-t border-gray-200 dark:border-gray-600">
+                                        <div><p class="font-semibold">${getTranslatedText('origin')}</p><p class="truncate">${shipperLocation}</p></div>
+                                        <div><p class="font-semibold">${getTranslatedText('destination')}</p><p class="truncate">${receiverLocation}</p></div>
                                         <div><p class="font-semibold">${getTranslatedText('pieces')}</p><p>${pieceCount}</p></div>
                                         <div><p class="font-semibold">${getTranslatedText('totalWeight')}</p><p>${totalWeight}</p></div>
                                     </div>
                                 </div>
                             </button>
-                            <div class="accordion-body"><div class="accordion-body-content p-4">${generateShipmentTimelineHTML(shipment)}</div></div>
+                            <div class="accordion-body"><div class="accordion-body-content">${generateShipmentTimelineHTML(shipment)}</div></div>
                         </div>`;
                 }).join('');
 
@@ -132,11 +134,16 @@
             }
 
             function generateShipmentTimelineHTML(shipment) {
-                const eventsByDate = (shipment.events || []).reduce((acc, event) => { const date = new Date(event.date).toLocaleDateString('en-CA'); if (!acc[date]) acc[date] = []; acc[date].push(event); return acc; }, {});
+                const eventsByDate = (shipment.events || []).reduce((acc, event) => { 
+                    const date = new Date(event.date || event.timestamp).toLocaleDateString('en-CA'); 
+                    if (!acc[date]) acc[date] = []; 
+                    acc[date].push(event); 
+                    return acc; 
+                }, {});
                 const sortedDates = Object.keys(eventsByDate).sort((a, b) => new Date(b) - new Date(a));
                 
                 if (sortedDates.length === 0) {
-                    return `<p class="italic">${getTranslatedText('noEventsFound')}</p>`;
+                    return `<p class="italic p-4">${getTranslatedText('noEventsFound')}</p>`;
                 }
 
                 return `
@@ -146,7 +153,7 @@
                             <div>
                                 <h4 class="timeline-date-header">${new Date(date).toLocaleDateString(currentLanguage === 'th' ? 'th-TH' : 'en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</h4>
                                 <ul class="tracking-timeline">
-                                    ${eventsByDate[date].sort((a, b) => (b.time || '').localeCompare(a.time || '')).map((event, index) => `
+                                    ${eventsByDate[date].sort((a, b) => (b.time || b.timestamp.slice(11,19) || '').localeCompare(a.time || a.timestamp.slice(11,19) || '')).map((event, index) => `
                                         <li class="timeline-item ${index === 0 && date === sortedDates[0] ? 'is-latest' : ''}">
                                             <div class="timeline-icon">
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -154,9 +161,9 @@
                                                 </svg>
                                             </div>
                                             <div class="timeline-content">
-                                                <p class="timeline-timestamp">${event.time || ''}</p>
+                                                <p class="timeline-timestamp">${event.time || event.timestamp.slice(11,19)}</p>
                                                 <p class="timeline-status">${event.description || 'N/A'}</p>
-                                                <p class="timeline-location">${event.serviceArea?.[0]?.description || ''}</p>
+                                                <p class="timeline-location">${event.location?.address?.addressLocality || ''}</p>
                                             </div>
                                         </li>
                                     `).join('')}
@@ -178,7 +185,6 @@
                 trackingResultDiv.classList.remove('hidden');
                 trackButton.disabled = true;
                 try {
-                    // ใช้ URL ของ Vercel function โดยตรง (หลังจากตั้งค่า CORS ที่ฝั่ง Backend แล้ว)
                     const apiUrl = `https://dbs-back-viruzjokes-projects.vercel.app/api/track?trackingNumber=${cleanedNumbersString}`;
                     const response = await fetch(apiUrl);
                     if (!response.ok) {
