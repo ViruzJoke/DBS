@@ -67,16 +67,40 @@
         <section id="ship-now-page" class="card max-w-5xl mx-auto">
             <h1 class="text-3xl font-extrabold text-center mb-8" data-i18n="createShipment"></h1>
             <div class="relative mb-8">
-                <div class="relative">
-                    <div class="progress-bar" style="--step-count: 7;">
-                        <div class="progress-line-fill"></div>
-                        <div id="step-1" class="progress-step"><div class="step-circle"><span class="step-number">1</span><svg class="step-check" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></div><p class="step-text" data-i18n="addressStep"></p></div>
-                        <div id="step-2" class="progress-step"><div class="step-circle"><span class="step-number">2</span><svg class="step-check" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></div><p class="step-text" data-i18n="shipmentStep"></p></div>
-                        <div id="step-3" class="progress-step"><div class="step-circle"><span class="step-number">3</span><svg class="step-check" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></div><p class="step-text" data-i18n="packageStep"></p></div>
-                        <div id="step-4" class="progress-step"><div class="step-circle"><span class="step-number">4</span><svg class="step-check" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></div><p class="step-text" data-i18n="detailsStep"></p></div>
-                        <div id="step-5" class="progress-step"><div class="step-circle"><span class="step-number">5</span><svg class="step-check" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></div><p class="step-text" data-i18n="docsStep"></p></div>
-                        <div id="step-6" class="progress-step"><div class="step-circle"><span class="step-number">6</span><svg class="step-check" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></div><p class="step-text" data-i18n="bookingStep"></p></div>
-                        <div id="step-7" class="progress-step"><div class="step-circle"><span class="step-number">7</span><svg class="step-check" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></div><p class="step-text" data-i18n="summaryStep"></p></div>
+                <div class="progress-bar">
+                    <div id="step-1" class="progress-step">
+                        <div class="step-circle"><span class="step-number">1</span><svg class="step-check" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></div>
+                        <p class="step-text" data-i18n="addressStep"></p>
+                    </div>
+                    <div class="progress-connector"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path></svg></div>
+                    <div id="step-2" class="progress-step">
+                        <div class="step-circle"><span class="step-number">2</span><svg class="step-check" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></div>
+                        <p class="step-text" data-i18n="shipmentStep"></p>
+                    </div>
+                    <div class="progress-connector"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path></svg></div>
+                    <div id="step-3" class="progress-step">
+                        <div class="step-circle"><span class="step-number">3</span><svg class="step-check" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></div>
+                        <p class="step-text" data-i18n="packageStep"></p>
+                    </div>
+                     <div class="progress-connector"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path></svg></div>
+                    <div id="step-4" class="progress-step">
+                        <div class="step-circle"><span class="step-number">4</span><svg class="step-check" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></div>
+                        <p class="step-text" data-i18n="detailsStep"></p>
+                    </div>
+                     <div class="progress-connector"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path></svg></div>
+                    <div id="step-5" class="progress-step">
+                        <div class="step-circle"><span class="step-number">5</span><svg class="step-check" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></div>
+                        <p class="step-text" data-i18n="docsStep"></p>
+                    </div>
+                     <div class="progress-connector"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path></svg></div>
+                    <div id="step-6" class="progress-step">
+                        <div class="step-circle"><span class="step-number">6</span><svg class="step-check" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></div>
+                        <p class="step-text" data-i18n="bookingStep"></p>
+                    </div>
+                     <div class="progress-connector"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path></svg></div>
+                    <div id="step-7" class="progress-step">
+                        <div class="step-circle"><span class="step-number">7</span><svg class="step-check" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></div>
+                        <p class="step-text" data-i18n="summaryStep"></p>
                     </div>
                 </div>
             </div>
@@ -462,10 +486,7 @@
         }
 
         function updateStepIndicator() {
-            const lineFill = document.querySelector('.progress-line-fill');
-            if (!lineFill) return;
-
-            // Update active/complete classes
+            // Update active/complete classes for steps
             for (let i = 1; i <= totalSteps; i++) {
                 const stepEl = document.getElementById(`step-${i}`);
                 if (stepEl) {
@@ -478,13 +499,16 @@
                 }
             }
 
-            // Calculate and set the width of the fill line using calc()
-            if (currentStep > 1) {
-                const percentage = (currentStep - 1) / (totalSteps - 1);
-                lineFill.style.width = `calc((100% - 2.5rem) * ${percentage})`;
-            } else {
-                lineFill.style.width = '0%';
-            }
+            // Update connectors
+            const connectors = document.querySelectorAll('.progress-connector');
+            connectors.forEach((connector, index) => {
+                const precedingStep = document.getElementById(`step-${index + 1}`);
+                if (precedingStep && precedingStep.classList.contains('is-complete')) {
+                    connector.classList.add('is-complete');
+                } else {
+                    connector.classList.remove('is-complete');
+                }
+            });
         }
         window.addEventListener('resize', updateStepIndicator);
 
@@ -583,7 +607,7 @@
                     </div>
                     
                     <!-- Expanded Form View -->
-                    <div class="line-item-body p-4 space-y-4 border-t border-gray-200 dark:border-gray-700">
+                    <div class="line-item-body p-4 space-y-4 border-t border-gray-200 dark:border-gray-700 mt-4">
                         <div><label class="block text-sm font-medium mb-1" data-i18n="whatIsTheItem"></label><div class="relative"><input type="text" class="input-field item-description pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
                         <div><label class="block text-sm font-medium mb-1" data-i18n="commodityCode"></label><input type="text" class="input-field commodity-code" placeholder="xxxx.xx.xxxx"></div>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -860,3 +884,188 @@
     </script>
 </body>
 </html>
+```
+
+### 2. ไฟล์ `styles.css` (อัปเดตแล้ว)
+
+
+```css
+/*
+  DHL Backup Solution - Central Stylesheet v10.7
+  Final fix for Progress Bar with Arrows
+*/
+
+/* --- Base and Layout --- */
+body {
+    font-family: 'Inter', sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #f3f4f6;
+    color: #1f2937;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+main { flex-grow: 1; padding: 1rem; }
+.container { max-width: 1280px; margin-left: auto; margin-right: auto; padding: 0 1rem; }
+
+/* --- Form Elements & Buttons --- */
+.input-field, textarea.input-field {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    background-color: #fff;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease, color 0.3s ease;
+}
+.input-field:focus, textarea.input-field:focus {
+    outline: none;
+    border-color: #dc2626;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2);
+}
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    border-radius: 0.375rem;
+    border: 1px solid transparent;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-red { background-color: #dc2626; color: white; }
+.btn-red:hover:not(:disabled) { background-color: #b91c1c; transform: translateY(-1px); }
+.btn-yellow { background-color: #fbbf24; color: #1f2937; }
+.btn-yellow:hover:not(:disabled) { background-color: #f59e0b; transform: translateY(-1px); }
+.btn-gray { background-color: #e5e7eb; color: #1f2937; }
+.btn-gray:hover:not(:disabled) { background-color: #d1d5db; transform: translateY(-1px); }
+.utility-button {
+    background-color: #e5e7eb;
+    color: #374151;
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+    transition: background-color 0.2s, color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.utility-button:hover { background-color: #d1d5db; }
+
+/* --- Components --- */
+.hidden-page, .hidden, .ship-now-step.hidden { display: none !important; }
+header, footer { width: 100%; z-index: 10; }
+.card {
+    background-color: #ffffff;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+    padding: 1.5rem;
+}
+@media (min-width: 640px) { .card { padding: 2rem; } }
+
+.main-action-button { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+    flex: 1;
+    padding: 2rem; 
+    border-radius: 0.75rem; 
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); 
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; 
+    cursor: pointer; 
+    border: none; 
+    min-height: 10rem; 
+    text-decoration: none; 
+}
+.main-action-button:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+.main-action-button svg { width: 3.5rem; height: 3.5rem; margin-bottom: 0.75rem; }
+.main-action-button span { font-size: 1.25rem; font-weight: 600; text-align: center; line-height: 1.3; }
+
+/* --- Progress Bar with Arrows --- */
+.progress-bar { 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    padding: 0 0.5rem; /* Add some padding to prevent circles from touching edges */
+}
+.progress-step { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    flex-shrink: 0; /* Prevent steps from shrinking */
+}
+.step-circle { 
+    width: 2.5rem; 
+    height: 2.5rem; 
+    border-radius: 50%; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    font-weight: bold; 
+    border: 2px solid #d1d5db; 
+    background-color: #fff; 
+    color: #6b7280; 
+    transition: all 0.4s ease; 
+    flex-shrink: 0;
+}
+.step-text { 
+    font-size: 0.75rem; 
+    margin-top: 0.5rem; 
+    text-align: center; 
+    transition: color 0.4s ease; 
+    white-space: nowrap;
+    line-height: 1.2;
+}
+.progress-connector {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #d1d5db; /* Default grey color */
+    transition: color 0.4s ease;
+    margin: 0 0.25rem; /* Space between circle and arrow */
+    padding-bottom: 1.5rem; /* Align with circles */
+}
+.progress-connector.is-complete {
+    color: #fbbf24; /* Yellow color for completed steps */
+}
+.progress-connector svg {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+.progress-step.is-active .step-circle { background-color: #dc2626; border-color: #dc2626; color: white; }
+.progress-step.is-active .step-text { color: #dc2626; font-weight: 600; }
+.progress-step.is-complete .step-circle { background-color: #10B981; border-color: #10B981; color: white; }
+.progress-step.is-complete .step-text { color: #4b5563; }
+.progress-step .step-number { display: block; }
+.progress-step .step-check { display: none; width: 1.5rem; height: 1.5rem; }
+.progress-step.is-complete .step-number { display: none; }
+.progress-step.is-complete .step-check { display: block; }
+
+/* --- Accordion for Tracking, etc. --- */
+.accordion-item { border-bottom: 1px solid #e5e7eb; }
+.accordion-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem; cursor: pointer; background-color: #f3f4f6; }
+.accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; }
+
+/* --- Dark Mode --- */
+body.dark-mode { background-color: #111827; color: #d1d5db; }
+body.dark-mode header, body.dark-mode footer, body.dark-mode .card { background-color: #1f2937; border-color: #374151; }
+body.dark-mode .text-gray-800, body.dark-mode .text-gray-700, body.dark-mode .text-gray-600, body.dark-mode .text-black, body.dark-mode label { color: #d1d5db; }
+body.dark-mode .input-field { background-color: #374151; color: #d1d5db; border-color: #4b5563; }
+body.dark-mode .input-field:focus { border-color: #fbbf24; }
+body.dark-mode .utility-button, body.dark-mode .btn-gray { background-color: #374151; color: #e5e7eb; }
+body.dark-mode .utility-button:hover, body.dark-mode .btn-gray:hover:not(:disabled) { background-color: #4b5563; }
+body.dark-mode .btn-yellow { background-color: #f59e0b; color: #111827; }
+body.dark-mode .bg-yellow-50 { background-color: #374151; border-color: #4b5563; }
+body.dark-mode .package-piece-item, body.dark-mode .line-item { background-color: #2b374d; border-color: #4b5563; }
+body.dark-mode .step-circle { border-color: #4b5563; background-color: #1f2937; color: #9ca3af; }
+body.dark-mode .progress-connector { color: #4b5563; }
+body.dark-mode .progress-connector.is-complete { color: #fbbf24; }
+body.dark-mode .progress-step.is-active .step-text { color: #f87171; }
+body.dark-mode .progress-step.is-complete .step-text { color: #d1d5db; }
+body.dark-mode .progress-step.is-complete .step-circle { background-color: #10B981; border-color: #10B981; }
+body.dark-mode .accordion-header { background-color: #2c374a; }
