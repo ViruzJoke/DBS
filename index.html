@@ -6,6 +6,16 @@
     <title>DHL Backup Solution</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* เพิ่มสไตล์สำหรับแสดงผล Error */
+        .accordion-item.is-error .accordion-header {
+            background-color: #fef2f2; /* red-50 */
+            cursor: default;
+        }
+        .dark-mode .accordion-item.is-error .accordion-header {
+            background-color: #451a1a; /* A dark red */
+        }
+    </style>
 </head>
 <body>
     <header class="bg-white shadow-md py-4 px-6 md:px-10 flex justify-between items-center relative z-10 rounded-b-xl">
@@ -84,13 +94,36 @@
                 lastResultsData = data; 
                 const contentDiv = document.getElementById('tracking-content');
                 const shipments = data.shipments || [];
+                
+                if (shipments.length === 0) {
+                    contentDiv.innerHTML = `<p class="text-center p-4">${getTranslatedText('trackingResultUnexpected')}</p>`;
+                    return;
+                }
+
                 contentDiv.innerHTML = shipments.map(shipment => {
-                    // Robust data mapping with fallbacks
+                    // --- ตรวจสอบว่าเป็นก้อน Error หรือไม่ ---
+                    if (shipment.title && shipment.title.toLowerCase().includes('not found')) {
+                        const requestedNumber = shipment.trackingNumber || 'N/A';
+                        const errorStatus = shipment.title || getTranslatedText('trackingResultUnexpected');
+                        const errorDetail = shipment.detail || '';
+                        return `
+                            <div class="accordion-item is-error">
+                                <div class="accordion-header w-full text-left !cursor-default">
+                                    <div class="flex flex-col w-full">
+                                        <h4 class="font-bold text-lg">${requestedNumber}</h4>
+                                        <p class="accordion-header-info text-red-600 dark:text-red-400 font-semibold">${errorStatus}</p>
+                                        ${errorDetail ? `<p class="text-sm text-gray-500 mt-1">${errorDetail}</p>` : ''}
+                                    </div>
+                                </div>
+                            </div>`;
+                    }
+
+                    // --- ถ้าไม่ใช่ Error ให้แสดงผลตามปกติ ---
                     const trackingNumber = shipment?.id || 'N/A';
-                    const status = shipment?.status?.description || shipment?.status?.status || getTranslatedText('trackingResultUnexpected');
+                    const status = shipment?.status?.description || shipment?.status?.status || 'Status Unavailable';
                     const shipperLocation = shipment?.origin?.address?.addressLocality || 'N/A';
                     const receiverLocation = shipment?.destination?.address?.addressLocality || 'N/A';
-                    const pieceCount = shipment?.details?.totalNumberOfPieces || 0;
+                    const pieceCount = shipment?.details?.totalNumberOfPieces ?? 0;
                     const weightValue = shipment?.details?.totalWeight?.value;
                     const weightUnit = shipment?.details?.totalWeight?.unit || 'KG';
                     const totalWeight = weightValue ? `${weightValue} ${weightUnit}` : 'N/A';
@@ -99,7 +132,6 @@
                         <div class="accordion-item">
                             <button class="accordion-header w-full text-left" aria-expanded="false">
                                 <div class="flex flex-col w-full">
-                                    <!-- Top row: Tracking #, Status, Arrow -->
                                     <div class="flex justify-between items-center w-full">
                                         <div>
                                             <h4 class="font-bold text-lg">${trackingNumber}</h4>
@@ -107,7 +139,6 @@
                                         </div>
                                         <svg class="accordion-arrow w-6 h-6 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                                     </div>
-                                    <!-- Bottom row: Summary Details -->
                                     <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-2 text-sm mt-3 pt-3 border-t border-gray-200 dark:border-gray-600">
                                         <div><p class="font-semibold">${getTranslatedText('origin')}</p><p class="truncate">${shipperLocation}</p></div>
                                         <div><p class="font-semibold">${getTranslatedText('destination')}</p><p class="truncate">${receiverLocation}</p></div>
@@ -121,6 +152,9 @@
                 }).join('');
 
                 contentDiv.querySelectorAll('.accordion-header').forEach(button => {
+                    // ไม่ต้องผูก event click กับก้อนที่เป็น error
+                    if (button.closest('.is-error')) return;
+
                     button.addEventListener('click', () => {
                         const isExpanded = button.getAttribute('aria-expanded') === 'true';
                         button.setAttribute('aria-expanded', !isExpanded);
@@ -152,7 +186,7 @@
                 const sortedDates = Object.keys(eventsByDate).sort((a, b) => new Date(b) - new Date(a));
                 
                 return `
-                    <div>
+                    <div class="p-4">
                         <h3 class="text-lg font-bold mb-4">${getTranslatedText('eventHistory')}</h3>
                         ${sortedDates.map(date => `
                             <div>
@@ -208,7 +242,8 @@
                         trackingDisplayPage.classList.remove('hidden-page');
                         trackingResultDiv.classList.add('hidden');
                     } else {
-                        trackingResultDiv.textContent = getTranslatedText('trackingResultUnexpected');
+                        // This case might happen if the API returns 200 OK but with an unexpected top-level structure
+                        displayMultiTrackingResults({ shipments: [] }); // Show an empty state
                     }
                 } catch (error) {
                     trackingResultDiv.textContent = `${getTranslatedText('trackingError')} ${error.message}`;
