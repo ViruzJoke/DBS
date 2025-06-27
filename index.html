@@ -101,18 +101,26 @@
                 }
 
                 contentDiv.innerHTML = shipments.map(shipment => {
-                    // --- ตรวจสอบว่าเป็นก้อน Error หรือไม่ (จาก Logic เดิม) ---
+                    // --- ตรวจสอบว่าเป็นก้อน Error หรือไม่ ---
                     if (shipment.title && shipment.title.toLowerCase().includes('not found')) {
                         const requestedNumber = shipment.trackingNumber || 'N/A';
                         const errorStatus = shipment.title || getTranslatedText('trackingResultUnexpected');
                         const errorDetail = shipment.detail || '';
+                        const additionalDetails = shipment.additionalDetails || [];
+
+                        let additionalDetailsHtml = '';
+                        if (Array.isArray(additionalDetails) && additionalDetails.length > 0) {
+                            additionalDetailsHtml = additionalDetails.map(detail => `<p class="text-sm text-gray-500 mt-1">${detail}</p>`).join('');
+                        }
+
                         return `
                             <div class="accordion-item is-error">
-                                <div class="accordion-header w-full text-left !cursor-default">
+                                <div class="accordion-header w-full text-left !cursor-default p-4">
                                     <div class="flex flex-col w-full">
                                         <h4 class="font-bold text-lg">${requestedNumber}</h4>
                                         <p class="accordion-header-info text-red-600 dark:text-red-400 font-semibold">${errorStatus}</p>
                                         ${errorDetail ? `<p class="text-sm text-gray-500 mt-1">${errorDetail}</p>` : ''}
+                                        ${additionalDetailsHtml}
                                     </div>
                                 </div>
                             </div>`;
@@ -229,7 +237,21 @@
                     const response = await fetch(apiUrl);
                     const data = await response.json();
                     if (!response.ok) {
-                        throw new Error(data.detail || data.message || getTranslatedText('serverError'));
+                        // If the API returns an error status, we create a mock error structure
+                        // that our display function can understand.
+                        const errorShipment = {
+                            shipments: [{
+                                title: data.title || `Error: ${response.status}`,
+                                detail: data.detail || response.statusText,
+                                additionalDetails: data.additionalDetails,
+                                trackingNumber: cleanedNumbersString // Show the number that was queried
+                            }]
+                        };
+                        displayMultiTrackingResults(errorShipment);
+                        corporatePage.classList.add('hidden-page');
+                        trackingDisplayPage.classList.remove('hidden-page');
+                        trackingResultDiv.classList.add('hidden');
+                        return; // Stop further execution
                     }
                     if (data?.shipments) {
                         displayMultiTrackingResults(data);
