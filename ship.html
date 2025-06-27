@@ -67,40 +67,21 @@
         <section id="ship-now-page" class="card max-w-5xl mx-auto">
             <h1 class="text-3xl font-extrabold text-center mb-8" data-i18n="createShipment"></h1>
             <div class="relative mb-8">
-                <div class="progress-bar">
-                    <div id="step-1" class="progress-step">
-                        <div class="step-circle"><span class="step-number">1</span><svg class="step-check" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></div>
-                        <p class="step-text" data-i18n="addressStep"></p>
-                    </div>
-                    <div class="progress-connector"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path></svg></div>
-                    <div id="step-2" class="progress-step">
-                        <div class="step-circle"><span class="step-number">2</span><svg class="step-check" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></div>
-                        <p class="step-text" data-i18n="shipmentStep"></p>
-                    </div>
-                    <div class="progress-connector"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path></svg></div>
-                    <div id="step-3" class="progress-step">
-                        <div class="step-circle"><span class="step-number">3</span><svg class="step-check" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></div>
-                        <p class="step-text" data-i18n="packageStep"></p>
-                    </div>
-                     <div class="progress-connector"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path></svg></div>
-                    <div id="step-4" class="progress-step">
-                        <div class="step-circle"><span class="step-number">4</span><svg class="step-check" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></div>
-                        <p class="step-text" data-i18n="detailsStep"></p>
-                    </div>
-                     <div class="progress-connector"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path></svg></div>
-                    <div id="step-5" class="progress-step">
-                        <div class="step-circle"><span class="step-number">5</span><svg class="step-check" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></div>
-                        <p class="step-text" data-i18n="docsStep"></p>
-                    </div>
-                     <div class="progress-connector"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path></svg></div>
-                    <div id="step-6" class="progress-step">
-                        <div class="step-circle"><span class="step-number">6</span><svg class="step-check" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></div>
-                        <p class="step-text" data-i18n="bookingStep"></p>
-                    </div>
-                     <div class="progress-connector"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path></svg></div>
-                    <div id="step-7" class="progress-step">
-                        <div class="step-circle"><span class="step-number">7</span><svg class="step-check" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></div>
-                        <p class="step-text" data-i18n="summaryStep"></p>
+                <div class="relative">
+                    <div class="progress-bar">
+                        <div id="step-1" class="progress-step"><div class="step-circle"><span class="step-number">1</span><svg class="step-check" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></div><p class="step-text" data-i18n="addressStep"></p></div>
+                        <div class="progress-separator">&gt;</div>
+                        <div id="step-2" class="progress-step"><div class="step-circle"><span class="step-number">2</span><svg class="step-check" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></div><p class="step-text" data-i18n="shipmentDetailsStep"></p></div>
+                        <div class="progress-separator">&gt;</div>
+                        <div id="step-3" class="progress-step"><div class="step-circle"><span class="step-number">3</span><svg class="step-check" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></div><p class="step-text" data-i18n="packageStep"></p></div>
+                        <div class="progress-separator">&gt;</div>
+                        <div id="step-4" class="progress-step"><div class="step-circle"><span class="step-number">4</span><svg class="step-check" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></div><p class="step-text" data-i18n="detailsStep"></p></div>
+                        <div class="progress-separator">&gt;</div>
+                        <div id="step-5" class="progress-step"><div class="step-circle"><span class="step-number">5</span><svg class="step-check" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></div><p class="step-text" data-i18n="docsStep"></p></div>
+                        <div class="progress-separator">&gt;</div>
+                        <div id="step-6" class="progress-step"><div class="step-circle"><span class="step-number">6</span><svg class="step-check" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></div><p class="step-text" data-i18n="bookingStep"></p></div>
+                        <div class="progress-separator">&gt;</div>
+                        <div id="step-7" class="progress-step"><div class="step-circle"><span class="step-number">7</span><svg class="step-check" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg></div><p class="step-text" data-i18n="summaryStep"></p></div>
                     </div>
                 </div>
             </div>
@@ -176,8 +157,8 @@
                         <div class="p-4 border-t-2 border-dashed dark:border-gray-600 mt-4 space-y-4">
                              <div class="space-y-2 text-right">
                                 <div class="flex justify-end items-center gap-4"><span class="font-semibold" data-i18n="totalUnits"></span><span id="summary-total-units" class="font-bold text-lg">0</span></div>
-                                <div class="flex justify-end items-center gap-4"><span class="font-semibold" data-i18n="totalWeight"></span><span id="summary-total-weight" class="font-bold text-lg">0.00 KG</span></div>
-                                <div class="flex justify-end items-center gap-4"><span class="font-semibold" data-i18n="totalValue"></span><span id="summary-total-value" class="font-bold text-lg text-red-600 dark:text-amber-400">0.00 THB</span></div>
+                                <div class="flex justify-end items-center gap-4"><span class="font-semibold" data-i18n="totalWeight"></span><span id="summary-total-weight" class="font-bold text-lg">0.000 KG</span></div>
+                                <div class="flex justify-end items-center gap-4"><span class="font-semibold" data-i18n="totalValue"></span><span id="summary-total-value" class="font-bold text-lg text-red-600 dark:text-amber-400">0.000 THB</span></div>
                             </div>
 
                             <div id="summarize-shipment-container" class="hidden text-left space-y-2">
@@ -296,12 +277,13 @@
     <script>
     document.addEventListener('DOMContentLoaded', () => {
         const translations = {
-            'th': { 'leaveSiteTitle': 'ออกจากหน้านี้?', 'leaveSiteBody': 'การเปลี่ยนแปลงที่คุณทำอาจไม่ถูกบันทึก', 'stayButton': 'อยู่ต่อ', 'leaveButton': 'ออก', 'createShipment':'สร้างใบนำส่ง','addressStep':'ที่อยู่','shipmentStep':'Shipment','packageStep':'แพ็คเกจ','detailsStep':'รายละเอียด','docsStep':'เอกสาร','bookingStep':'บุ๊คกิ้ง','summaryStep':'สรุป','shipperInfo':'ข้อมูลผู้ส่ง','receiverInfo':'ข้อมูลผู้รับ','shipperName':'ชื่อผู้ส่ง','shipperCompany':'บริษัทผู้ส่ง','shipperPhone':'เบอร์โทรผู้ส่ง','shipperAddress1':'ที่อยู่ 1','shipperAddress2':'ที่อยู่ 2','shipperAddress3':'ที่อยู่ 3','shipperCountry':'ประเทศ','shipperPostalCode':'รหัสไปรษณีย์','shipperCity':'เมือง','receiverName':'ชื่อผู้รับ','receiverCompany':'บริษัทผู้รับ','receiverPhone':'เบอร์โทรผู้รับ','receiverAddress1':'ที่อยู่ 1','receiverAddress2':'ที่อยู่ 2','receiverAddress3':'ที่อยู่ 3','receiverCountry':'ประเทศ','receiverPostalCode':'รหัสไปรษณีย์','receiverCity':'เมือง','document':'เอกสาร','package':'พัสดุ','addLineItem':'เพิ่มรายการสินค้า','shipmentRef':'เลขที่อ้างอิง (optional)','protectShipment':'เพิ่มความคุ้มครองการจัดส่ง (ประกัน)','packageDetails':'รายละเอียดแพ็คเกจ','addPiece':'เพิ่มกล่อง','accountAndDetails':'บัญชีและรายละเอียดเพิ่มเติม','shipperAccount':'บัญชีผู้ส่ง','dutiesAccount':'บัญชีผู้ชำระภาษี','incoterm':'Incoterm','shipmentDate':'วันที่ส่ง','docUpload':'อัปโหลดเอกสาร','docUploadDesc':'อัปโหลดเอกสารเพิ่มเติม (ไม่เกิน 5MB)','pickupBooking':'บุ๊คกิ้งรถเข้ารับ','requestPickup':'ต้องการให้รถเข้ารับ','pickupCloseTime':'เวลาปิดทำการ','pickupLocation':'สถานที่รับของ (เช่น Reception)','summary':'สรุปข้อมูล','previous':'ย้อนกลับ','next':'ถัดไป','createShipmentBtn':'สร้างใบนำส่ง','allRightsReserved':'สงวนลิขสิทธิ์.','fillAllFields':'กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วน','typeOrSelectCountry': 'พิมพ์หรือเลือกประเทศ', 'backToMain': 'กลับหน้าหลัก', 'shipperEmail': 'อีเมลผู้ส่ง', 'receiverEmail': 'อีเมลผู้รับ', 'shipperVat': 'เลขประจำตัวผู้เสียภาษีผู้ส่ง', 'receiverVat': 'เลขประจำตัวผู้เสียภาษีผู้รับ', 'whatIsTheItem': 'สินค้าคืออะไร?', 'commodityCode': 'รหัสพิกัดศุลกากร', 'quantity': 'จำนวน', 'units': 'หน่วย', 'valuePerItem': 'มูลค่า (ต่อชิ้น)', 'weight': 'น้ำหนัก (KG)', 'whereWasItMade': 'ผลิตที่ประเทศ', 'totalUnits': 'จำนวนรวม:', 'totalWeight': 'น้ำหนักรวม:', 'totalValue': 'มูลค่ารวม:', 'insuredValue': 'มูลค่าประกัน', 'describeDocuments': 'ระบุประเภทเอกสารในชิปเมนต์ของคุณ', 'fillAllFieldsInItem': 'กรุณากรอกข้อมูลในรายการก่อนหน้าให้ครบถ้วน', 'customsInvoiceDetails': 'รายละเอียดใบกำกับสินค้า', 'createInvoice': 'สร้าง Invoice', 'useMyOwnInvoice': 'ใช้ Invoice ของฉัน', 'invoiceNumber': 'หมายเลข Invoice', 'itemDescription': 'รายละเอียดสินค้า', 'totalItemValue': 'มูลค่ารวม', 'summarizeShipment': 'สรุปรายการสินค้าในชิปเมนต์'},
-            'en': { 'leaveSiteTitle': 'Leave Site?', 'leaveSiteBody': 'Changes you made may not be saved.', 'stayButton': 'Stay', 'leaveButton': 'Leave', 'createShipment':'Create Shipment','addressStep':'Address','shipmentStep':'Shipment','packageStep':'Package','detailsStep':'Details','docsStep':'Documents','bookingStep':'Booking','summaryStep':'Summary','shipperInfo':'Shipper Information','receiverInfo':'Receiver Information','shipperName':'Name','shipperCompany':'Company','shipperPhone':'Phone','shipperAddress1':'Address Line 1','shipperAddress2':'Address Line 2','shipperAddress3':'Address Line 3','shipperCountry':'Country','shipperPostalCode':'Postal Code','shipperCity':'City','receiverName':'Name','receiverCompany':'Company','receiverPhone':'Phone','receiverAddress1':'Address Line 1','receiverAddress2':'Address Line 2','receiverAddress3':'Address Line 3','receiverCountry':'Country','receiverPostalCode':'Postal Code','receiverCity':'City','document':'Document','package':'Package','addLineItem':'Add Line Item','shipmentRef':'Shipment Reference (optional)','protectShipment':'Protect Your Shipment (Insurance)','packageDetails':'Package Details','addPiece':'Add Piece','accountAndDetails':'Account & Details','shipperAccount':'Shipper Account','dutiesAccount':'Duties & Taxes Account','incoterm':'Incoterm','shipmentDate':'Shipment Date','docUpload':'Document Upload','docUploadDesc':'Upload additional documents (max 5MB)','pickupBooking':'Pickup Booking','requestPickup':'Request a pickup','pickupCloseTime':'Pickup Close Time','pickupLocation':'Pickup Location (e.g., Reception)','summary':'Summary','previous':'Previous','next':'Next','createShipmentBtn':'Create Shipment','allRightsReserved':'All rights reserved.','fillAllFields':'Please fill in all required fields.','typeOrSelectCountry': 'Type or select a country', 'backToMain': 'Back to Main', 'shipperEmail': 'Email Address', 'receiverEmail': 'Email Address', 'shipperVat': 'VAT / Tax ID', 'receiverVat': 'VAT / Tax ID', 'whatIsTheItem': 'What is the item?', 'commodityCode': 'Commodity Code', 'quantity': 'Quantity', 'units': 'Units', 'valuePerItem': 'Value (Per Item)', 'weight': 'Weight (KG)', 'whereWasItMade': 'Where was the item made?', 'totalUnits': 'Total Units:', 'totalWeight': 'Total Weight:', 'totalValue': 'Total Value:', 'insuredValue': 'Insured Value', 'describeDocuments': 'Describe the documents in your shipment', 'fillAllFieldsInItem': 'Please fill in the previous item completely.', 'customsInvoiceDetails': 'Customs Invoice Details', 'createInvoice': 'Create Invoice', 'useMyOwnInvoice': 'Use My Own Invoice', 'invoiceNumber': 'Invoice Number', 'itemDescription': 'Item Description', 'totalItemValue': 'Total Item Value', 'summarizeShipment': 'Summarize the contents of your shipment'}
+            'th': { 'leaveSiteTitle': 'ออกจากหน้านี้?', 'leaveSiteBody': 'การเปลี่ยนแปลงที่คุณทำอาจไม่ถูกบันทึก', 'stayButton': 'อยู่ต่อ', 'leaveButton': 'ออก', 'createShipment':'สร้างใบนำส่ง','addressStep':'ที่อยู่','shipmentDetailsStep':'ชิปเมนต์','packageStep':'แพ็คเกจ','detailsStep':'รายละเอียด','docsStep':'เอกสาร','bookingStep':'บุ๊คกิ้ง','summaryStep':'สรุป','shipperInfo':'ข้อมูลผู้ส่ง','receiverInfo':'ข้อมูลผู้รับ','shipperName':'ชื่อผู้ส่ง','shipperCompany':'บริษัทผู้ส่ง','shipperPhone':'เบอร์โทรผู้ส่ง','shipperAddress1':'ที่อยู่ 1','shipperAddress2':'ที่อยู่ 2','shipperAddress3':'ที่อยู่ 3','shipperCountry':'ประเทศ','shipperPostalCode':'รหัสไปรษณีย์','shipperCity':'เมือง','receiverName':'ชื่อผู้รับ','receiverCompany':'บริษัทผู้รับ','receiverPhone':'เบอร์โทรผู้รับ','receiverAddress1':'ที่อยู่ 1','receiverAddress2':'ที่อยู่ 2','receiverAddress3':'ที่อยู่ 3','receiverCountry':'ประเทศ','receiverPostalCode':'รหัสไปรษณีย์','receiverCity':'เมือง','document':'เอกสาร','package':'พัสดุ','addLineItem':'เพิ่มรายการสินค้า','shipmentRef':'เลขที่อ้างอิง (optional)','protectShipment':'เพิ่มความคุ้มครองการจัดส่ง (ประกัน)','packageDetails':'รายละเอียดแพ็คเกจ','addPiece':'เพิ่มกล่อง','accountAndDetails':'บัญชีและรายละเอียดเพิ่มเติม','shipperAccount':'บัญชีผู้ส่ง','dutiesAccount':'บัญชีผู้ชำระภาษี','incoterm':'Incoterm','shipmentDate':'วันที่ส่ง','docUpload':'อัปโหลดเอกสาร','docUploadDesc':'อัปโหลดเอกสารเพิ่มเติม (ไม่เกิน 5MB)','pickupBooking':'บุ๊คกิ้งรถเข้ารับ','requestPickup':'ต้องการให้รถเข้ารับ','pickupCloseTime':'เวลาปิดทำการ','pickupLocation':'สถานที่รับของ (เช่น Reception)','summary':'สรุปข้อมูล','previous':'ย้อนกลับ','next':'ถัดไป','createShipmentBtn':'สร้างใบนำส่ง','allRightsReserved':'สงวนลิขสิทธิ์.','fillAllFields':'กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วน','typeOrSelectCountry': 'พิมพ์หรือเลือกประเทศ', 'backToMain': 'กลับหน้าหลัก', 'shipperEmail': 'อีเมลผู้ส่ง', 'receiverEmail': 'อีเมลผู้รับ', 'shipperVat': 'เลขประจำตัวผู้เสียภาษีผู้ส่ง', 'receiverVat': 'เลขประจำตัวผู้เสียภาษีผู้รับ', 'whatIsTheItem': 'สินค้าคืออะไร?', 'commodityCode': 'รหัสพิกัดศุลกากร', 'quantity': 'จำนวน', 'units': 'หน่วย', 'valuePerItem': 'มูลค่า (ต่อชิ้น)', 'weight': 'น้ำหนัก (KG)', 'whereWasItMade': 'ผลิตที่ประเทศ', 'totalUnits': 'จำนวนรวม:', 'totalWeight': 'น้ำหนักรวม:', 'totalValue': 'มูลค่ารวม:', 'insuredValue': 'มูลค่าประกัน', 'describeDocuments': 'ระบุประเภทเอกสารในชิปเมนต์ของคุณ', 'fillAllFieldsInItem': 'กรุณากรอกข้อมูลในรายการก่อนหน้าให้ครบถ้วน', 'customsInvoiceDetails': 'รายละเอียดใบกำกับสินค้า', 'createInvoice': 'สร้าง Invoice', 'useMyOwnInvoice': 'ใช้ Invoice ของฉัน', 'invoiceNumber': 'หมายเลข Invoice', 'itemDescription': 'รายละเอียดสินค้า', 'totalItemValue': 'มูลค่ารวม', 'summarizeShipment': 'สรุปรายการสินค้าในชิปเมนต์'},
+            'en': { 'leaveSiteTitle': 'Leave Site?', 'leaveSiteBody': 'Changes you made may not be saved.', 'stayButton': 'Stay', 'leaveButton': 'Leave', 'createShipment':'Create Shipment','addressStep':'Address','shipmentDetailsStep':'Shipment','packageStep':'Package','detailsStep':'Details','docsStep':'Documents','bookingStep':'Booking','summaryStep':'Summary','shipperInfo':'Shipper Information','receiverInfo':'Receiver Information','shipperName':'Name','shipperCompany':'Company','shipperPhone':'Phone','shipperAddress1':'Address Line 1','shipperAddress2':'Address Line 2','shipperAddress3':'Address Line 3','shipperCountry':'Country','shipperPostalCode':'Postal Code','shipperCity':'City','receiverName':'Name','receiverCompany':'Company','receiverPhone':'Phone','receiverAddress1':'Address Line 1','receiverAddress2':'Address Line 2','receiverAddress3':'Address Line 3','receiverCountry':'Country','receiverPostalCode':'Postal Code','receiverCity':'City','document':'Document','package':'Package','addLineItem':'Add Line Item','shipmentRef':'Shipment Reference (optional)','protectShipment':'Protect Your Shipment (Insurance)','packageDetails':'Package Details','addPiece':'Add Piece','accountAndDetails':'Account & Details','shipperAccount':'Shipper Account','dutiesAccount':'Duties & Taxes Account','incoterm':'Incoterm','shipmentDate':'Shipment Date','docUpload':'Document Upload','docUploadDesc':'Upload additional documents (max 5MB)','pickupBooking':'Pickup Booking','requestPickup':'Request a pickup','pickupCloseTime':'Pickup Close Time','pickupLocation':'Pickup Location (e.g., Reception)','summary':'Summary','previous':'Previous','next':'Next','createShipmentBtn':'Create Shipment','allRightsReserved':'All rights reserved.','fillAllFields':'Please fill in all required fields.','typeOrSelectCountry': 'Type or select a country', 'backToMain': 'Back to Main', 'shipperEmail': 'Email Address', 'receiverEmail': 'Email Address', 'shipperVat': 'VAT / Tax ID', 'receiverVat': 'VAT / Tax ID', 'whatIsTheItem': 'What is the item?', 'commodityCode': 'Commodity Code', 'quantity': 'Quantity', 'units': 'Units', 'valuePerItem': 'Value (Per Item)', 'weight': 'Weight (KG)', 'whereWasItMade': 'Where was the item made?', 'totalUnits': 'Total Units:', 'totalWeight': 'Total Weight:', 'totalValue': 'Total Value:', 'insuredValue': 'Insured Value', 'describeDocuments': 'Describe the documents in your shipment', 'fillAllFieldsInItem': 'Please fill in the previous item completely.', 'customsInvoiceDetails': 'Customs Invoice Details', 'createInvoice': 'Create Invoice', 'useMyOwnInvoice': 'Use My Own Invoice', 'invoiceNumber': 'Invoice Number', 'itemDescription': 'Item Description', 'totalItemValue': 'Total Item Value', 'summarizeShipment': 'Summarize the contents of your shipment'}
         };
         const countryList = [ { "name": "Afghanistan", "code": "AF" }, { "name": "Albania", "code": "AL" }, { "name": "Algeria", "code": "DZ" }, { "name": "American Samoa", "code": "AS" }, { "name": "Andorra", "code": "AD" }, { "name": "Angola", "code": "AO" }, { "name": "Anguilla", "code": "AI" }, { "name": "Antigua", "code": "AG" }, { "name": "Argentina", "code": "AR" }, { "name": "Armenia", "code": "AM" }, { "name": "Aruba", "code": "AW" }, { "name": "Australia", "code": "AU" }, { "name": "Austria", "code": "AT" }, { "name": "Azerbaijan", "code": "AZ" }, { "name": "Bahamas", "code": "BS" }, { "name": "Bahrain", "code": "BH" }, { "name": "Bangladesh", "code": "BD" }, { "name": "Barbados", "code": "BB" }, { "name": "Belarus", "code": "BY" }, { "name": "Belgium", "code": "BE" }, { "name": "Belize", "code": "BZ" }, { "name": "Benin", "code": "BJ" }, { "name": "Bermuda", "code": "BM" }, { "name": "Bhutan", "code": "BT" }, { "name": "Bolivia", "code": "BO" }, { "name": "Bonaire", "code": "BQ" }, { "name": "Bosnia and Herzegovina", "code": "BA" }, { "name": "Botswana", "code": "BW" }, { "name": "Brazil", "code": "BR" }, { "name": "Brunei", "code": "BN" }, { "name": "Bulgaria", "code": "BG" }, { "name": "Burkina Faso", "code": "BF" }, { "name": "Burundi", "code": "BI" }, { "name": "Cambodia", "code": "KH" }, { "name": "Cameroon", "code": "CM" }, { "name": "Canada", "code": "CA" }, { "name": "Canary Islands, The", "code": "IC" }, { "name": "Cape Verde", "code": "CV" }, { "name": "Cayman Islands", "code": "KY" }, { "name": "Central African Republic", "code": "CF" }, { "name": "Chad", "code": "TD" }, { "name": "Chile", "code": "CL" }, { "name": "China, People's Republic", "code": "CN" }, { "name": "Colombia", "code": "CO" }, { "name": "Comoros", "code": "KM" }, { "name": "Congo", "code": "CG" }, { "name": "Congo, The Democratic Republic of", "code": "CD" }, { "name": "Cook Islands", "code": "CK" }, { "name": "Costa Rica", "code": "CR" }, { "name": "Cote D'ivoire", "code": "CI" }, { "name": "Croatia", "code": "HR" }, { "name": "Cuba", "code": "CU" }, { "name": "Curacao", "code": "CW" }, { "name": "Cyprus", "code": "CY" }, { "name": "Czech Republic, The", "code": "CZ" }, { "name": "Denmark", "code": "DK" }, { "name": "Djibouti", "code": "DJ" }, { "name": "Dominica", "code": "DM" }, { "name": "Dominican Republic", "code": "DO" }, { "name": "East Timor", "code": "TL" }, { "name": "Ecuador", "code": "EC" }, { "name": "Egypt", "code": "EG" }, { "name": "El Salvador", "code": "SV" }, { "name": "Eritrea", "code": "ER" }, { "name": "Estonia", "code": "EE" }, { "name": "Ethiopia", "code": "ET" }, { "name": "Falkland Islands", "code": "FK" }, { "name": "Faroe Islands", "code": "FO" }, { "name": "Fiji", "code": "FJ" }, { "name": "Finland", "code": "FI" }, { "name": "France", "code": "FR" }, { "name": "French Guyana", "code": "GF" }, { "name": "Gabon", "code": "GA" }, { "name": "Gambia", "code": "GM" }, { "name": "Georgia", "code": "GE" }, { "name": "Germany", "code": "DE" }, { "name": "Ghana", "code": "GH" }, { "name": "Gibraltar", "code": "GI" }, { "name": "Greece", "code": "GR" }, { "name": "Greenland", "code": "GL" }, { "name": "Grenada", "code": "GD" }, { "name": "Guadeloupe", "code": "GP" }, { "name": "Guam", "code": "GU" }, { "name": "Guatemala", "code": "GT" }, { "name": "Guernsey", "code": "GG" }, { "name": "Guinea Republic", "code": "GN" }, { "name": "Guinea-Bissau", "code": "GW" }, { "name": "Guinea-Equatorial", "code": "GQ" }, { "name": "Guyana", "code": "GY" }, { "name": "Haiti", "code": "HT" }, { "name": "Honduras", "code": "HN" }, { "name": "Hong Kong", "code": "HK" }, { "name": "Hungary", "code": "HU" }, { "name": "Iceland", "code": "IS" }, { "name": "India", "code": "IN" }, { "name": "Indonesia", "code": "ID" }, { "name": "Iran (Islamic Republic of)", "code": "IR" }, { "name": "Iraq", "code": "IQ" }, { "name": "Ireland, Republic of", "code": "IE" }, { "name": "Israel", "code": "IL" }, { "name": "Italy", "code": "IT" }, { "name": "Jamaica", "code": "JM" }, { "name": "Japan", "code": "JP" }, { "name": "Jersey", "code": "JE" }, { "name": "Jordan", "code": "JO" }, { "name": "Kazakhstan", "code": "KZ" }, { "name": "Kenya", "code": "KE" }, { "name": "Kiribati", "code": "KI" }, { "name": "Korea, Republic of", "code": "KR" }, { "name": "Korea, The D.P.R of (North K.)", "code": "KP" }, { "name": "Kosovo", "code": "KV" }, { "name": "Kuwait", "code": "KW" }, { "name": "Kyrgyzstan", "code": "KG" }, { "name": "Lao People's Democratic Republic", "code": "LA" }, { "name": "Latvia", "code": "LV" }, { "name": "Lebanon", "code": "LB" }, { "name": "Lesotho", "code": "LS" }, { "name": "Liberia", "code": "LR" }, { "name": "Libya", "code": "LY" }, { "name": "Liechtenstein", "code": "LI" }, { "name": "Lithuania", "code": "LT" }, { "name": "Luxembourg", "code": "LU" }, { "name": "Macau", "code": "MO" }, { "name": "Macedonia, Republic of", "code": "MK" }, { "name": "Madagascar", "code": "MG" }, { "name": "Malawi", "code": "MW" }, { "name": "Malaysia", "code": "MY" }, { "name": "Maldives", "code": "MV" }, { "name": "Mali", "code": "ML" }, { "name": "Malta", "code": "MT" }, { "name": "Marshall Islands", "code": "MH" }, { "name": "Martinique", "code": "MQ" }, { "name": "Mauritania", "code": "MR" }, { "name": "Mauritius", "code": "MU" }, { "name": "Mayotte", "code": "YT" }, { "name": "Mexico", "code": "MX" }, { "name": "Micronesia, Federated States of", "code": "FM" }, { "name": "Moldova, Republic of", "code": "MD" }, { "name": "Monaco", "code": "MC" }, { "name": "Mongolia", "code": "MN" }, { "name": "Montenegro, Republic of", "code": "ME" }, { "name": "Montserrat", "code": "MS" }, { "name": "Morocco", "code": "MA" }, { "name": "Mozambique", "code": "MZ" }, { "name": "Myanmar", "code": "MM" }, { "name": "Namibia", "code": "NA" }, { "name": "Nauru, Republic of", "code": "NR" }, { "name": "Nepal", "code": "NP" }, { "name": "Netherlands, The", "code": "NL" }, { "name": "New Caledonia", "code": "NC" }, { "name": "New Zealand", "code": "NZ" }, { "name": "Nicaragua", "code": "NI" }, { "name": "Niger", "code": "NE" }, { "name": "Nigeria", "code": "NG" }, { "name": "Niue", "code": "NU" }, { "name": "Northern Mariana Islands", "code": "MP" }, { "name": "Norway", "code": "NO" }, { "name": "Oman", "code": "OM" }, { "name": "Pakistan", "code": "PK" }, { "name": "Palau", "code": "PW" }, { "name": "Panama", "code": "PA" }, { "name": "Papua New Guinea", "code": "PG" }, { "name": "Paraguay", "code": "PY" }, { "name": "Peru", "code": "PE" }, { "name": "Philippines, The", "code": "PH" }, { "name": "Poland", "code": "PL" }, { "name": "Portugal", "code": "PT" }, { "name": "Puerto Rico", "code": "PR" }, { "name": "Qatar", "code": "QA" }, { "name": "Reunion, Island of", "code": "RE" }, { "name": "Romania", "code": "RO" }, { "name": "Russian Federation, The", "code": "RU" }, { "name": "Rwanda", "code": "RW" }, { "name": "Saipan", "code": "SP" }, { "name": "San Marino", "code": "SM" }, { "name": "Sao Tome and Principe", "code": "ST" }, { "name": "Saudi Arabia", "code": "SA" }, { "name": "Senegal", "code": "SN" }, { "name": "Serbia, Republic of", "code": "RS" }, { "name": "Seychelles", "code": "SC" }, { "name": "Sierra Leone", "code": "SL" }, { "name": "Singapore", "code": "SG" }, { "name": "Slovakia", "code": "SK" }, { "name": "Slovenia", "code": "SI" }, { "name": "Solomon Islands", "code": "SB" }, { "name": "Somalia", "code": "SO" }, { "name": "Somaliland, Rep of (North Somalia)", "code": "XS" }, { "name": "South Africa", "code": "ZA" }, { "name": "South Sudan", "code": "SS" }, { "name": "Spain", "code": "ES" }, { "name": "Sri Lanka", "code": "LK" }, { "name": "St. Barthelemy", "code": "XY" }, { "name": "St. Eustatius", "code": "XE" }, { "name": "St. Helena", "code": "SH" }, { "name": "St. Kitts and Nevis", "code": "KN" }, { "name": "St. Lucia", "code": "LC" }, { "name": "St. Maarten", "code": "SX" }, { "name": "St. Vincent", "code": "VC" }, { "name": "Sudan", "code": "SD" }, { "name": "Suriname", "code": "SR" }, { "name": "Swaziland", "code": "SZ" }, { "name": "Sweden", "code": "SE" }, { "name": "Switzerland", "code": "CH" }, { "name": "Syria", "code": "SY" }, { "name": "Tahiti", "code": "PF" }, { "name": "Taiwan", "code": "TW" }, { "name": "Tanzania", "code": "TZ" }, { "name": "Thailand", "code": "TH" }, { "name": "Togo", "code": "TG" }, { "name": "Tonga", "code": "TO" }, { "name": "Trinidad and Tobago", "code": "TT" }, { "name": "Tunisia", "code": "TN" }, { "name": "Turkey", "code": "TR" }, { "name": "Turkmenistan", "code": "TM" }, { "name": "Turks and Caicos Islands", "code": "TC" }, { "name": "Tuvalu", "code": "TV" }, { "name": "Uganda", "code": "UG" }, { "name": "Ukraine", "code": "UA" }, { "name": "United Arab Emirates", "code": "AE" }, { "name": "United Kingdom", "code": "GB" }, { "name": "United States of America", "code": "US" }, { "name": "Uruguay", "code": "UY" }, { "name": "Uzbekistan", "code": "UZ" }, { "name": "Vanuatu", "code": "VU" }, { "name": "Vatican City", "code": "VA" }, { "name": "Venezuela", "code": "VE" }, { "name": "Vietnam", "code": "VN" }, { "name": "Virgin Islands (British)", "code": "VG" }, { "name": "Virgin Islands (US)", "code": "VI" }, { "name": "Yemen, Republic of", "code": "YE" }, { "name": "Zambia", "code": "ZM" }, { "name": "Zimbabwe", "code": "ZW" } ];
-        const documentTypes = [ "Annual reports", "Bill of lading", "Blank forms", "Certificates", "Completed Forms", "Contract", "Credit note", "Deeds", "Documents general business", "Educational material printed", "Examination papers", "Identity document", "Invoices - not blank", "Letter correspondence", "Manuals technical", "Manuscripts", "Maps", "Medical Examination Result", "Music - printed, manuscript", "Passports", "Plans, drawings - for architectural industrial engineering purposes", "Printed matter", "Ship manifest - computer generated", "Shipping schedules", "Transparencies", "Visa applications" ];
-        const uomList = [ { unitOfMeasurement: 'BOX', description: 'Boxes' }, { unitOfMeasurement: 'DPR', description: 'Dozen Pairs' }, { unitOfMeasurement: 'DOZ', description: 'Dozen' }, { unitOfMeasurement: 'PCS', description: 'Pieces' }, { unitOfMeasurement: 'GM', description: 'Grams' }, { unitOfMeasurement: 'GRS', description: 'Gross' }, { unitOfMeasurement: 'KG', description: 'Kilograms' }, { unitOfMeasurement: 'BGM', description: 'Milligrams' }, { unitOfMeasurement: 'X', description: 'No Unit Required' }, { unitOfMeasurement: 'NO', description: 'Number' }, { unitOfMeasurement: 'PRS', description: 'Pairs' }, { unitOfMeasurement: 'CM2', description: 'Square Centimeters' }, { unitOfMeasurement: '2M2', description: 'Square Feet' }, { unitOfMeasurement: '3M2', description: 'Square Inches' }, { unitOfMeasurement: 'M2', description: 'Square Meters' }, { unitOfMeasurement: '4M2', description: 'Square Yards' }, { unitOfMeasurement: 'CM', description: 'Centimeters' }, { unitOfMeasurement: 'CONE', description: 'Cone' }, { unitOfMeasurement: 'CT', description: 'Carat' }, { unitOfMeasurement: 'EA', description: 'Each' }, { unitOfMeasurement: 'LBS', description: 'Pounds' }, { unitOfMeasurement: 'RILL', description: 'Rill' }, { unitOfMeasurement: 'ROLL', description: 'Roll' }, { unitOfMeasurement: 'SET', description: 'Set' }, { unitOfMeasurement: 'TU', description: 'Time Unit' }, { unitOfMeasurement: '2GM', description: 'Centigram' }, { unitOfMeasurement: 'KM', description: 'kilometre' }, { unitOfMeasurement: 'IN', description: 'inch' }, { unitOfMeasurement: 'FT', description: 'foot' }, { unitOfMeasurement: 'YD', description: 'yard' }, { unitOfMeasurement: 'MI', description: 'mile (statute mile)' }, { unitOfMeasurement: 'LTR', description: 'litre' }, { unitOfMeasurement: 'MMQ', description: 'cubic millimetre' }, { unitOfMeasurement: 'CM3', description: 'cubic centimetre' }, { unitOfMeasurement: 'DMQ', description: 'cubic decimetre' }, { unitOfMeasurement: 'MLT', description: 'millilitre' }, { unitOfMeasurement: 'CLT', description: 'centilitre' }, { unitOfMeasurement: 'DLT', description: 'decilitre' }, { unitOfMeasurement: 'INQ', description: 'cubic inch' }, { unitOfMeasurement: 'FT3', description: 'cubic foot' }, { unitOfMeasurement: 'YD3', description: 'cubic yard' }, { unitOfMeasurement: 'GLL', description: 'gallon (UK)' }, { unitOfMeasurement: 'GLI', description: 'gallon (US)' }, { unitOfMeasurement: 'PT', description: 'pint (US)' }, { unitOfMeasurement: 'PTI', description: 'pint (UK)' }, { unitOfMeasurement: 'QTI', description: 'quart (UK)' }, { unitOfMeasurement: 'PTL', description: 'liquid pint (US)' }, { unitOfMeasurement: 'QTL', description: 'liquid quart (US)' }, { unitOfMeasurement: 'PTD', description: 'dry pint (US)' }, { unitOfMeasurement: 'OZI', description: 'fluid ounce (UK)' }, { unitOfMeasurement: 'J57', description: 'barrel (UK petroleum)' }, { unitOfMeasurement: 'NM3', description: 'Normalised cubic meter' }, { unitOfMeasurement: 'SM3', description: 'Standard cubic metre' }, { unitOfMeasurement: 'TNE', description: 'tonne (metric ton)' }, { unitOfMeasurement: 'LB', description: 'Pound' }, { unitOfMeasurement: 'ONZ', description: 'ounce (avoirdupois)' }, { unitOfMeasurement: 'CEL', description: 'degree Celsius' }, { unitOfMeasurement: 'M', description: 'Meters' } ];
+        
+        const documentTypes = [ "Annual reports", "Bill of lading", "Blank forms", "Certificates", "Completed Forms", "Contract", "Credit note", "Deeds", "Documents - general business", "Educational material printed", "Examination papers", "Identity document", "Invoices - not blank", "Letter correspondence", "Manuals technical", "Manuscripts", "Maps", "Medical Examination Result", "Music - printed, manuscript", "Passports", "Plans, drawings - for architectural industrial engineering purposes", "Printed matter", "Ship manifest - computer generated", "Shipping schedules", "Transparencies", "Visa applications" ];
+        const uomList = [ { unitOfMeasurement: 'BOX', description: 'Boxes' }, { unitOfMeasurement: '2M2', description: 'Cubic Meters' }, { unitOfMeasurement: 'DPR', description: 'Dozen Pairs' }, { unitOfMeasurement: 'DOZ', description: 'Dozen' }, { unitOfMeasurement: 'PCS', description: 'Pieces' }, { unitOfMeasurement: 'GM', description: 'Grams' }, { unitOfMeasurement: 'GRS', description: 'Gross' }, { unitOfMeasurement: 'KG', description: 'Kilograms' }, { unitOfMeasurement: '3GM', description: 'Milligrams' }, { unitOfMeasurement: 'X', description: 'No Unit Required' }, { unitOfMeasurement: 'NO', description: 'Number' }, { unitOfMeasurement: 'PRS', description: 'Pairs' }, { unitOfMeasurement: 'CM2', description: 'Square Centimeters' }, { unitOfMeasurement: '2M2', description: 'Square Feet' }, { unitOfMeasurement: '3M2', description: 'Square Inches' }, { unitOfMeasurement: 'M2', description: 'Square Meters' }, { unitOfMeasurement: '4M2', description: 'Square Yards' }, { unitOfMeasurement: 'CM', description: 'Centimeters' }, { unitOfMeasurement: 'CONE', description: 'Cone' }, { unitOfMeasurement: 'CT', description: 'Carat' }, { unitOfMeasurement: 'EA', description: 'Each' }, { unitOfMeasurement: 'LBS', description: 'Pounds' }, { unitOfMeasurement: 'RILL', description: 'Rill' }, { unitOfMeasurement: 'ROLL', description: 'Roll' }, { unitOfMeasurement: 'SET', description: 'Set' }, { unitOfMeasurement: 'TU', description: 'Time Unit' }, { unitOfMeasurement: '2GM', description: 'centigram' }, { unitOfMeasurement: 'KM', description: 'kilometre' }, { unitOfMeasurement: 'IN', description: 'inch' }, { "name": "foot", "code": "FT" }, { unitOfMeasurement: 'YD', description: 'yard' }, { unitOfMeasurement: 'MI', description: 'mile (statute mile)' }, { unitOfMeasurement: 'LTR', description: 'litre' }, { unitOfMeasurement: 'MMQ', description: 'cubic millimetre' }, { unitOfMeasurement: 'CM3', description: 'cubic centimetre' }, { unitOfMeasurement: 'DMQ', 'description': 'cubic decimetre' }, { unitOfMeasurement: 'MLT', description: 'millilitre' }, { unitOfMeasurement: 'CLT', description: 'centilitre' }, { unitOfMeasurement: 'DLT', description: 'decilitre' }, { unitOfMeasurement: 'INQ', description: 'cubic inch' }, { unitOfMeasurement: 'FT3', description: 'cubic foot' }, { unitOfMeasurement: 'YD3', description: 'cubic yard' }, { unitOfMeasurement: 'GLL', description: 'gallon (UK)' }, { unitOfMeasurement: 'GLI', description: 'gallon (US)' }, { unitOfMeasurement: 'PT', description: 'pint (US)' }, { unitOfMeasurement: 'PTI', description: 'pint (UK)' }, { unitOfMeasurement: 'QTI', description: 'quart (UK)' }, { unitOfMeasurement: 'QTL', description: 'liquid quart (US)' }, { unitOfMeasurement: 'PTL', description: 'liquid pint (US)' }, { unitOfMeasurement: 'PTD', description: 'dry pint (US)' }, { unitOfMeasurement: 'OZI', description: 'fluid ounce (UK)' }, { unitOfMeasurement: 'J57', description: 'barrel (UK petroleum)' }, { unitOfMeasurement: 'NM3', description: 'Normalised cubic metre' }, { unitOfMeasurement: 'SM3', description: 'Standard cubic metre' }, { unitOfMeasurement: 'TNE', description: 'tonne (metric ton)' }, { unitOfMeasurement: 'LB', description: 'Pound' }, { unitOfMeasurement: 'ONZ', description: 'ounce (avoirdupois)' }, { unitOfMeasurement: 'CEL', description: 'degree Celsius' }, { unitOfMeasurement: 'M', description: 'Meters' } ];
         const incotermList = [ { incoterm: 'DAP', incotermName: 'Delivered at Place' }, { incoterm: 'DDU', incotermName: 'Delivered Duty Unpaid' }, { incoterm: 'DDP', incotermName: 'Delivered Duty Paid' }, { incoterm: 'DEQ', incotermName: 'Delivery ex Quay' }, { incoterm: 'FCA', incotermName: 'Free Carrier' }, { incoterm: 'FAS', incotermName: 'Free Alongside Ship' }, { incoterm: 'DAF', incotermName: 'Delivered at Frontier' }, { incoterm: 'FOB', incotermName: 'Free on Board' }, { incoterm: 'EXW', incotermName: 'Ex Works' }, { incoterm: 'CPT', incotermName: 'Carriage Paid To' }, { incoterm: 'DES', incotermName: 'Delivered ex Ship' }, { incoterm: 'CFR', incotermName: 'Cost and Freight' }, { incoterm: 'CIF', incotermName: 'Cost Insurance and Freight' }, { incoterm: 'CIP', incotermName: 'Carriage and Insurance Paid to' }, { incoterm: 'DAT', incotermName: 'Delivered at Terminal' }, { incoterm: 'DPU', incotermName: 'Delivered at Place Unloaded' } ];
 
         let currentLanguage = localStorage.getItem('language') || 'th';
@@ -328,8 +310,7 @@
                 if (el.placeholder !== undefined && (el.hasAttribute('data-i18n-placeholder') || el.matches('[data-i18n-placeholder]'))) {
                     el.placeholder = getTranslatedText(key);
                 } else {
-                     // Check if the element or its parent is the summary div to avoid re-translating labels
-                    if (!el.closest('.line-item-summary')) {
+                     if (!el.closest('.line-item-summary')) {
                         el.textContent = getTranslatedText(key);
                     }
                 }
@@ -337,11 +318,14 @@
             document.querySelectorAll('label[data-i18n]').forEach(label => {
                 const key = label.getAttribute('data-i18n');
                 const asterisk = label.querySelector('.text-red-500');
-                label.innerHTML = getTranslatedText(key) + (asterisk ? ' <span class="text-red-500">*</span>' : '');
+                if (key !== 'invoiceNumber' && key !== 'summarizeShipment') {
+                   label.innerHTML = getTranslatedText(key) + (asterisk ? ' <span class="text-red-500">*</span>' : '');
+                } else {
+                   label.innerHTML = getTranslatedText(key);
+                }
             });
             document.getElementById('current-language-display').textContent = currentLanguage.toUpperCase();
             document.title = `DHL Backup Solution - ${getTranslatedText('createShipment')}`;
-            // Re-translate summary labels after general translation
             document.querySelectorAll('.line-item-summary strong[data-i18n]').forEach(el => {
                  el.textContent = getTranslatedText(el.getAttribute('data-i18n'));
             });
@@ -432,16 +416,6 @@
                  indicator.classList.add('indicator-required');
              }
         }
-        
-        function populateDropdowns() {
-            const docDescSelect = document.getElementById('document-description');
-            docDescSelect.innerHTML = documentTypes.map(type => `<option value="${type}">${type}</option>`).join('');
-
-            const incotermSelect = document.getElementById('incoterm');
-            incotermSelect.innerHTML = incotermList.map(item =>
-                `<option value="${item.incoterm}" ${item.incoterm === 'DAP' ? 'selected' : ''}>${item.incoterm} - ${item.incotermName}</option>`
-            ).join('');
-        }
 
         function initializeForm() {
              const shipperCountryInput = document.getElementById('shipper-country-input');
@@ -459,9 +433,26 @@
                 shipDateInput.min = today;
                 updateInputValidationState(shipDateInput);
              }
-             populateDropdowns();
         }
         
+        function populateStaticDropdowns() {
+            // Document Description
+            const docDescSelect = document.getElementById('document-description');
+            if (docDescSelect) {
+                docDescSelect.innerHTML = documentTypes.map(doc =>
+                    `<option value="${doc}" ${doc === 'Documents - general business' ? 'selected' : ''}>${doc}</option>`
+                ).join('');
+            }
+
+            // Incoterm
+            const incotermSelect = document.getElementById('incoterm');
+            if (incotermSelect) {
+                incotermSelect.innerHTML = incotermList.map(item =>
+                    `<option value="${item.incoterm}" ${item.incoterm === 'DAP' ? 'selected' : ''}>${item.incoterm} - ${item.incotermName}</option>`
+                ).join('');
+            }
+        }
+
         const prevButton = document.getElementById('ship-now-prev-step');
         const nextButton = document.getElementById('ship-now-next-step');
         
@@ -486,32 +477,26 @@
         }
 
         function updateStepIndicator() {
-            // Update active/complete classes for steps
+            const separators = document.querySelectorAll('.progress-separator');
             for (let i = 1; i <= totalSteps; i++) {
                 const stepEl = document.getElementById(`step-${i}`);
-                if (stepEl) {
-                    stepEl.classList.remove('is-active', 'is-complete');
-                    if (i === currentStep) {
-                        stepEl.classList.add('is-active');
-                    } else if (i < currentStep) {
-                        stepEl.classList.add('is-complete');
+                stepEl.classList.remove('is-active', 'is-complete');
+                if (i === currentStep) {
+                    stepEl.classList.add('is-active');
+                } else if (i < currentStep) {
+                    stepEl.classList.add('is-complete');
+                }
+                
+                if (i <= separators.length) {
+                    const separatorEl = separators[i - 1];
+                    if (i < currentStep) {
+                        separatorEl.classList.add('is-complete');
+                    } else {
+                        separatorEl.classList.remove('is-complete');
                     }
                 }
             }
-
-            // Update connectors
-            const connectors = document.querySelectorAll('.progress-connector');
-            connectors.forEach((connector, index) => {
-                const precedingStep = document.getElementById(`step-${index + 1}`);
-                if (precedingStep && precedingStep.classList.contains('is-complete')) {
-                    connector.classList.add('is-complete');
-                } else {
-                    connector.classList.remove('is-complete');
-                }
-            });
         }
-        window.addEventListener('resize', updateStepIndicator);
-
 
         function validateCurrentStep() {
             let isValid = true;
@@ -547,7 +532,6 @@
             return isValid;
         }
 
-        // --- Step 2 Logic ---
         const lineItemsContainer = document.getElementById('line-items-container');
         const packageDetailsContainer = document.getElementById('package-details-container');
         const documentDetailsContainer = document.getElementById('document-details-container');
@@ -557,7 +541,7 @@
         function renumberLineItemHeaders() {
             const headers = lineItemsContainer.querySelectorAll('.line-item-header h4');
             const summarizeInput = document.getElementById('summarize-shipment');
-            const summarizeLabel = document.querySelector('label[for="summarize-shipment"]');
+            const summarizeIndicator = document.querySelector('#summarize-shipment-container .input-indicator');
             
             headers.forEach((header, index) => {
                 header.textContent = `Item #${index + 1}`;
@@ -566,13 +550,12 @@
             const showSummarize = headers.length > 1;
             summarizeShipmentContainer.classList.toggle('hidden', !showSummarize);
             summarizeInput.required = showSummarize;
-            if (summarizeLabel) {
-                const asterisk = summarizeLabel.querySelector('.text-red-500');
-                if (showSummarize && !asterisk) {
-                    summarizeLabel.insertAdjacentHTML('beforeend', ' <span class="text-red-500">*</span>');
-                } else if (!showSummarize && asterisk) {
-                    asterisk.remove();
-                }
+
+            if (summarizeIndicator) {
+                summarizeIndicator.classList.toggle('hidden', !showSummarize);
+            }
+            if (!showSummarize) {
+                summarizeInput.classList.remove('is-invalid');
             }
         }
         
@@ -588,7 +571,6 @@
                     <div class="line-item-header flex justify-between items-center p-4">
                         <div>
                             <h4 class="font-bold text-lg">Item #${itemId}</h4>
-                            <!-- Collapsed Summary View -->
                             <div class="line-item-summary text-sm text-gray-500 dark:text-gray-400 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-1 mt-2">
                                 <div class="truncate"><strong data-i18n="itemDescription" class="font-semibold text-current"></strong>: <span class="summary-description">...</span></div>
                                 <div><strong data-i18n="quantity" class="font-semibold text-current"></strong>: <span class="summary-quantity">...</span></div>
@@ -606,20 +588,19 @@
                         </div>
                     </div>
                     
-                    <!-- Expanded Form View -->
                     <div class="line-item-body p-4 space-y-4 border-t border-gray-200 dark:border-gray-700 mt-4">
                         <div><label class="block text-sm font-medium mb-1" data-i18n="whatIsTheItem"></label><div class="relative"><input type="text" class="input-field item-description pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
-                        <div><label class="block text-sm font-medium mb-1" data-i18n="commodityCode"></label><input type="text" class="input-field commodity-code" placeholder="xxxx.xx.xxxx"></div>
+                        <div><label class="block text-sm font-medium mb-1" data-i18n="commodityCode"></label><input type="text" class="input-field commodity-code" placeholder="xxxx.xx.xxxxxx"></div>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div><label class="block text-sm font-medium mb-1" data-i18n="quantity"></label><div class="relative"><input type="number" min="1" value="1" class="input-field item-quantity pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
+                            <div><label class="block text-sm font-medium mb-1" data-i18n="quantity"></label><div class="relative"><input type="number" min="1" step="1" value="1" class="input-field item-quantity pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
                             <div><label class="block text-sm font-medium mb-1" data-i18n="units"></label><select class="input-field item-units">${unitOptions}</select></div>
-                            <div><label class="block text-sm font-medium mb-1" data-i18n="weight"></label><div class="relative"><input type="number" min="0.1" step="0.1" value="0.5" class="input-field item-weight pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
+                            <div><label class="block text-sm font-medium mb-1" data-i18n="weight"></label><div class="relative"><input type="number" min="0.001" step="0.001" value="0.5" class="input-field item-weight pr-8" required><span class="input-indicator indicator-required">*</span></div></div>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-sm font-medium mb-1" data-i18n="valuePerItem"></label>
                                 <div class="flex items-center">
-                                    <div class="relative w-full"><input type="number" min="0" step="0.01" value="1" class="input-field item-value rounded-r-none pr-8" required><span class="input-indicator indicator-required">*</span></div>
+                                    <div class="relative w-full"><input type="number" min="0" step="0.001" value="1" class="input-field item-value rounded-r-none pr-8" required><span class="input-indicator indicator-required">*</span></div>
                                     <select class="input-field item-currency rounded-l-none border-l-0 w-24">${currencyOptions}</select>
                                 </div>
                             </div>
@@ -634,10 +615,7 @@
             const newItem = document.getElementById(`item-wrapper-${itemId}`);
             newItem.querySelectorAll('input[required], select[required]').forEach(updateInputValidationState);
             updateLineItemSummary(newItem);
-            
-            // Start collapsed by default
             newItem.classList.add('is-collapsed');
-            
             updateContentLanguage();
             renumberLineItemHeaders();
         }
@@ -671,8 +649,8 @@
             const weight = parseFloat(itemElement.querySelector('.item-weight').value) || 0;
             const value = parseFloat(itemElement.querySelector('.item-value').value) || 0;
             const currency = itemElement.querySelector('.item-currency').value;
-            const totalItemWeight = (quantity * weight).toFixed(2);
-            const totalValue = (quantity * value).toFixed(2);
+            const totalItemWeight = (quantity * weight).toFixed(3);
+            const totalValue = (quantity * value).toFixed(3);
             
             descSpan.textContent = description || '...';
             qtySpan.textContent = quantity;
@@ -691,7 +669,7 @@
             const currency = document.querySelector('.item-currency')?.value || 'THB';
 
             document.querySelectorAll('.line-item').forEach(item => {
-                const quantity = parseFloat(item.querySelector('.item-quantity')?.value) || 0;
+                const quantity = parseInt(item.querySelector('.item-quantity')?.value, 10) || 0;
                 const weight = parseFloat(item.querySelector('.item-weight')?.value) || 0;
                 const value = parseFloat(item.querySelector('.item-value')?.value) || 0;
                 totalUnits += quantity;
@@ -700,8 +678,8 @@
             });
 
             document.getElementById('summary-total-units').textContent = totalUnits;
-            document.getElementById('summary-total-weight').textContent = `${totalWeight.toFixed(2)} KG`;
-            document.getElementById('summary-total-value').textContent = `${totalValue.toFixed(2)} ${currency}`;
+            document.getElementById('summary-total-weight').textContent = `${totalWeight.toFixed(3)} KG`;
+            document.getElementById('summary-total-value').textContent = `${totalValue.toFixed(3)} ${currency}`;
             updateAllLineItemSummaries();
         }
 
@@ -713,9 +691,10 @@
             if (validateLastLineItem()) {
                 formMessage.classList.add('hidden');
                 createLineItem();
+                updateSummary();
                 const newItem = lineItemsContainer.querySelector('.line-item:last-child');
                 if (newItem) {
-                    newItem.classList.remove('is-collapsed'); // Expand the new item
+                    newItem.classList.remove('is-collapsed');
                 }
             } else {
                 formMessage.textContent = getTranslatedText('fillAllFieldsInItem');
@@ -738,23 +717,34 @@
         });
 
         lineItemsContainer.addEventListener('input', (e) => {
-            const item = e.target.closest('.line-item');
+            const target = e.target;
+            const item = target.closest('.line-item');
             if (item) {
                 updateLineItemSummary(item);
             }
-            if (e.target.matches('.item-quantity, .item-weight, .item-value, .item-currency')) {
+            if (target.matches('.item-quantity, .item-weight, .item-value, .item-currency')) {
                 updateSummary();
             }
-            if (e.target.matches('.item-currency')) {
-                const newCurrency = e.target.value;
+            if (target.matches('.item-currency')) {
+                const newCurrency = target.value;
                 document.querySelectorAll('.item-currency').forEach(select => select.value = newCurrency);
                 document.getElementById('insurance-currency').textContent = newCurrency;
             }
-            if (e.target.matches('.commodity-code')) {
-                let val = e.target.value.replace(/\D/g, '');
+            if (target.matches('.commodity-code')) {
+                let val = target.value.replace(/[^\d]/g, '');
                 if (val.length > 4) val = val.slice(0, 4) + '.' + val.slice(4);
                 if (val.length > 7) val = val.slice(0, 7) + '.' + val.slice(7);
-                e.target.value = val.slice(0, 12);
+                target.value = val.slice(0, 14);
+            }
+            if (target.matches('.item-quantity')) {
+                target.value = target.value.replace(/\D/g, '');
+            }
+            if (target.matches('.item-weight, .item-value')) {
+                const value = target.value;
+                const decimalIndex = value.indexOf('.');
+                if (decimalIndex !== -1 && value.length - decimalIndex - 1 > 3) {
+                    target.value = value.substring(0, decimalIndex + 4);
+                }
             }
         });
 
@@ -795,16 +785,12 @@
         
         const invoiceNumberInput = document.getElementById('invoice-number');
         const invoiceNumberIndicator = document.getElementById('invoice-number-indicator');
-        const invoiceNumberLabel = document.getElementById('invoice-number-label');
 
         document.getElementById('create-invoice-btn').addEventListener('click', (e) => {
             e.currentTarget.classList.add('active');
             document.getElementById('use-my-own-invoice-btn').classList.remove('active');
             invoiceNumberInput.required = true;
             invoiceNumberIndicator.classList.remove('hidden');
-            if (!invoiceNumberLabel.querySelector('.text-red-500')) {
-                invoiceNumberLabel.insertAdjacentHTML('beforeend', ' <span class="text-red-500">*</span>');
-            }
         });
         document.getElementById('use-my-own-invoice-btn').addEventListener('click', (e) => {
             e.currentTarget.classList.add('active');
@@ -812,7 +798,6 @@
             invoiceNumberInput.required = false;
             invoiceNumberIndicator.classList.add('hidden');
             invoiceNumberInput.classList.remove('is-invalid');
-            invoiceNumberLabel.querySelector('.text-red-500')?.remove();
         });
 
         function showLeaveModal(url) {
@@ -870,8 +855,8 @@
         setupCountryComboBox('shipper-country-input', 'shipper-country-value', 'shipper-country-dropdown');
         setupCountryComboBox('receiver-country-input', 'receiver-country-value', 'receiver-country-dropdown');
         initializeForm();
+        populateStaticDropdowns();
         
-        // Initial item starts expanded
         createLineItem();
         const firstItem = lineItemsContainer.querySelector('.line-item');
         if (firstItem) {
@@ -884,188 +869,3 @@
     </script>
 </body>
 </html>
-```
-
-### 2. ไฟล์ `styles.css` (อัปเดตแล้ว)
-
-
-```css
-/*
-  DHL Backup Solution - Central Stylesheet v10.7
-  Final fix for Progress Bar with Arrows
-*/
-
-/* --- Base and Layout --- */
-body {
-    font-family: 'Inter', sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    background-color: #f3f4f6;
-    color: #1f2937;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    margin: 0;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-main { flex-grow: 1; padding: 1rem; }
-.container { max-width: 1280px; margin-left: auto; margin-right: auto; padding: 0 1rem; }
-
-/* --- Form Elements & Buttons --- */
-.input-field, textarea.input-field {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    border: 1px solid #d1d5db;
-    border-radius: 0.375rem;
-    background-color: #fff;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease, color 0.3s ease;
-}
-.input-field:focus, textarea.input-field:focus {
-    outline: none;
-    border-color: #dc2626;
-    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2);
-}
-.btn-primary {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.75rem 1.5rem;
-    font-weight: 600;
-    border-radius: 0.375rem;
-    border: 1px solid transparent;
-    transition: all 0.2s ease-in-out;
-    cursor: pointer;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-}
-.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
-.btn-red { background-color: #dc2626; color: white; }
-.btn-red:hover:not(:disabled) { background-color: #b91c1c; transform: translateY(-1px); }
-.btn-yellow { background-color: #fbbf24; color: #1f2937; }
-.btn-yellow:hover:not(:disabled) { background-color: #f59e0b; transform: translateY(-1px); }
-.btn-gray { background-color: #e5e7eb; color: #1f2937; }
-.btn-gray:hover:not(:disabled) { background-color: #d1d5db; transform: translateY(-1px); }
-.utility-button {
-    background-color: #e5e7eb;
-    color: #374151;
-    padding: 0.5rem;
-    border-radius: 0.375rem;
-    transition: background-color 0.2s, color 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.utility-button:hover { background-color: #d1d5db; }
-
-/* --- Components --- */
-.hidden-page, .hidden, .ship-now-step.hidden { display: none !important; }
-header, footer { width: 100%; z-index: 10; }
-.card {
-    background-color: #ffffff;
-    border-radius: 0.75rem;
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
-    padding: 1.5rem;
-}
-@media (min-width: 640px) { .card { padding: 2rem; } }
-
-.main-action-button { 
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    justify-content: center; 
-    flex: 1;
-    padding: 2rem; 
-    border-radius: 0.75rem; 
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); 
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; 
-    cursor: pointer; 
-    border: none; 
-    min-height: 10rem; 
-    text-decoration: none; 
-}
-.main-action-button:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
-.main-action-button svg { width: 3.5rem; height: 3.5rem; margin-bottom: 0.75rem; }
-.main-action-button span { font-size: 1.25rem; font-weight: 600; text-align: center; line-height: 1.3; }
-
-/* --- Progress Bar with Arrows --- */
-.progress-bar { 
-    display: flex; 
-    align-items: center; 
-    justify-content: space-between;
-    margin-bottom: 2rem;
-    padding: 0 0.5rem; /* Add some padding to prevent circles from touching edges */
-}
-.progress-step { 
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    flex-shrink: 0; /* Prevent steps from shrinking */
-}
-.step-circle { 
-    width: 2.5rem; 
-    height: 2.5rem; 
-    border-radius: 50%; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    font-weight: bold; 
-    border: 2px solid #d1d5db; 
-    background-color: #fff; 
-    color: #6b7280; 
-    transition: all 0.4s ease; 
-    flex-shrink: 0;
-}
-.step-text { 
-    font-size: 0.75rem; 
-    margin-top: 0.5rem; 
-    text-align: center; 
-    transition: color 0.4s ease; 
-    white-space: nowrap;
-    line-height: 1.2;
-}
-.progress-connector {
-    flex-grow: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #d1d5db; /* Default grey color */
-    transition: color 0.4s ease;
-    margin: 0 0.25rem; /* Space between circle and arrow */
-    padding-bottom: 1.5rem; /* Align with circles */
-}
-.progress-connector.is-complete {
-    color: #fbbf24; /* Yellow color for completed steps */
-}
-.progress-connector svg {
-    width: 1.5rem;
-    height: 1.5rem;
-}
-.progress-step.is-active .step-circle { background-color: #dc2626; border-color: #dc2626; color: white; }
-.progress-step.is-active .step-text { color: #dc2626; font-weight: 600; }
-.progress-step.is-complete .step-circle { background-color: #10B981; border-color: #10B981; color: white; }
-.progress-step.is-complete .step-text { color: #4b5563; }
-.progress-step .step-number { display: block; }
-.progress-step .step-check { display: none; width: 1.5rem; height: 1.5rem; }
-.progress-step.is-complete .step-number { display: none; }
-.progress-step.is-complete .step-check { display: block; }
-
-/* --- Accordion for Tracking, etc. --- */
-.accordion-item { border-bottom: 1px solid #e5e7eb; }
-.accordion-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem; cursor: pointer; background-color: #f3f4f6; }
-.accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; }
-
-/* --- Dark Mode --- */
-body.dark-mode { background-color: #111827; color: #d1d5db; }
-body.dark-mode header, body.dark-mode footer, body.dark-mode .card { background-color: #1f2937; border-color: #374151; }
-body.dark-mode .text-gray-800, body.dark-mode .text-gray-700, body.dark-mode .text-gray-600, body.dark-mode .text-black, body.dark-mode label { color: #d1d5db; }
-body.dark-mode .input-field { background-color: #374151; color: #d1d5db; border-color: #4b5563; }
-body.dark-mode .input-field:focus { border-color: #fbbf24; }
-body.dark-mode .utility-button, body.dark-mode .btn-gray { background-color: #374151; color: #e5e7eb; }
-body.dark-mode .utility-button:hover, body.dark-mode .btn-gray:hover:not(:disabled) { background-color: #4b5563; }
-body.dark-mode .btn-yellow { background-color: #f59e0b; color: #111827; }
-body.dark-mode .bg-yellow-50 { background-color: #374151; border-color: #4b5563; }
-body.dark-mode .package-piece-item, body.dark-mode .line-item { background-color: #2b374d; border-color: #4b5563; }
-body.dark-mode .step-circle { border-color: #4b5563; background-color: #1f2937; color: #9ca3af; }
-body.dark-mode .progress-connector { color: #4b5563; }
-body.dark-mode .progress-connector.is-complete { color: #fbbf24; }
-body.dark-mode .progress-step.is-active .step-text { color: #f87171; }
-body.dark-mode .progress-step.is-complete .step-text { color: #d1d5db; }
-body.dark-mode .progress-step.is-complete .step-circle { background-color: #10B981; border-color: #10B981; }
-body.dark-mode .accordion-header { background-color: #2c374a; }
