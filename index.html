@@ -90,42 +90,32 @@
             const corporatePage = document.getElementById('corporate-page');
             const trackingDisplayPage = document.getElementById('tracking-display-page');
 
-            function displayMultiTrackingResults(data) {
-                lastResultsData = data; 
+            function displayMultiTrackingResults(results) {
+                lastResultsData = results; 
                 const contentDiv = document.getElementById('tracking-content');
-                const shipments = data.shipments || [];
                 
-                if (shipments.length === 0) {
+                if (!results || results.length === 0) {
                     contentDiv.innerHTML = `<p class="text-center p-4">${getTranslatedText('trackingResultUnexpected')}</p>`;
                     return;
                 }
 
-                contentDiv.innerHTML = shipments.map(shipment => {
-                    // --- ตรวจสอบว่าเป็นก้อน Error หรือไม่ (จาก Logic เดิม) ---
-                    if (shipment.title && shipment.title.toLowerCase().includes('not found')) {
-                        const requestedNumber = shipment.trackingNumber || 'N/A';
-                        const errorStatus = shipment.title || getTranslatedText('trackingResultUnexpected');
-                        const errorDetail = shipment.detail || '';
-                        const additionalDetails = shipment.additionalDetails || [];
-
-                        let additionalDetailsHtml = '';
-                        if (Array.isArray(additionalDetails) && additionalDetails.length > 0) {
-                            additionalDetailsHtml = additionalDetails.map(detail => `<p class="text-sm text-gray-500 mt-1">${detail}</p>`).join('');
-                        }
-
+                contentDiv.innerHTML = results.map(item => {
+                    // --- ตรวจสอบว่าเป็นก้อน Error หรือไม่ ---
+                    if (item.isError) {
                         return `
                             <div class="accordion-item is-error">
                                 <div class="accordion-header w-full text-left !cursor-default p-4">
                                     <div class="flex flex-col w-full">
-                                        <h4 class="font-bold text-lg">${requestedNumber}</h4>
-                                        <p class="accordion-header-info text-red-600 dark:text-red-400 font-semibold">${errorStatus}</p>
-                                        ${errorDetail ? `<p class="text-sm text-gray-500 mt-1">${errorDetail}</p>` : ''}
-                                        ${additionalDetailsHtml}
+                                        <h4 class="font-bold text-lg">${item.trackingNumber}</h4>
+                                        <p class="accordion-header-info text-red-600 dark:text-red-400 font-semibold">${item.title}</p>
+                                        ${item.detail ? `<p class="text-sm text-gray-500 mt-1">${item.detail}</p>` : ''}
+                                        ${item.additionalDetails ? item.additionalDetails.map(d => `<p class="text-sm text-gray-500 mt-1">${d}</p>`).join('') : ''}
                                     </div>
                                 </div>
                             </div>`;
                     } else {
-                        // --- ถ้าไม่ใช่ Error ให้แสดงผลตามปกติ ---
+                        // --- ถ้าไม่ใช่ Error ให้แสดงผลตามปกติ (ใช้ Logic จากไฟล์เก่า) ---
+                        const shipment = item; // เพื่อความชัดเจน
                         const trackingNumber = shipment?.shipmentTrackingNumber || 'N/A';
                         const status = shipment?.status || getTranslatedText('trackingResultUnexpected');
                         const shipperLocation = shipment?.shipperDetails?.serviceArea?.[0]?.description || 'N/A';
@@ -228,38 +218,82 @@
                 const trackingInput = document.getElementById('tracking-number-input').value;
                 const trackingResultDiv = document.getElementById('tracking-result');
                 const cleanedNumbersString = cleanTrackingNumbers(trackingInput);
-                if (!cleanedNumbersString) { trackingResultDiv.textContent = getTranslatedText('noValidNumbers'); trackingResultDiv.classList.remove('hidden'); return; }
+
+                if (!cleanedNumbersString) { 
+                    trackingResultDiv.textContent = getTranslatedText('noValidNumbers'); 
+                    trackingResultDiv.classList.remove('hidden'); 
+                    return; 
+                }
+
                 trackingResultDiv.textContent = getTranslatedText('trackingSimulated');
                 trackingResultDiv.classList.remove('hidden');
                 trackButton.disabled = true;
+
+                const showTrackingPage = () => {
+                    corporatePage.classList.add('hidden-page');
+                    trackingDisplayPage.classList.remove('hidden-page');
+                    trackingResultDiv.classList.add('hidden');
+                };
+
                 try {
                     const apiUrl = `https://dbs-back-viruzjokes-projects.vercel.app/api/track?trackingNumber=${cleanedNumbersString}`;
                     const response = await fetch(apiUrl);
                     const data = await response.json();
-                    if (!response.ok) {
-                        // If the API returns an error status, we create a mock error structure
-                        // that our display function can understand.
-                        const errorShipment = {
-                            shipments: [{
-                                title: data.title || `Error: ${response.status}`,
-                                detail: data.detail || response.statusText,
-                                additionalDetails: data.additionalDetails,
-                                trackingNumber: cleanedNumbersString // Show the number that was queried
-                            }]
-                        };
-                        displayMultiTrackingResults(errorShipment);
-                        corporatePage.classList.add('hidden-page');
-                        trackingDisplayPage.classList.remove('hidden-page');
-                        trackingResultDiv.classList.add('hidden');
-                        return; // Stop further execution
-                    }
-                    if (data?.shipments) {
-                        displayMultiTrackingResults(data);
-                        corporatePage.classList.add('hidden-page');
-                        trackingDisplayPage.classList.remove('hidden-page');
-                        trackingResultDiv.classList.add('hidden');
+
+                    if (response.ok) {
+                        // Case 1: All tracking numbers are valid
+                        displayMultiTrackingResults(data.shipments || []);
+                        showTrackingPage();
                     } else {
-                        displayMultiTrackingResults({ shipments: [] });
+                        // Case 2: The API returned an error (e.g., 404), which might contain partial results
+                        if (data && data.additionalDetails && Array.isArray(data.additionalDetails)) {
+                            const validNumbers = [];
+                            const errorResults = [];
+                            const numberRegex = /(\d{10,})/;
+
+                            data.additionalDetails.forEach(detail => {
+                                const match = detail.match(numberRegex);
+                                const trackingNumber = match ? match[1] : 'Unknown';
+
+                                if (detail.toLowerCase().includes('no shipments found')) {
+                                    errorResults.push({
+                                        isError: true,
+                                        trackingNumber: trackingNumber,
+                                        title: 'No data found',
+                                        detail: detail
+                                    });
+                                } else if (detail.toLowerCase().includes('shipments found')) {
+                                    if (match) validNumbers.push(trackingNumber);
+                                }
+                            });
+
+                            if (validNumbers.length > 0) {
+                                // Re-fetch only the valid numbers
+                                const validNumbersString = validNumbers.join(',');
+                                const validApiUrl = `https://dbs-back-viruzjokes-projects.vercel.app/api/track?trackingNumber=${validNumbersString}`;
+                                const validResponse = await fetch(validApiUrl);
+                                const validData = await validResponse.json();
+                                
+                                const finalResults = (validData.shipments || []).concat(errorResults);
+                                displayMultiTrackingResults(finalResults);
+                            } else {
+                                // No valid numbers found, just display all errors
+                                displayMultiTrackingResults(errorResults);
+                            }
+                        } else {
+                             // Generic error from API, display it as a single error block
+                            const errorShipment = {
+                                shipments: [{
+                                    isError: true,
+                                    title: data.title || `Error: ${response.status}`,
+                                    detail: data.detail || response.statusText,
+                                    additionalDetails: data.additionalDetails,
+                                    trackingNumber: cleanedNumbersString
+                                }]
+                            };
+                            displayMultiTrackingResults(errorShipment.shipments);
+                        }
+                        showTrackingPage();
                     }
                 } catch (error) {
                     trackingResultDiv.textContent = `${getTranslatedText('trackingError')} ${error.message}`;
