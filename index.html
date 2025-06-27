@@ -241,22 +241,22 @@
                 };
 
                 try {
-                    const apiUrl = `https://dbs-back-viruzjokes-projects.vercel.app/api/track?trackingNumber=${cleanedNumbersString}`;
+                    const proxyUrl = 'https://corsproxy.io/?';
+                    const apiUrl = `${proxyUrl}${encodeURIComponent(`https://dbs-back-viruzjokes-projects.vercel.app/api/track?trackingNumber=${cleanedNumbersString}`)}`;
+                    
                     const response = await fetch(apiUrl);
                     const data = await response.json();
 
                     if (response.ok) {
-                        // Case 1: All tracking numbers are valid and data is returned
                         displayMultiTrackingResults(data);
                     } else {
-                        // Case 2: The API returned an error (e.g., 404)
-                        // Display the error information directly.
                         displayMultiTrackingResults(null, true, data);
                     }
                     showTrackingPage();
 
                 } catch (error) {
-                    // Handle network errors or other exceptions during fetch
+                    // This block catches network errors or JSON parsing errors
+                    console.error("Fetch Error:", error);
                     trackingResultDiv.textContent = `${getTranslatedText('trackingError')} ${error.message}`;
                 } finally {
                     trackButton.disabled = false;
