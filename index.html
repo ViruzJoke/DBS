@@ -87,44 +87,82 @@
                 contentDiv.innerHTML = shipments.map(shipment => {
                     const trackingNumber = shipment.shipmentTrackingNumber;
                     const status = shipment.status || getTranslatedText('trackingResultUnexpected');
+                    const shipperLocation = shipment.shipperDetails?.serviceArea?.[0]?.description || 'N/A';
+                    const receiverLocation = shipment.receiverDetails?.serviceArea?.[0]?.description || 'N/A';
+                    const pieceCount = shipment.numberOfPieces || 0;
+                    const weightUnit = shipment.unitOfMeasurements?.toLowerCase() === 'metric' ? 'KG' : 'LBS';
+                    const totalWeight = shipment.totalWeight ? `${shipment.totalWeight} ${weightUnit}` : 'N/A';
+                    
                     return `
                         <div class="accordion-item">
                             <button class="accordion-header w-full text-left" aria-expanded="false">
-                                <div><h4>${trackingNumber}</h4><p class="accordion-header-info">${status}</p></div>
-                                <svg class="accordion-arrow w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                <div class="flex-grow">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <h4 class="font-bold text-lg">${trackingNumber}</h4>
+                                            <p class="accordion-header-info text-green-600 dark:text-green-400 font-semibold">${status}</p>
+                                        </div>
+                                        <svg class="accordion-arrow w-6 h-6 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    </div>
+                                    <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-1 text-sm mt-2 pt-2 border-t border-gray-200 dark:border-gray-600">
+                                        <div><p class="font-semibold">${getTranslatedText('origin')}</p><p>${shipperLocation}</p></div>
+                                        <div><p class="font-semibold">${getTranslatedText('destination')}</p><p>${receiverLocation}</p></div>
+                                        <div><p class="font-semibold">${getTranslatedText('pieces')}</p><p>${pieceCount}</p></div>
+                                        <div><p class="font-semibold">${getTranslatedText('totalWeight')}</p><p>${totalWeight}</p></div>
+                                    </div>
+                                </div>
                             </button>
-                            <div class="accordion-body"><div class="accordion-body-content">${generateShipmentHTML(shipment)}</div></div>
+                            <div class="accordion-body"><div class="accordion-body-content p-4">${generateShipmentTimelineHTML(shipment)}</div></div>
                         </div>`;
                 }).join('');
+
                 contentDiv.querySelectorAll('.accordion-header').forEach(button => {
                     button.addEventListener('click', () => {
                         const isExpanded = button.getAttribute('aria-expanded') === 'true';
                         button.setAttribute('aria-expanded', !isExpanded);
+                        button.querySelector('.accordion-arrow').classList.toggle('rotate-180');
                         const body = button.nextElementSibling;
-                        if (!isExpanded) { body.style.maxHeight = body.scrollHeight + "px"; } else { body.style.maxHeight = '0'; }
+                        if (!isExpanded) { 
+                            body.style.maxHeight = body.scrollHeight + "px"; 
+                        } else { 
+                            body.style.maxHeight = '0'; 
+                        }
                     });
                 });
             }
-            function generateShipmentHTML(shipment) {
-                const shipperLocation = shipment.shipperDetails?.serviceArea?.[0]?.description || 'N/A';
-                const receiverLocation = shipment.receiverDetails?.serviceArea?.[0]?.description || 'N/A';
-                const pieceCount = shipment.numberOfPieces || 0;
-                const weightUnit = shipment.unitOfMeasurements?.toLowerCase() === 'metric' ? 'KG' : 'LBS';
-                const totalWeight = shipment.totalWeight ? `${shipment.totalWeight} ${weightUnit}` : 'N/A';
+
+            function generateShipmentTimelineHTML(shipment) {
                 const eventsByDate = (shipment.events || []).reduce((acc, event) => { const date = new Date(event.date).toLocaleDateString('en-CA'); if (!acc[date]) acc[date] = []; acc[date].push(event); return acc; }, {});
                 const sortedDates = Object.keys(eventsByDate).sort((a, b) => new Date(b) - new Date(a));
+                
+                if (sortedDates.length === 0) {
+                    return `<p class="italic">${getTranslatedText('noEventsFound')}</p>`;
+                }
+
                 return `
-                    <div class="mb-4 pb-4 border-b border-gray-300 dark:border-gray-600">
-                         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                            <div><p class="font-bold">${getTranslatedText('origin')}</p><p>${shipperLocation}</p></div>
-                            <div><p class="font-bold">${getTranslatedText('destination')}</p><p>${receiverLocation}</p></div>
-                            <div><p class="font-bold">${getTranslatedText('pieces')}</p><p>${pieceCount}</p></div>
-                            <div><p class="font-bold">${getTranslatedText('totalWeight')}</p><p>${totalWeight}</p></div>
-                        </div>
-                    </div>
                     <div>
                         <h3 class="text-lg font-bold mb-4">${getTranslatedText('eventHistory')}</h3>
-                        ${sortedDates.length > 0 ? sortedDates.map(date => `<div><h4 class="timeline-date-header">${new Date(date).toLocaleDateString(currentLanguage === 'th' ? 'th-TH' : 'en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</h4><ul class="tracking-timeline">${eventsByDate[date].sort((a, b) => (b.time || '').localeCompare(a.time || '')).map((event, index) => `<li class="timeline-item ${index === 0 && date === sortedDates[0] ? 'is-latest' : ''}"><div class="timeline-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg></div><div class="timeline-content"><p class="timeline-timestamp">${event.time || ''}</p><p class="timeline-status">${event.description || 'N/A'}</p><p class="timeline-location">${event.serviceArea?.[0]?.description || ''}</p></div></li>`).join('')}</ul></div>`).join('') : `<p class="italic">${getTranslatedText('noEventsFound')}</p>`}
+                        ${sortedDates.map(date => `
+                            <div>
+                                <h4 class="timeline-date-header">${new Date(date).toLocaleDateString(currentLanguage === 'th' ? 'th-TH' : 'en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</h4>
+                                <ul class="tracking-timeline">
+                                    ${eventsByDate[date].sort((a, b) => (b.time || '').localeCompare(a.time || '')).map((event, index) => `
+                                        <li class="timeline-item ${index === 0 && date === sortedDates[0] ? 'is-latest' : ''}">
+                                            <div class="timeline-icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                                </svg>
+                                            </div>
+                                            <div class="timeline-content">
+                                                <p class="timeline-timestamp">${event.time || ''}</p>
+                                                <p class="timeline-status">${event.description || 'N/A'}</p>
+                                                <p class="timeline-location">${event.serviceArea?.[0]?.description || ''}</p>
+                                            </div>
+                                        </li>
+                                    `).join('')}
+                                </ul>
+                            </div>
+                        `).join('')}
                     </div>`;
             }
             
@@ -140,8 +178,13 @@
                 trackingResultDiv.classList.remove('hidden');
                 trackButton.disabled = true;
                 try {
-                    const response = await fetch(`https://dbs-back-viruzjokes-projects.vercel.app/api/track?trackingNumber=${cleanedNumbersString}`);
-                    if (!response.ok) throw new Error(getTranslatedText('serverError'));
+                    // ใช้ URL ของ Vercel function โดยตรง (หลังจากตั้งค่า CORS ที่ฝั่ง Backend แล้ว)
+                    const apiUrl = `https://dbs-back-viruzjokes-projects.vercel.app/api/track?trackingNumber=${cleanedNumbersString}`;
+                    const response = await fetch(apiUrl);
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.message || getTranslatedText('serverError'));
+                    }
                     const data = await response.json();
                     if (data?.shipments) {
                         displayMultiTrackingResults(data);
