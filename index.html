@@ -8,12 +8,15 @@
     <link rel="stylesheet" href="styles.css">
     <style>
         /* เพิ่มสไตล์สำหรับแสดงผล Error */
-        .accordion-item.is-error .accordion-header {
+        .tracking-error-box {
             background-color: #fef2f2; /* red-50 */
-            cursor: default;
+            border: 1px solid #fecaca; /* red-200 */
+            border-radius: 0.5rem;
+            padding: 1rem;
         }
-        .dark-mode .accordion-item.is-error .accordion-header {
-            background-color: #451a1a; /* A dark red */
+        .dark-mode .tracking-error-box {
+            background-color: #451a1a;
+            border-color: #991b1b;
         }
     </style>
 </head>
@@ -90,67 +93,69 @@
             const corporatePage = document.getElementById('corporate-page');
             const trackingDisplayPage = document.getElementById('tracking-display-page');
 
-            function displayMultiTrackingResults(results) {
-                lastResultsData = results; 
+            function displayMultiTrackingResults(data, isError = false, errorData = {}) {
+                lastResultsData = data; 
                 const contentDiv = document.getElementById('tracking-content');
                 
-                if (!results || results.length === 0) {
+                if (isError) {
+                    const errorTitle = errorData.title || 'Error';
+                    const errorDetail = errorData.detail || 'An unknown error occurred.';
+                    const additionalDetails = errorData.additionalDetails || [];
+                    
+                    let additionalDetailsHtml = '';
+                    if (Array.isArray(additionalDetails) && additionalDetails.length > 0) {
+                        additionalDetailsHtml = additionalDetails.map(detail => `<p class="text-sm text-gray-600 dark:text-gray-400 mt-1">${detail}</p>`).join('');
+                    }
+
+                    contentDiv.innerHTML = `
+                        <div class="tracking-error-box">
+                            <h4 class="font-bold text-lg text-red-700 dark:text-red-400">${errorTitle}</h4>
+                            <p class="text-red-600 dark:text-red-300 font-semibold mt-1">${errorDetail}</p>
+                            <div class="mt-2">${additionalDetailsHtml}</div>
+                        </div>`;
+                    return;
+                }
+
+                const shipments = data.shipments || [];
+                if (shipments.length === 0) {
                     contentDiv.innerHTML = `<p class="text-center p-4">${getTranslatedText('trackingResultUnexpected')}</p>`;
                     return;
                 }
 
-                contentDiv.innerHTML = results.map(item => {
-                    // --- ตรวจสอบว่าเป็นก้อน Error หรือไม่ ---
-                    if (item.isError) {
-                        return `
-                            <div class="accordion-item is-error">
-                                <div class="accordion-header w-full text-left !cursor-default p-4">
-                                    <div class="flex flex-col w-full">
-                                        <h4 class="font-bold text-lg">${item.trackingNumber}</h4>
-                                        <p class="accordion-header-info text-red-600 dark:text-red-400 font-semibold">${item.title}</p>
-                                        ${item.detail ? `<p class="text-sm text-gray-500 mt-1">${item.detail}</p>` : ''}
-                                        ${item.additionalDetails ? item.additionalDetails.map(d => `<p class="text-sm text-gray-500 mt-1">${d}</p>`).join('') : ''}
+                contentDiv.innerHTML = shipments.map(shipment => {
+                    const trackingNumber = shipment?.shipmentTrackingNumber || 'N/A';
+                    const status = shipment?.status || getTranslatedText('trackingResultUnexpected');
+                    const shipperLocation = shipment?.shipperDetails?.serviceArea?.[0]?.description || 'N/A';
+                    const receiverLocation = shipment?.receiverDetails?.serviceArea?.[0]?.description || 'N/A';
+                    const pieceCount = shipment?.numberOfPieces ?? 0;
+                    const weightValue = shipment?.totalWeight;
+                    const weightUnit = shipment?.unitOfMeasurements?.toLowerCase() === 'metric' ? 'KG' : 'LBS';
+                    const totalWeight = weightValue ? `${weightValue} ${weightUnit}` : 'N/A';
+                    
+                    return `
+                        <div class="accordion-item">
+                            <button class="accordion-header w-full text-left" aria-expanded="false">
+                                <div class="flex flex-col w-full">
+                                    <div class="flex justify-between items-center w-full">
+                                        <div>
+                                            <h4 class="font-bold text-lg">${trackingNumber}</h4>
+                                            <p class="accordion-header-info text-green-600 dark:text-green-400 font-semibold">${status}</p>
+                                        </div>
+                                        <svg class="accordion-arrow w-6 h-6 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    </div>
+                                    <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-2 text-sm mt-3 pt-3 border-t border-gray-200 dark:border-gray-600">
+                                        <div><p class="font-semibold">${getTranslatedText('origin')}</p><p class="truncate">${shipperLocation}</p></div>
+                                        <div><p class="font-semibold">${getTranslatedText('destination')}</p><p class="truncate">${receiverLocation}</p></div>
+                                        <div><p class="font-semibold">${getTranslatedText('pieces')}</p><p>${pieceCount}</p></div>
+                                        <div><p class="font-semibold">${getTranslatedText('totalWeight')}</p><p>${totalWeight}</p></div>
                                     </div>
                                 </div>
-                            </div>`;
-                    } else {
-                        // --- ถ้าไม่ใช่ Error ให้แสดงผลตามปกติ (ใช้ Logic จากไฟล์เก่า) ---
-                        const shipment = item; // เพื่อความชัดเจน
-                        const trackingNumber = shipment?.shipmentTrackingNumber || 'N/A';
-                        const status = shipment?.status || getTranslatedText('trackingResultUnexpected');
-                        const shipperLocation = shipment?.shipperDetails?.serviceArea?.[0]?.description || 'N/A';
-                        const receiverLocation = shipment?.receiverDetails?.serviceArea?.[0]?.description || 'N/A';
-                        const pieceCount = shipment?.numberOfPieces ?? 0;
-                        const weightValue = shipment?.totalWeight;
-                        const weightUnit = shipment?.unitOfMeasurements?.toLowerCase() === 'metric' ? 'KG' : 'LBS';
-                        const totalWeight = weightValue ? `${weightValue} ${weightUnit}` : 'N/A';
-                        
-                        return `
-                            <div class="accordion-item">
-                                <button class="accordion-header w-full text-left" aria-expanded="false">
-                                    <div class="flex flex-col w-full">
-                                        <div class="flex justify-between items-center w-full">
-                                            <div>
-                                                <h4 class="font-bold text-lg">${trackingNumber}</h4>
-                                                <p class="accordion-header-info text-green-600 dark:text-green-400 font-semibold">${status}</p>
-                                            </div>
-                                            <svg class="accordion-arrow w-6 h-6 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                                        </div>
-                                        <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-2 text-sm mt-3 pt-3 border-t border-gray-200 dark:border-gray-600">
-                                            <div><p class="font-semibold">${getTranslatedText('origin')}</p><p class="truncate">${shipperLocation}</p></div>
-                                            <div><p class="font-semibold">${getTranslatedText('destination')}</p><p class="truncate">${receiverLocation}</p></div>
-                                            <div><p class="font-semibold">${getTranslatedText('pieces')}</p><p>${pieceCount}</p></div>
-                                            <div><p class="font-semibold">${getTranslatedText('totalWeight')}</p><p>${totalWeight}</p></div>
-                                        </div>
-                                    </div>
-                                </button>
-                                <div class="accordion-body"><div class="accordion-body-content">${generateShipmentTimelineHTML(shipment)}</div></div>
-                            </div>`;
-                    }
+                            </button>
+                            <div class="accordion-body"><div class="accordion-body-content">${generateShipmentTimelineHTML(shipment)}</div></div>
+                        </div>`;
                 }).join('');
 
                 contentDiv.querySelectorAll('.accordion-header').forEach(button => {
-                    if (button.closest('.is-error')) return;
                     button.addEventListener('click', () => {
                         const isExpanded = button.getAttribute('aria-expanded') === 'true';
                         button.setAttribute('aria-expanded', !isExpanded);
@@ -241,61 +246,17 @@
                     const data = await response.json();
 
                     if (response.ok) {
-                        // Case 1: All tracking numbers are valid
-                        displayMultiTrackingResults(data.shipments || []);
-                        showTrackingPage();
+                        // Case 1: All tracking numbers are valid and data is returned
+                        displayMultiTrackingResults(data);
                     } else {
-                        // Case 2: The API returned an error (e.g., 404), which might contain partial results
-                        if (data && data.additionalDetails && Array.isArray(data.additionalDetails)) {
-                            const validNumbers = [];
-                            const errorResults = [];
-                            const numberRegex = /(\d{10,})/;
-
-                            data.additionalDetails.forEach(detail => {
-                                const match = detail.match(numberRegex);
-                                const trackingNumber = match ? match[1] : 'Unknown';
-
-                                if (detail.toLowerCase().includes('no shipments found')) {
-                                    errorResults.push({
-                                        isError: true,
-                                        trackingNumber: trackingNumber,
-                                        title: 'No data found',
-                                        detail: detail
-                                    });
-                                } else if (detail.toLowerCase().includes('shipments found')) {
-                                    if (match) validNumbers.push(trackingNumber);
-                                }
-                            });
-
-                            if (validNumbers.length > 0) {
-                                // Re-fetch only the valid numbers
-                                const validNumbersString = validNumbers.join(',');
-                                const validApiUrl = `https://dbs-back-viruzjokes-projects.vercel.app/api/track?trackingNumber=${validNumbersString}`;
-                                const validResponse = await fetch(validApiUrl);
-                                const validData = await validResponse.json();
-                                
-                                const finalResults = (validData.shipments || []).concat(errorResults);
-                                displayMultiTrackingResults(finalResults);
-                            } else {
-                                // No valid numbers found, just display all errors
-                                displayMultiTrackingResults(errorResults);
-                            }
-                        } else {
-                             // Generic error from API, display it as a single error block
-                            const errorShipment = {
-                                shipments: [{
-                                    isError: true,
-                                    title: data.title || `Error: ${response.status}`,
-                                    detail: data.detail || response.statusText,
-                                    additionalDetails: data.additionalDetails,
-                                    trackingNumber: cleanedNumbersString
-                                }]
-                            };
-                            displayMultiTrackingResults(errorShipment.shipments);
-                        }
-                        showTrackingPage();
+                        // Case 2: The API returned an error (e.g., 404)
+                        // Display the error information directly.
+                        displayMultiTrackingResults(null, true, data);
                     }
+                    showTrackingPage();
+
                 } catch (error) {
+                    // Handle network errors or other exceptions during fetch
                     trackingResultDiv.textContent = `${getTranslatedText('trackingError')} ${error.message}`;
                 } finally {
                     trackButton.disabled = false;
