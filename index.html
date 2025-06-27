@@ -85,13 +85,15 @@
                 const contentDiv = document.getElementById('tracking-content');
                 const shipments = data.shipments || [];
                 contentDiv.innerHTML = shipments.map(shipment => {
-                    const trackingNumber = shipment.id;
-                    const status = shipment.status?.description || getTranslatedText('trackingResultUnexpected');
-                    const shipperLocation = shipment.origin?.address?.addressLocality || 'N/A';
-                    const receiverLocation = shipment.destination?.address?.addressLocality || 'N/A';
-                    const pieceCount = shipment.details?.totalNumberOfPieces || 0;
-                    const weightUnit = shipment.details?.totalWeight?.unit || 'KG';
-                    const totalWeight = shipment.details?.totalWeight?.value ? `${shipment.details.totalWeight.value} ${weightUnit}` : 'N/A';
+                    // Robust data mapping with fallbacks
+                    const trackingNumber = shipment?.id || 'N/A';
+                    const status = shipment?.status?.description || shipment?.status?.status || getTranslatedText('trackingResultUnexpected');
+                    const shipperLocation = shipment?.origin?.address?.addressLocality || 'N/A';
+                    const receiverLocation = shipment?.destination?.address?.addressLocality || 'N/A';
+                    const pieceCount = shipment?.details?.totalNumberOfPieces || 0;
+                    const weightValue = shipment?.details?.totalWeight?.value;
+                    const weightUnit = shipment?.details?.totalWeight?.unit || 'KG';
+                    const totalWeight = weightValue ? `${weightValue} ${weightUnit}` : 'N/A';
                     
                     return `
                         <div class="accordion-item">
@@ -134,26 +136,35 @@
             }
 
             function generateShipmentTimelineHTML(shipment) {
-                const eventsByDate = (shipment.events || []).reduce((acc, event) => { 
-                    const date = new Date(event.date || event.timestamp).toLocaleDateString('en-CA'); 
+                if (!shipment?.events || shipment.events.length === 0) {
+                    return `<p class="italic p-4">${getTranslatedText('noEventsFound')}</p>`;
+                }
+
+                const eventsByDate = (shipment.events).reduce((acc, event) => { 
+                    const ts = event?.timestamp;
+                    if (!ts) return acc;
+                    const date = ts.substring(0, 10); // YYYY-MM-DD format
                     if (!acc[date]) acc[date] = []; 
                     acc[date].push(event); 
                     return acc; 
                 }, {});
+
                 const sortedDates = Object.keys(eventsByDate).sort((a, b) => new Date(b) - new Date(a));
                 
-                if (sortedDates.length === 0) {
-                    return `<p class="italic p-4">${getTranslatedText('noEventsFound')}</p>`;
-                }
-
                 return `
                     <div>
                         <h3 class="text-lg font-bold mb-4">${getTranslatedText('eventHistory')}</h3>
                         ${sortedDates.map(date => `
                             <div>
-                                <h4 class="timeline-date-header">${new Date(date).toLocaleDateString(currentLanguage === 'th' ? 'th-TH' : 'en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</h4>
+                                <h4 class="timeline-date-header">${new Date(date+'T00:00:00').toLocaleDateString(currentLanguage === 'th' ? 'th-TH' : 'en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</h4>
                                 <ul class="tracking-timeline">
-                                    ${eventsByDate[date].sort((a, b) => (b.time || b.timestamp.slice(11,19) || '').localeCompare(a.time || a.timestamp.slice(11,19) || '')).map((event, index) => `
+                                    ${eventsByDate[date].sort((a, b) => (b.timestamp || '').localeCompare(a.timestamp || '')).map((event, index) => {
+                                        const eventTimestamp = event?.timestamp || '';
+                                        const eventTime = eventTimestamp.substring(11, 19);
+                                        const eventDescription = event?.description || 'N/A';
+                                        const eventLocation = event?.location?.address?.addressLocality || '';
+                                        
+                                        return `
                                         <li class="timeline-item ${index === 0 && date === sortedDates[0] ? 'is-latest' : ''}">
                                             <div class="timeline-icon">
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -161,12 +172,12 @@
                                                 </svg>
                                             </div>
                                             <div class="timeline-content">
-                                                <p class="timeline-timestamp">${event.time || event.timestamp.slice(11,19)}</p>
-                                                <p class="timeline-status">${event.description || 'N/A'}</p>
-                                                <p class="timeline-location">${event.location?.address?.addressLocality || ''}</p>
+                                                <p class="timeline-timestamp">${eventTime}</p>
+                                                <p class="timeline-status">${eventDescription}</p>
+                                                <p class="timeline-location">${eventLocation}</p>
                                             </div>
                                         </li>
-                                    `).join('')}
+                                    `}).join('')}
                                 </ul>
                             </div>
                         `).join('')}
@@ -187,11 +198,10 @@
                 try {
                     const apiUrl = `https://dbs-back-viruzjokes-projects.vercel.app/api/track?trackingNumber=${cleanedNumbersString}`;
                     const response = await fetch(apiUrl);
-                    if (!response.ok) {
-                        const errorData = await response.json();
-                        throw new Error(errorData.message || getTranslatedText('serverError'));
-                    }
                     const data = await response.json();
+                    if (!response.ok) {
+                        throw new Error(data.detail || data.message || getTranslatedText('serverError'));
+                    }
                     if (data?.shipments) {
                         displayMultiTrackingResults(data);
                         corporatePage.classList.add('hidden-page');
